@@ -1,0 +1,791 @@
+using QFramework;
+using QuickLinker.Model;
+using QuickLinker.Properties;
+using QuickLinker.QuickLaunch.Command;
+using QuickLinker.QuickLaunch.Systems;
+using QuickLinker.QuickLaunch.Utils;
+using QuickLinker.Utils;
+using System;
+using System.Collections.Generic;
+using System.Drawing;
+using System.IO;
+using System.Linq;
+using System.Media;
+using System.Runtime.InteropServices;
+using System.Text;
+using System.Windows.Forms;
+using WK.Libraries.HotkeyListenerNS;
+using AppConfig = QuickLinker.Model.AppConfig;
+using OptType = QuickLinker.QuickLaunch.Command.QuickEntityOptCommand.OptType;
+using Timer = System.Windows.Forms.Timer;
+
+namespace QuickLinker
+{
+    public partial class MainForm : Form, IController
+    {
+        private BindableProperty<OptType> _optType = new BindableProperty<OptType>();
+        private TPanel _optFirstTemp; //临时数据：如交换、排列
+        private Timer _dateTimer;
+        private int _lastRow;
+        private int _lastColumn;
+
+        private bool formMove = false;//窗体是否移动
+        private Point formPoint;//记录窗体的位置
+        private int _oldGroupCount;
+        private Size _offsetSize = Size.Empty;
+        ToolTip _toolTip = new ToolTip();
+
+        public MainForm()
+        {
+            InitializeComponent();
+        }
+        public static string MakeRelativePath(string fromPath, string toPath)
+        {
+            string relativePath = null;
+            try
+            {
+                if (string.IsNullOrEmpty(toPath) || string.IsNullOrEmpty(fromPath)) return null;
+                Uri file = new Uri(@toPath);
+                // Must end in a slash to indicate folder
+                Uri folder = new Uri(@fromPath);
+                relativePath =
+                Uri.UnescapeDataString(
+                    folder.MakeRelativeUri(file)
+                        .ToString()
+                        .Replace('/', Path.DirectorySeparatorChar)
+                    );
+            }
+            catch (Exception ex)
+            {
+                LogKit.E(ex, "建立相对路径出错:fromPath:" + fromPath + ",toPath:" + toPath);
+            }
+            return relativePath;
+        }
+
+        public IArchitecture GetArchitecture() => AppArchitecture.Interface;
+        private void MainForm_Load(object sender, EventArgs e)
+        {
+            tabControl1.TabPages.Clear();
+            ToolStatus_Txt.Text = string.Empty;
+
+            var config = this.GetModel<AppConfig>();
+            config.gridGroup.SetValueWithoutEvent(config.groupArray.Value.Length);
+
+            _lastRow = config.gridRow.Value;
+            _lastColumn = config.gridColumn.Value;
+            _oldGroupCount = config.gridGroup.Value;
+
+            tabControl1.SelectedIndexChanged += tabControl1_SelectedIndexChanged;
+            this.MouseDown += TabControl1_MouseDown;
+            this.MouseMove += TabControl1_MouseMove;
+            this.MouseUp += TabControl1_MouseUp;
+
+            config.groupArray.RegisterWithInitValue(Event_GroupChange);
+            AutoWindowSize();
+            config.grid.Register(Event_RefreshTabSizeControl);
+            config.gridSize.Register(Event_RefreshTabSizeControl);
+            config.gridColumn.Register(Event_RefreshTabPageControl);
+            config.gridRow.Register(Event_RefreshTabPageControl);
+
+            config.disableMinClose.RegisterWithInitValue(b => MinimizeBox = !b);
+            config.disableMaxClose.RegisterWithInitValue(b => MaximizeBox = !b);
+            config.titleStyle.RegisterWithInitValue(Event_TitleStyleChange);
+            config.topWindow.RegisterWithInitValue(b => TopMost = b);
+            _optType.Register(Event_ChengOptType);
+            config.dateTimeType.RegisterWithInitValue(Event_RefreshShowMenu);
+            config.dateTimeType.RegisterWithInitValue(t => Event_RefreshShowTime(null, null));
+            config.windowAlpha.RegisterWithInitValue(t => Opacity = t * 1f / 100);
+            config.tabAppearance.RegisterWithInitValue(t => tabControl1.Appearance = t);
+            config.disableAffinity.RegisterWithInitValue(b => SetWindowDisplayAffinity(Handle, (uint)(b ? 0x11 : 0)));
+            config.showInTray.RegisterWithInitValue(b => { ShowInTaskbar = b; NotifyIcon.Visible = !b; });
+            config.launch.RegisterWithInitValue(this.GetUtility<LaunchUtil>().Set);
+            TypeEventSystem.Global.Register<RefreshStateTextEvent>(Event_RefreshStateText);
+            TypeEventSystem.Global.Register<ShowToolTipEvent>(Event_ShowToolTip);
+            TypeEventSystem.Global.Register<ClickTPanelEvent>(TPanel_OnClick);
+            TypeEventSystem.Global.Register<ClickMenuTPanelEvent>(TPanel_OnClickMenu);
+
+            _dateTimer = new Timer();
+            _dateTimer.Tick += Event_RefreshShowTime;
+            _dateTimer.Interval = 120;
+            _dateTimer.Start();
+
+            if (config.appHideType.Value == AppHideType.AutoMinimize)
+                Hide();
+
+
+            if (config.startbutton.Value)
+                this.SendCommand(new QuickEntityAutoStartCommand());
+
+            var system = this.GetSystem<QuickEntitySystem>();
+            Dictionary<int, string> paths = new Dictionary<int, string> {
+            //{ 4, "D:\\LOG.TXT"},
+            //{ 2, "D:\\padddle_fast_test.zip"},
+            //{ 3, "D:\\LOG.TXT"},
+            //{ -1, "D:\\LOG.TXT"},
+            { 28, "D:\\LOG.TXT"},
+            { 31, "D:\\LOG.TXT"},
+            { 16, "D:\\LOG.TXT"},
+            { 19, "D:\\LOG.TXT"},
+            };
+            foreach (var item in paths)
+            {
+                this.SendCommand(new QuickEntityInsertCommand() { filePath = item.Value, index = item.Key, canParse = true });
+            }
+            var hotKeyMgr = this.GetSystem<HotKeyManager>();
+            hotKeyMgr.HotKeyListener.HotkeyPressed += HotkeyListener_HotkeyPressed;
+            hotKeyMgr.InitializeQuickActionsHotKeys();
+            //this.SendCommand(new QuickEntityOpenCommand() {  index = 2 });
+            //var entytys = system.QueryDataWithAnyFlag(Array.Empty<string>());
+            //foreach (var item in entytys)
+            //{
+            //    Console.WriteLine(item.index);
+            //}
+        }
+        private void MainForm_FormClosing(object sender, FormClosingEventArgs e)
+        {
+            if (e.CloseReason == CloseReason.UserClosing)
+            {
+                var config = this.GetModel<AppConfig>();
+                if (config.disableClose.Value)
+                {
+                    e.Cancel = true;
+                    return;
+                }
+                if (!config.showInTray.Value)
+                {
+                    e.Cancel = true;
+                    Hide();
+                    return;
+                }
+            }
+            ApplicationExit();
+        }
+        private void MainForm_Deactivate(object sender, EventArgs e)
+        {
+            var config = this.GetModel<AppConfig>();
+            if (config.appHideType.Value == AppHideType.LoseFocusMinimize)
+                Hide();
+            //else if (config.appHideType.Value == AppHideType.RollUp)
+            //    WindowState = FormWindowState.
+        }
+
+        private void HotkeyListener_HotkeyPressed(object sender, HotkeyEventArgs e)
+        {
+            var hotKeyMgr = this.GetSystem<HotKeyManager>();
+            var config = this.GetModel<AppConfig>();
+            if (e.Hotkey.ToString() == config.actionHotKey.Value)
+            {
+                Show();
+                WindowState = FormWindowState.Normal;
+                if (config.showMouse.Value)
+                {
+                    var showPos = MousePosition;
+                    showPos.X -= Width / 2;
+                    showPos.Y -= Height / 2;
+                    this.Location = showPos;
+                }
+            }
+            else
+                hotKeyMgr.ProcessQuickActionHotKey(e.Hotkey.ToString());
+        }
+
+        private void TabControl1_MouseDown(object sender, MouseEventArgs e)
+        {
+            if (this.GetModel<AppConfig>().disableMove.Value)
+                return;
+            formPoint = new Point();
+            if (e.Button == MouseButtons.Left)
+            {
+                formPoint = e.Location;//获取鼠标在窗口上的坐标
+                formMove = true;//开始移动
+            }
+        }
+        private void TabControl1_MouseMove(object sender, MouseEventArgs e)
+        {
+            if (formMove == true)
+            {
+                Point point = new Point(e.Location.X - formPoint.X, e.Location.Y - formPoint.Y);
+                point.X += Location.X;
+                point.Y += Location.Y;
+                this.Location = point;
+            }
+        }
+        private void TabControl1_MouseUp(object sender, MouseEventArgs e)
+        {
+            if (e.Button == MouseButtons.Left)//按下的是鼠标左键
+            {
+                formMove = false;//停止移动
+            }
+        }
+        private void tabControl1_MouseDown_1(object sender, MouseEventArgs e)
+        {
+            if (e.Button != MouseButtons.Right)
+                return;
+            var config = this.GetModel<AppConfig>();
+            TabMenuItem_Left.Enabled = tabControl1.SelectedIndex != 0;
+            TabMenuItem_Right.Enabled = tabControl1.SelectedIndex != tabControl1.TabPages.Count - 1;
+            TabMenuItem_Delete.Enabled = tabControl1.TabPages.Count > 1;
+            TabMenuItem_Stand.Checked = config.tabAppearance.Value == TabAppearance.Normal;
+            TabMenuItem_Button.Checked = config.tabAppearance.Value == TabAppearance.Buttons;
+            TabMenuItem_Flot.Checked = config.tabAppearance.Value == TabAppearance.FlatButtons;
+            TabMenuStrip.Show(MousePosition);
+        }
+        private void tabControl1_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            new SoundPlayer(Resources.WAVE_GROUP).Play();
+        }
+
+
+        public void TPanel_OnClick(ClickTPanelEvent info)
+        {
+            var panel = info.tPanel;
+            if (_optType.Value != OptType.None)
+            {
+                _optFirstTemp.Invert(false);
+                do
+                {
+                    if (_optFirstTemp.Index == panel.Index)
+                        break;
+                    if (_optType.Value == OptType.Copy && panel.Entity != null)
+                    {
+                        DialogResult dialogResult = MessageBox.Show(string.Format(Resources.MainForm_Copy, _optFirstTemp.Title, panel.Title), Text, MessageBoxButtons.YesNo, MessageBoxIcon.Question);
+                        if (dialogResult != DialogResult.Yes)
+                            break;
+                    }
+                    this.SendCommand(new QuickEntityOptCommand() { optType = _optType.Value, fromIndex = _optFirstTemp.Index, index = panel.Index });
+                } while (false);
+                _optType.Value = OptType.None;
+                return;
+            }
+            if ((ModifierKeys & Keys.Control) != 0) //Ctrl+左键 打开所在目录
+            {
+                if (panel.Entity != null)
+                    this.SendCommand(new QuickEntityShowInExploreCommand() { index = panel.Index });
+            }
+            else //只有鼠标左键 打开应用
+            {
+                if (panel.Entity == null)
+                {
+                    if (!this.GetModel<AppConfig>().ignoreZeroButton.Value)
+                    {
+                        panel.Invert(true);
+                        BtnPropertiesFrom.Show(panel);
+                        panel.Invert(false);
+                    }
+                    return;
+                }
+                this.SendCommand(new QuickEntityOpenCommand() { index = panel.Index });
+                new SoundPlayer(Resources.WAVE_CLICK).Play();
+            }
+        }
+        public void TPanel_OnClickMenu(ClickMenuTPanelEvent info)
+        {
+            var panel = info.tPanel;
+            if (_optType.Value != OptType.None)
+                return;
+            PageMenuStrip.Tag = panel;
+            MenuStrip_FullPath.Text = panel.Title;
+            MenuStrip_FullPath.Enabled = panel.Entity != null;
+            MenuStrip_FullPath.Font = new Font(MenuStrip_FullPath.Font, panel.Entity != null ? FontStyle.Bold : FontStyle.Regular);
+            MenuStrip_Attr.Font = new Font(MenuStrip_FullPath.Font, panel.Entity == null ? FontStyle.Bold : FontStyle.Regular);
+            PageMenuStrip.Show(MousePosition);
+        }
+        private void Event_ChengOptType(OptType type)
+        {
+            if (type != OptType.None)
+            {
+                switch (type)
+                {
+                    case OptType.Copy:
+                        _optFirstTemp.Invert(true);
+                        ToolStatus_Txt.Text = Resources.MainForm_CopyStats;
+                        break;
+                    case OptType.Switch:
+                        _optFirstTemp.Invert(true);
+                        ToolStatus_Txt.Text = Resources.MainForm_SwitchStats;
+                        break;
+                    case OptType.Align:
+                        _optFirstTemp.Invert(true);
+                        ToolStatus_Txt.Text = Resources.MainForm_AlignStats;
+                        break;
+                }
+                using (MemoryStream ms = new MemoryStream(Resources.CUR_COPY))
+                    tabControl1.Cursor = new Cursor(ms);
+            }
+            else
+            {
+                ToolStatus_Txt.Text = string.Empty;
+                tabControl1.Cursor = Cursors.Default;
+                new SoundPlayer(Resources.WAVE_BUTTON).Play();
+            }
+        }
+
+        //MenuStrip
+        private void MenuStrip_CreateQuick_Click(object sender, EventArgs e)
+        {
+            var stripMenuItem = sender as ToolStripMenuItem;
+            var tPanel = stripMenuItem.Owner.Tag as TPanel;
+            if (tPanel.Entity == null)
+                return;
+            CommonCode.CreateShortcut(tPanel.Entity);
+        }
+        private void MenuStrip_SystemContextMenu_Click(object sender, EventArgs e)
+        {
+            var stripMenuItem = sender as ToolStripMenuItem;
+            var tPanel = stripMenuItem.Owner.Tag as TPanel;
+            if (tPanel.Entity == null)
+                return;
+            DirectoryInfo[] folders = new DirectoryInfo[1];
+            folders[0] = new DirectoryInfo(tPanel.Entity.path);
+            ShellContextMenu scm = new ShellContextMenu();
+            Point p = Cursor.Position;
+            p.X -= 80;
+            p.Y -= 80;
+            scm.ShowContextMenu(folders, p);
+        }
+        private void MenuStrip_Clear_Click(object sender, EventArgs e)
+        {
+            var stripMenuItem = sender as ToolStripMenuItem;
+            var tPanel = stripMenuItem.Owner.Tag as TPanel;
+            if (tPanel.Entity == null)
+                return;
+            DialogResult dialogResult = MessageBox.Show(string.Format(Resources.MainForm_Remove, tPanel.Title), Text, MessageBoxButtons.YesNo, MessageBoxIcon.Question);
+            if (dialogResult == DialogResult.Yes)
+                this.SendCommand(new QuickEntityRemoveCommand() { index = tPanel.Index });
+        }
+        private void MenuStrip_Copy_Click(object sender, EventArgs e)
+        {
+            var stripMenuItem = sender as ToolStripMenuItem;
+            var tPanel = stripMenuItem.Owner.Tag as TPanel;
+            _optFirstTemp = tPanel;
+            _optType.Value = OptType.Copy;
+        }
+        private void MenuStrip_Switch_Click(object sender, EventArgs e)
+        {
+            var stripMenuItem = sender as ToolStripMenuItem;
+            var tPanel = stripMenuItem.Owner.Tag as TPanel;
+            _optFirstTemp = tPanel;
+            _optType.Value = OptType.Switch;
+        }
+        private void MenuStrip_Align_Click(object sender, EventArgs e)
+        {
+            var stripMenuItem = sender as ToolStripMenuItem;
+            var tPanel = stripMenuItem.Owner.Tag as TPanel;
+            _optFirstTemp = tPanel;
+            _optType.Value = OptType.Align;
+        }
+        private void MenuStrip_Attr_Click(object sender, EventArgs e)
+        {
+            var stripMenuItem = sender as ToolStripMenuItem;
+            var tPanel = stripMenuItem.Owner.Tag as TPanel;
+            tPanel.Invert(true);
+            BtnPropertiesFrom.Show(tPanel);
+            tPanel.Invert(false);
+        }
+
+        public const int WM_SYSCOMMAND = 0x112;
+        public const int SC_MOVE = 0xF012;
+        protected override void WndProc(ref Message m)
+        {
+            SystemMenu.WndProc(ref m, this);
+            if (m.Msg == WM_SYSCOMMAND && (int)m.WParam == SC_MOVE)
+            {
+                if (this.GetModel<AppConfig>().disableMove.Value)
+                    return;
+            }
+            base.WndProc(ref m);
+        }
+
+        private void ApplicationExit()
+        {
+            _dateTimer?.Stop();
+            var hotKeyMgr = this.GetSystem<HotKeyManager>();
+            hotKeyMgr.HotKeyListener?.RemoveAll();
+            hotKeyMgr.HotKeyListener?.Dispose();
+        }
+        private void Event_TitleStyleChange(TitleStyle b)
+        {
+            switch (b)
+            {
+                case TitleStyle.Stand:
+                    FormBorderStyle = FormBorderStyle.FixedSingle;
+                    break;
+                case TitleStyle.Min:
+                    FormBorderStyle = FormBorderStyle.FixedToolWindow;
+                    break;
+                case TitleStyle.None:
+                default:
+                    FormBorderStyle = FormBorderStyle.None;
+                    break;
+            }
+        }
+        private void Event_RefreshShowMenu(DateTimeType dateTime)
+        {
+            ToolStatusMenu_Time.Checked = false;
+            ToolStatusMenu_Time.Tag = DateTimeType.Time;
+            ToolStatusMenu_Date.Checked = false;
+            ToolStatusMenu_Date.Tag = DateTimeType.Date;
+            ToolStatusMenu_DateTime.Checked = false;
+            ToolStatusMenu_DateTime.Tag = DateTimeType.DateTime;
+            ToolStatusMenu_None.Checked = false;
+            ToolStatusMenu_None.Tag = DateTimeType.None;
+            switch (dateTime)
+            {
+                case DateTimeType.None:
+                    ToolStatusMenu_None.Checked = true;
+                    break;
+                case DateTimeType.Time:
+                    ToolStatusMenu_Time.Checked = true;
+                    break;
+                case DateTimeType.Date:
+                    ToolStatusMenu_Date.Checked = true;
+                    break;
+                case DateTimeType.DateTime:
+                    ToolStatusMenu_DateTime.Checked = true;
+                    break;
+                default:
+                    break;
+            }
+        }
+        private void Event_RefreshShowTime(object sender, EventArgs e)
+        {
+            var config = this.GetModel<AppConfig>();
+            DateTime dateTime = DateTime.Now;
+            string showDateOrTime = string.Empty;
+            switch (config.dateTimeType.Value)
+            {
+                case DateTimeType.Time:
+                    showDateOrTime = config.showLongFormatTime.Value ?
+                        dateTime.ToLongTimeString() : dateTime.ToShortTimeString();
+                    break;
+                case DateTimeType.Date:
+                    showDateOrTime = config.showLongFormatDate.Value ?
+                        dateTime.ToLongDateString() : dateTime.ToShortDateString();
+                    break;
+                case DateTimeType.DateTime:
+                    var time = config.showLongFormatTime.Value ?
+                    dateTime.ToLongTimeString() : dateTime.ToShortTimeString();
+                    var date = config.showLongFormatDate.Value ?
+                    dateTime.ToLongDateString() : dateTime.ToShortDateString();
+                    showDateOrTime = time + " - " + date;
+                    break;
+                case DateTimeType.None:
+                default:
+                    break;
+            }
+            if (string.IsNullOrEmpty(showDateOrTime))
+                ToolStatus_DateTime.Text = string.Empty;
+            else
+                ToolStatus_DateTime.Text = showDateOrTime;
+        }
+        private void ToolStatusMenu_Item_Click(object sender, EventArgs e)
+        {
+            var menuItem = sender as ToolStripMenuItem;
+            var type = (DateTimeType)menuItem.Tag;
+            var config = this.GetModel<AppConfig>();
+            config.dateTimeType.Value = type;
+        }
+        private void Event_RefreshStateText(RefreshStateTextEvent info)
+        {
+            this.Invoke(() =>
+            {
+                ToolStatus_Txt.Text = info.text;
+            });
+        }
+        private void Event_ShowToolTip(ShowToolTipEvent info)
+        {
+            _toolTip.SetToolTip(info.control, info.text);
+        }
+
+
+        protected override void OnHandleCreated(EventArgs e)
+        {
+            base.OnHandleCreated(e);
+            SystemMenu.OnHandleCreated(e, this);
+        }
+
+        public void OpenSettingWindow()
+        {
+            using (var settingForm = new PreferencesFrom())
+            {
+                settingForm.ShowDialog();
+            }
+        }
+        private void AutoWindowSize()
+        {
+            var config = this.GetModel<AppConfig>();
+            if (_offsetSize == Size.Empty)
+                _offsetSize = tabControl1.Size - tabControl1.TabPages[0].Size;
+            tabControl1.Size = new Size(config.gridColumn.Value * config.gridSize.Value + (config.gridColumn.Value - 1) * config.grid.Value,
+                                        config.gridSize.Value * config.gridRow.Value + (config.gridRow.Value - 1) * config.grid.Value)
+                                       + _offsetSize;
+            var titelHeight = Height - ClientRectangle.Height;
+            Size = new Size(tabControl1.Size.Width, tabControl1.Size.Height + titelHeight + StatusStrip.Height);
+        }
+        private void Event_RefreshTabSizeControl(int _)
+        {
+            var config = this.GetModel<AppConfig>();
+            tabControl1.SuspendLayout();
+            SuspendLayout();
+            foreach (TabPage page in tabControl1.TabPages)
+            {
+                page.SuspendLayout();
+                List<Control> controls = new List<Control>(page.Controls.Count);
+                foreach (Control control in page.Controls)
+                    controls.Add(control);
+                for (int row = 0; row < config.gridRow.Value; row++)
+                {
+                    for (int column = 0; column < config.gridColumn.Value; column++)
+                    {
+                        var defalutIndex = row * config.gridColumn.Value + column;
+                        var tPanel = controls[defalutIndex];
+                        tPanel.Size = new Size(config.gridSize.Value, config.gridSize.Value);
+                        var columnSize = column * config.gridSize.Value;
+                        var rowSize = row * config.gridSize.Value;
+                        columnSize += config.grid.Value * column;
+                        rowSize += config.grid.Value * row;
+                        tPanel.Location = new Point(columnSize, rowSize);
+                    }
+                }
+                page.ResumeLayout(false);
+            }
+            tabControl1.ResumeLayout(true);
+            ResumeLayout();
+            AutoWindowSize();
+        }
+        private void Event_RefreshTabPageControl(int _)
+        {
+            var config = this.GetModel<AppConfig>();
+            tabControl1.SuspendLayout();
+            int lastPageGridCount = tabControl1.TabPages.Count * _lastColumn * _lastRow;
+            int pageGridCount = tabControl1.TabPages.Count * config.gridColumn.Value * config.gridRow.Value;
+            List<TPanel> controls = new List<TPanel>(Math.Max(lastPageGridCount, pageGridCount));
+            foreach (TabPage tabPage in tabControl1.TabPages)
+                foreach (TPanel control in tabPage.Controls)
+                    controls.Add(control);
+            //增加
+            for (int i = lastPageGridCount; i < pageGridCount; i++)
+            {
+                var tPanel = new TPanel(i);
+                tPanel.Size = new Size(config.gridSize.Value, config.gridSize.Value);
+                controls.Add(tPanel);
+            }
+            //减少
+            for (int i = lastPageGridCount - 1; i >= pageGridCount; i--)
+            {
+                var tPanel = controls[i];
+                tPanel.UnLoad();
+                var tabPage = tPanel.Parent as TabPage;
+                tabPage.Controls.Remove(tPanel);
+            }
+            //调整page中的格子所属容器
+            for (int i = 0; i < tabControl1.TabPages.Count; i++)
+            {
+                int startIndex = i * config.gridColumn.Value * config.gridRow.Value;
+                int endIndex = (i + 1) * config.gridColumn.Value * config.gridRow.Value;
+                TabPage tabPage = tabControl1.TabPages[i];
+                tabPage.Controls.Clear();
+                for (int index = startIndex; index < endIndex; index++)
+                {
+                    var tPanel = controls[index];
+                    tabPage.Controls.Add(tPanel);
+                }
+            }
+            tabControl1.ResumeLayout(false);
+            //对数据层进行更改
+            for (int pageIndex = tabControl1.TabPages.Count - 1; pageIndex >= 0; pageIndex--)
+            {
+                int lastPageCount = pageIndex * _lastColumn * _lastRow;
+                int newPageCount = pageIndex * config.gridColumn.Value * config.gridRow.Value;
+                //减少行
+                for (int row = _lastRow - 1; row >= config.gridRow.Value; row--)
+                {
+                    for (int column = config.gridColumn.Value - 1; column >= 0; column--)
+                    {
+                        var defalutIndex = row * _lastColumn + column + lastPageCount;
+                        this.SendCommand(new QuickEntityRemoveCommand() { index = defalutIndex });
+                        if (pageIndex != tabControl1.TabPages.Count - 1)
+                        {
+                            this.SendCommand(new QuickEntityOptCommand() { optType = OptType.Align, fromIndex = defalutIndex, index = lastPageGridCount - 1 });
+                        }
+                    }
+                }
+                //减少列(必须先遍历行)
+                for (int row = config.gridRow.Value - 1; row >= 0; row--)
+                {
+                    for (int column = _lastColumn - 1; column >= config.gridColumn.Value; column--)
+                    {
+                        var defalutIndex = row * _lastColumn + column + lastPageCount;
+                        this.SendCommand(new QuickEntityRemoveCommand() { index = defalutIndex });
+                        //在减少列时，需要进行一次排列，把其中的图标挤到指定位置
+                        if (defalutIndex != lastPageGridCount - 1)
+                            this.SendCommand(new QuickEntityOptCommand() { optType = OptType.Align, fromIndex = defalutIndex, index = lastPageGridCount - 1 });
+                    }
+                }
+                //增加行
+                for (int row = _lastRow; row < config.gridRow.Value; row++)
+                {
+                    for (int column = 0; column < config.gridColumn.Value; column++)
+                    {
+                        var defalutIndex = row * _lastColumn + column + lastPageCount;
+                        if (pageIndex != tabControl1.TabPages.Count - 1)
+                        {
+                            this.SendCommand(new QuickEntityOptCommand() { optType = OptType.Align, fromIndex = pageGridCount - 1, index = defalutIndex });
+                        }
+                    }
+                }
+                //LogPage(new Point(_lastRow, _lastColumn), new Point(_lastRow, _lastColumn));
+                //增加列
+                for (int column = _lastColumn; column < config.gridColumn.Value; column++)
+                {
+                    for (int row = config.gridRow.Value - 1; row >= 0; row--)
+                    {
+                        var defalutIndex = row * _lastColumn + column + lastPageCount;
+                        //在增加列时，需要进行一次排列，把其中的图标挤到指定位置
+                        if (defalutIndex < lastPageGridCount)
+                            this.SendCommand(new QuickEntityOptCommand() { optType = OptType.Align, fromIndex = pageGridCount, index = defalutIndex });
+                    }
+                }
+                //LogPage(new Point(config.gridRow.Value, config.gridColumn.Value), new Point(config.gridRow.Value, config.gridColumn.Value));
+            }
+            _lastRow = config.gridRow.Value;
+            _lastColumn = config.gridColumn.Value;
+            Event_RefreshTabSizeControl(0);
+        }
+        private void LogPage(params Point[] points)
+        {
+            StringBuilder sb = new StringBuilder();
+            var config = this.GetModel<AppConfig>();
+            var system = this.GetSystem<QuickEntitySystem>();
+            var entytys = system.QueryDataWithAnyFlag(Array.Empty<string>());
+            //string.Join(",", entytys).LogInfo();
+            for (int tagPag = 0; tagPag < config.groupArray.Value.Length; tagPag++)
+            {
+                sb.AppendLine($"---- pag:{tagPag} -----");
+                Point pos;
+                if (tagPag < points.Length)
+                    pos = points[tagPag];
+                else
+                    pos = points[points.Length - 1];
+                var pagCount = tagPag * pos.X * pos.Y;
+                for (int row = 0; row < pos.X; row++)
+                {
+                    for (int column = 0; column < pos.Y; column++)
+                    {
+                        var findIndex = row * pos.Y + column + pagCount;
+                        var entity = system.Find(findIndex);
+                        sb.Append(entity != null ? "{" + entity.index + "}" : findIndex.ToString());
+                        sb.Append('\t');
+                    }
+                    sb.AppendLine();
+                }
+            }
+            sb.LogInfo();
+        }
+        private void Event_GroupChange(string[] strs)
+        {
+            var config = this.GetModel<AppConfig>();
+            var groupArray = config.groupArray;
+            for (int i = tabControl1.TabCount; i < groupArray.Value.Length; i++)
+            {
+                this.AddPage(groupArray.Value[i]);
+            }
+            for (int i = tabControl1.TabCount; i > groupArray.Value.Length; i--)
+            {
+                this.RemovePage(i - 1);
+            }
+            for (int i = 0; i < groupArray.Value.Length; i++)
+            {
+                tabControl1.TabPages[i].Text = groupArray.Value[i];
+            }
+        }
+
+        [DllImport("user32.dll")]
+        private static extern uint SetWindowDisplayAffinity(IntPtr hWnd, uint dwAffinity);
+
+        //NotifyIcon
+        private void NotifyIcon_MouseDoubleClick(object sender, MouseEventArgs e)
+        {
+            NotifyIcon.Visible = true;
+            Show();
+            WindowState = FormWindowState.Normal;
+            Focus();
+        }
+        private void AppMenu_Quit_Click(object sender, EventArgs e)
+        {
+            NotifyIcon.Visible = false;
+            base.Close();
+            base.Dispose();
+            Application.Exit();
+        }
+        private void AppMenu_Setting_Click(object sender, EventArgs e)
+        {
+            AppMenu_Show_Click(sender, e);
+            OpenSettingWindow();
+        }
+        private void AppMenu_Show_Click(object sender, EventArgs e)
+        {
+            NotifyIcon.Visible = true;
+            Show();
+            WindowState = FormWindowState.Normal;
+            Focus();
+        }
+
+        //TabMenuItem
+        private void TabMenuItem_Left_Click(object sender, EventArgs e)
+        {
+            int curIndex = tabControl1.SelectedIndex;
+            int swapIndex = curIndex - 1;
+            this.SwitchPage(curIndex, swapIndex);
+            tabControl1.SelectedIndex = swapIndex;
+        }
+        private void TabMenuItem_Right_Click(object sender, EventArgs e)
+        {
+            int curIndex = tabControl1.SelectedIndex;
+            int swapIndex = curIndex + 1;
+            this.SwitchPage(curIndex, swapIndex);
+            tabControl1.SelectedIndex = swapIndex;
+        }
+        private void TabMenuItem_Rename_Click(object sender, EventArgs e)
+        {
+            using (GroupNameForm groupNameForm = new GroupNameForm())
+            {
+                string pageText = tabControl1.TabPages[tabControl1.SelectedIndex].Text;
+                groupNameForm.GroupName = pageText;
+                if (groupNameForm.ShowDialog() != DialogResult.OK)
+                    return;
+                if (string.Equals(groupNameForm.GroupName, pageText))
+                    return;
+                var config = this.GetModel<AppConfig>();
+                var groupArray = config.groupArray;
+                string[] tempArray = new string[groupArray.Value.Length];
+                Array.Copy(groupArray.Value, tempArray, tempArray.Length);
+                tempArray[tabControl1.SelectedIndex] = groupNameForm.GroupName;
+                config.groupArray.Value = tempArray;
+            }
+        }
+        private void TabMenuItem_Delete_Click(object sender, EventArgs e)
+        {
+            int curIndex = tabControl1.SelectedIndex;
+            var config = this.GetModel<AppConfig>();
+            var groupArray = config.groupArray.Value.ToList();
+            groupArray.RemoveAt(curIndex);
+            config.groupArray.Value = groupArray.ToArray();
+        }
+        private void TabMenuItem_Stand_Click(object sender, EventArgs e)
+        {
+            var config = this.GetModel<AppConfig>();
+            config.tabAppearance.Value = TabAppearance.Normal;
+        }
+        private void TabMenuItem_Button_Click(object sender, EventArgs e)
+        {
+            var config = this.GetModel<AppConfig>();
+            config.tabAppearance.Value = TabAppearance.Buttons;
+        }
+        private void TabMenuItem_Flot_Click(object sender, EventArgs e)
+        {
+            var config = this.GetModel<AppConfig>();
+            config.tabAppearance.Value = TabAppearance.FlatButtons;
+        }
+    }
+}
