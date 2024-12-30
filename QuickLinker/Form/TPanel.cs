@@ -155,7 +155,7 @@ namespace QuickLinker
                 showImage = _entity.bitmapImage;
                 if (_invertImage)
                     showImage = InvertImage(_entity.bitmapImage);
-                _text = string.IsNullOrWhiteSpace(_entity.desc) ? _entity.path : _entity.desc;
+                _text = string.IsNullOrWhiteSpace(_entity.desc) ? _entity.Path : _entity.desc;
                 _title = _text;
             }
             else

@@ -5,6 +5,7 @@ using QuickLinker.QuickLaunch.Models;
 using QuickLinker.QuickLaunch.Utils;
 using QuickLinker.Utils;
 using System;
+using System.IO;
 using System.Windows.Forms;
 using AppConfig = QuickLinker.Model.AppConfig;
 
@@ -67,7 +68,7 @@ namespace QuickLinker
             if (setExtInfo)
             {
                 Txt_TargetPostion.TextChanged -= Txt_TargetPostion_TextChanged;
-                Txt_TargetPostion.Text = _tempEntity.path;
+                Txt_TargetPostion.Text = _tempEntity.Path;
                 Txt_Args.Text = _tempEntity.startArg;
                 Txt_WorkFolder.Text = _tempEntity.workFolder;
                 Txt_Desc.Text = _tempEntity.desc;
@@ -136,7 +137,7 @@ namespace QuickLinker
         private void Btn_Ok_Click(object sender, EventArgs e)
         {
             string filePath = Txt_TargetPostion.Text.Trim();
-            _tempEntity.path = filePath;
+            _tempEntity.Path = filePath;
             _tempEntity.workFolder = Txt_WorkFolder.Text.Trim();
             _tempEntity.desc = Txt_Desc.Text.Trim();
             _tempEntity.startArg = Txt_Args.Text.Trim();

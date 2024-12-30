@@ -5,10 +5,11 @@ using QuickLinker.Utils;
 
 namespace QuickLinker
 {
-    internal class AppArchitecture : Architecture<AppArchitecture>
+    internal class AppArchitecture : CommonArchitecture<AppArchitecture>
     {
         protected override void Init()
         {
+            base.Init();
             this.RegisterModel(new AppConfig());
 
             this.RegisterSystem(new QuickEntitySystem());

@@ -21,10 +21,12 @@ namespace QuickLinker.QuickLaunch.Systems
         public BindableProperty<int> needSaveNum = new BindableProperty<int>();
 
         private readonly List<int> removeIndexTempList = new List<int>();//移除的位置列表，用作改动计数(保存后清空)
-        private readonly List<Entity> entities = new List<Entity>();
+        private EntityCache entitieCache;
         private readonly Entity DEFAULT = new Entity();
         protected override void OnInit()
         {
+            var stroe = this.GetSystem<IStroeSystem>();
+            entitieCache = stroe.Load<EntityCache>(new EntityCache());
         }
 
         /// <summary>
@@ -51,7 +53,7 @@ namespace QuickLinker.QuickLaunch.Systems
 
             entity.index = index;
             var insertIndex = FindInsertIndex(index);
-            entities.Insert(insertIndex, entity);
+            entitieCache.entities.Insert(insertIndex, entity);
             entity.needSave.RegisterWithInitValue(Event_NeedSave);
             if (removeIndexTempList.Remove(index))
                 Event_NeedSave(false);
@@ -66,11 +68,11 @@ namespace QuickLinker.QuickLaunch.Systems
             if (index < 0)
                 return null;
             DEFAULT.index = index;
-            var findIndex = entities.BinarySearch(DEFAULT, this);
+            var findIndex = entitieCache.entities.BinarySearch(DEFAULT, this);
             if (findIndex >= 0)
             {
-                Entity findEntity = entities[findIndex];
-                entities.Remove(findEntity);
+                Entity findEntity = entitieCache.entities[findIndex];
+                entitieCache.entities.Remove(findEntity);
                 removeIndexTempList.Add(index);
                 Event_NeedSave(true);
                 ChangeEntityEvent.Trigger(findEntity.index, null);
@@ -85,7 +87,7 @@ namespace QuickLinker.QuickLaunch.Systems
         internal int FindZeroIndex()
         {
             int index = 0;
-            foreach (Entity entity in entities)
+            foreach (Entity entity in entitieCache.entities)
             {
                 if (entity.index != index)
                     return index;
@@ -95,7 +97,7 @@ namespace QuickLinker.QuickLaunch.Systems
         }
         internal int FindInsertIndex(int index)
         {
-            var insertIndex = entities.FindLastIndex(item => item.index < index);
+            var insertIndex = entitieCache.entities.FindLastIndex(item => item.index < index);
             if (insertIndex < 0)
                 return 0;
             else
@@ -178,24 +180,23 @@ namespace QuickLinker.QuickLaunch.Systems
         //执行跟随启动的应用
         internal void AutoStart()
         {
-            for (int i = 0; i < entities.Count; i++)
+            for (int i = 0; i < entitieCache.entities.Count; i++)
             {
-                var item = entities[i];
+                var item = entitieCache.entities[i];
                 if (item.autoRun)
                     ProcessUtil.StartIconEntity(item);
             }
         }
         internal void Save()
         {
-            //TODO:保存到配置文件
-            var stroe = this.GetSystem<IStroeSystem>();
-            if (stroe == null)
+            var needSave = entitieCache.entities.Exists(item => item.needSave.Value) || removeIndexTempList.Count > 0;
+            if (!needSave)
                 return;
+            var stroe = this.GetSystem<IStroeSystem>();
+            stroe.Save(entitieCache);
 
-            stroe.Save(entities);
-            //stroe.Save();
-            //清楚需保存的状态
-            entities.ForEach(item => item.needSave.Value = false);
+            //清除需保存的状态
+            entitieCache.entities.ForEach(item => item.needSave.Value = false);
             for (int i = 0; i < removeIndexTempList.Count; i++)
                 Event_NeedSave(false);
             removeIndexTempList.Clear();
@@ -216,9 +217,9 @@ namespace QuickLinker.QuickLaunch.Systems
         public Entity Find(int index)
         {
             DEFAULT.index = index;
-            var findIndex = entities.BinarySearch(DEFAULT, this);
+            var findIndex = entitieCache.entities.BinarySearch(DEFAULT, this);
             if (findIndex >= 0)
-                return entities[findIndex];
+                return entitieCache.entities[findIndex];
             else
                 return null;
         }
@@ -231,7 +232,7 @@ namespace QuickLinker.QuickLaunch.Systems
         public List<Entity> QueryDataWithAllFlags(string[] flags)
         {
             List<Entity> reault = new List<Entity>();
-            foreach (var entity in entities)
+            foreach (var entity in entitieCache.entities)
             {
                 var forAll = Array.TrueForAll(flags, flag => Array.Exists(entity.flags, flag.Equals));
                 if (forAll)
@@ -248,9 +249,9 @@ namespace QuickLinker.QuickLaunch.Systems
         public List<Entity> QueryDataWithAnyFlag(string[] flags)
         {
             if (flags.Length == 0)
-                return new List<Entity>(entities);
+                return new List<Entity>(entitieCache.entities);
             List<Entity> reault = new List<Entity>();
-            foreach (var entity in entities)
+            foreach (var entity in entitieCache.entities)
             {
                 var exist = Array.Exists(flags, flag => Array.Exists(entity.flags, flag.Equals));
                 if (exist)

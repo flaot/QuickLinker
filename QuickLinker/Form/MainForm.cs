@@ -167,6 +167,7 @@ namespace QuickLinker
                 Hide();
             //else if (config.appHideType.Value == AppHideType.RollUp)
             //    WindowState = FormWindowState.
+            this.SendCommand(new QuickEntitySaveCommand());
         }
 
         private void HotkeyListener_HotkeyPressed(object sender, HotkeyEventArgs e)
@@ -336,7 +337,7 @@ namespace QuickLinker
             if (tPanel.Entity == null)
                 return;
             DirectoryInfo[] folders = new DirectoryInfo[1];
-            folders[0] = new DirectoryInfo(tPanel.Entity.path);
+            folders[0] = new DirectoryInfo(tPanel.Entity.Path);
             ShellContextMenu scm = new ShellContextMenu();
             Point p = Cursor.Position;
             p.X -= 80;

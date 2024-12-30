@@ -8,7 +8,6 @@ namespace QuickLinker.QuickLaunch.Command
     /// </summary>
     public class QuickEntitySaveCommand : AbstractCommand
     {
-        public int index;
         protected override void OnExecute()
         {
             var entitySystem = this.GetSystem<QuickEntitySystem>();

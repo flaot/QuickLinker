@@ -2,6 +2,7 @@
 using QuickLinker.QuickLaunch.Systems;
 using QuickLinker.QuickLaunch.Utils;
 using System.Drawing;
+using System.IO;
 
 namespace QuickLinker.QuickLaunch.Command
 {
@@ -21,10 +22,10 @@ namespace QuickLinker.QuickLaunch.Command
             if (entity == null)
                 return;
             bool change = false;
-            if (filePath != null && !string.Equals(entity.path, filePath))
+            if (filePath != null && !string.Equals(entity.Path, filePath))
             {
                 change |= true;
-                entity.path = filePath;
+                entity.Path = filePath;
             }
             if (adminStartUp.HasValue && adminStartUp.Value != entity.adminStartUp)
             {

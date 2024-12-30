@@ -2,6 +2,8 @@
 using QuickLinker.QuickLaunch.Constant;
 using System;
 using System.Drawing;
+using System.Text.Json.Serialization;
+using System.Xml.Serialization;
 
 namespace QuickLinker.QuickLaunch.Models
 {
@@ -18,10 +20,16 @@ namespace QuickLinker.QuickLaunch.Models
 
         /// <summary> 打开方式 </summary>
         public OpenType iconType = OpenType.OTHER;
+        [JsonInclude , XmlAttribute]
+        private string path = string.Empty;
         /// <summary> 路径 </summary>
-        public string path = string.Empty;
+        [JsonIgnore, XmlIgnore]
+        public string Path { get => path; set => path = value.Replace(System.IO.Path.DirectorySeparatorChar, '/'); }
+        [JsonInclude, XmlAttribute]
+        private string relativePath = string.Empty;
         /// <summary> 相对路径 </summary>
-        public string relativePath = string.Empty;
+        [JsonIgnore, XmlIgnore]
+        public string RelativePath { get => relativePath; set => relativePath = value.Replace(System.IO.Path.DirectorySeparatorChar, '/'); }
         /// <summary> 启动参数 </summary>
         public string startArg = string.Empty;
         /// <summary> 工作目录 </summary>
@@ -36,15 +44,20 @@ namespace QuickLinker.QuickLaunch.Models
         public PriorityClass priorityClass = PriorityClass.Normal;
 
         /// <summary> 图标 </summary>
+        [JsonIgnore, XmlIgnore]
         public Bitmap bitmapImage;
         /// <summary> 图标 byte数组(存) </summary>
         public byte[] imageByteArr;
+        [JsonInclude, XmlAttribute]
+        private string imagePath = string.Empty;
         /// <summary> 图标的来源路径 </summary>
-        public string imagePath = string.Empty;
+        [JsonIgnore, XmlIgnore]
+        public string ImagePath { get => imagePath; set => imagePath = value.Replace(System.IO.Path.DirectorySeparatorChar, '/'); }
         /// <summary> 图标的下标 </summary>
         public int imageIndex;
 
         /// <summary> 需要保存 </summary>
+        [JsonIgnore, XmlIgnore]
         public BindableProperty<bool> needSave = new BindableProperty<bool>();
 
         public object Clone()

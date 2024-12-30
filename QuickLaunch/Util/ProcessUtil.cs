@@ -38,7 +38,7 @@ namespace QuickLinker.QuickLaunch.Utils
                     }
                     else
                     {
-                        p.StartInfo.FileName = icon.path;
+                        p.StartInfo.FileName = icon.Path;
                         if (!string.IsNullOrWhiteSpace(startArg))
                             p.StartInfo.Arguments = startArg;
 
@@ -67,7 +67,7 @@ namespace QuickLinker.QuickLaunch.Utils
                                     break;
                                 case IconStartType.SHOW_IN_EXPLORE:
                                     p.StartInfo.FileName = "Explorer.exe";
-                                    p.StartInfo.Arguments = "/e,/select," + icon.path;
+                                    p.StartInfo.Arguments = "/e,/select," + icon.Path;
                                     break;
                             }
                         }
@@ -76,9 +76,9 @@ namespace QuickLinker.QuickLaunch.Utils
                             //以正确启动应用的路径为准
                             if (icon.iconType == OpenType.OTHER)
                             {
-                                if (!string.Equals(p.StartInfo.FileName, icon.path))
+                                if (!string.Equals(p.StartInfo.FileName, icon.Path))
                                 { 
-                                    icon.path = p.StartInfo.FileName;
+                                    icon.Path = p.StartInfo.FileName;
                                     icon.needSave.Value = true;
                                 }
                             }
@@ -89,7 +89,7 @@ namespace QuickLinker.QuickLaunch.Utils
             }
             catch (Exception e)
             {
-                LogUtil.WriteErrorLog(e, "程序启动失败:path=" + icon.path + ",type=" + type);
+                LogUtil.WriteErrorLog(e, "程序启动失败:path=" + icon.Path + ",type=" + type);
             }
         }
 
@@ -98,12 +98,12 @@ namespace QuickLinker.QuickLaunch.Utils
         /// </summary>
         private static string GetFullPath(Entity icon)
         {
-            if (File.Exists(icon.path) || Directory.Exists(icon.path))
-                return Path.GetFullPath(icon.path);
-            if (string.IsNullOrWhiteSpace(icon.relativePath))
+            if (File.Exists(icon.Path) || Directory.Exists(icon.Path))
+                return Path.GetFullPath(icon.Path);
+            if (string.IsNullOrWhiteSpace(icon.RelativePath))
                 return string.Empty;
-            if (File.Exists(icon.relativePath) || Directory.Exists(icon.relativePath))
-                return Path.GetFullPath(Path.Combine(Constants.APP_DIR, icon.relativePath));
+            if (File.Exists(icon.RelativePath) || Directory.Exists(icon.RelativePath))
+                return Path.GetFullPath(Path.Combine(Constants.APP_DIR, icon.RelativePath));
             return string.Empty;
         }
         /// <summary>

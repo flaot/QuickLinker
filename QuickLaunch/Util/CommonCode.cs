@@ -11,68 +11,6 @@ namespace QuickLinker.QuickLaunch.Utils
 {
     public class CommonCode
     {
-
-        /// <summary>
-        /// 获取app 数据
-        /// </summary>
-        /// <returns></returns>
-        internal static AppData GetAppDataByFile()
-        {
-            AppData appData = new AppData();
-            if (!File.Exists(Constants.DATA_FILE_PATH))
-            {
-                using (FileStream fs = File.Create(Constants.DATA_FILE_PATH)) { }
-                appData = new AppData();
-                SaveAppData(appData, Constants.DATA_FILE_PATH);
-            }
-            else
-            {
-                try
-                {
-                    using (FileStream fs = new FileStream(Constants.DATA_FILE_PATH, FileMode.Open))
-                    {
-                        appData = JsonSerializer.Deserialize<AppData>(fs);
-
-                        //将菜单密码写入文件
-                        if (!string.IsNullOrEmpty(appData.AppConfig.MenuPassword))
-                        {
-                            SavePassword(appData.AppConfig.MenuPassword);
-                        }
-                    }
-                }
-                catch
-                {
-                    LogUtil.WriteErrorLog("不幸的是, GeekDesk当前的数据文件已经损坏\n如果你有备份, 请将备份文件重命名为:Data 然后将Data覆盖到GeekDesk的根目录即可!");
-                }
-            }
-            return appData;
-        }
-
-        private readonly static object _MyLock = new object();
-
-        /// <summary>
-        /// 保存app 数据
-        /// </summary>
-        /// <param name="appData"></param>
-        public static void SaveAppData(AppData appData, string filePath)
-        {
-            lock (_MyLock)
-            {
-                if (filePath.Equals(Constants.DATA_FILE_BAK_PATH))
-                {
-                    appData.AppConfig.SysBakTime = DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss");
-                }
-                if (!Directory.Exists(filePath.Substring(0, filePath.LastIndexOf("\\"))))
-                {
-                    Directory.CreateDirectory(filePath.Substring(0, filePath.LastIndexOf("\\")));
-                }
-                using (FileStream fs = new FileStream(filePath, FileMode.Create))
-                {
-                    JsonSerializer.Serialize(fs, appData);
-                }
-            }
-        }
-
         public static void SavePassword(string password)
         {
             using (StreamWriter sw = new StreamWriter(Constants.PW_FILE_BAK_PATH))
@@ -136,8 +74,8 @@ namespace QuickLinker.QuickLaunch.Utils
             else
             {
                 Bitmap bi = ImageUtil.GetBitmapIconByPath(path);
-                iconInfo.imagePath = path;
-                iconInfo.path = path;
+                iconInfo.ImagePath = path;
+                iconInfo.Path = path;
                 iconInfo.bitmapImage = bi;
                 iconInfo.desc = Path.GetFileNameWithoutExtension(path);
             }
@@ -158,9 +96,9 @@ namespace QuickLinker.QuickLaunch.Utils
 
             iconInfo.imageByteArr = ImageUtil.BitmapImageToByte(iconInfo.bitmapImage);
             var mainModule = Path.GetFileName(System.Diagnostics.Process.GetCurrentProcess().MainModule.FileName);
-            string relativePath = FileUtil.MakeRelativePath(CommonCode.GetFullPath(mainModule), iconInfo.path);
-            if (!string.IsNullOrEmpty(relativePath) && !string.Equals(iconInfo.path, relativePath))
-                iconInfo.relativePath = relativePath;
+            string relativePath = FileUtil.MakeRelativePath(CommonCode.GetFullPath(mainModule), iconInfo.Path);
+            if (!string.IsNullOrEmpty(relativePath) && !string.Equals(iconInfo.Path, relativePath))
+                iconInfo.RelativePath = relativePath;
             return iconInfo;
         }
 
@@ -182,14 +120,14 @@ namespace QuickLinker.QuickLaunch.Utils
             if (shortcut.IconLocation.Length > 1)
                 int.TryParse(locationArray[1], out iconIndex);
             Bitmap bi = ImageUtil.GetBitmapIconByPath(iconPath, iconIndex);
-            iconInfo.path = string.IsNullOrWhiteSpace(shortcut.TargetPath) ? path : shortcut.TargetPath;
+            iconInfo.Path = (string.IsNullOrWhiteSpace(shortcut.TargetPath) ? path : shortcut.TargetPath);
             iconInfo.startArg = shortcut.Arguments;
             iconInfo.bitmapImage = bi;
             iconInfo.desc = shortcut.Description;
             iconInfo.workFolder = shortcut.WorkingDirectory;
             if (string.IsNullOrWhiteSpace(iconInfo.desc))
                 iconInfo.desc = Path.GetFileNameWithoutExtension(path);
-            iconInfo.imagePath = iconPath;
+            iconInfo.ImagePath = iconPath;
             iconInfo.imageIndex = iconIndex;
             switch (shortcut.WindowStyle)
             {
@@ -219,19 +157,19 @@ namespace QuickLinker.QuickLaunch.Utils
             //    var ssdfsf = key.GetValue(string.Empty);
             //}
             Bitmap bi = ImageUtil.GetBitmapIconByPath(path);
-            iconInfo.path = shortcut.TargetPath;
+            iconInfo.Path = shortcut.TargetPath;
             iconInfo.bitmapImage = bi;
             iconInfo.desc = Path.GetFileNameWithoutExtension(path);
             iconInfo.iconType = OpenType.URL;
-            iconInfo.imagePath = path;
+            iconInfo.ImagePath = path;
         }
         public static void CreateShortcut(Entity entity)
         {
             string desktopPath = Environment.GetFolderPath(Environment.SpecialFolder.Desktop);
-            string shortcutPath = Path.Combine(desktopPath, Path.GetFileNameWithoutExtension(entity.path) + ".lnk");
+            string shortcutPath = Path.Combine(desktopPath, Path.GetFileNameWithoutExtension(entity.Path) + ".lnk");
             WshShell shell = new WshShell();
             IWshShortcut shortcut = (IWshShortcut)shell.CreateShortcut(shortcutPath);
-            shortcut.TargetPath = entity.path;
+            shortcut.TargetPath = entity.Path;
             shortcut.WorkingDirectory = Path.GetDirectoryName(entity.workFolder);
             shortcut.WindowStyle = 1; // 正常窗口
             shortcut.Description = entity.desc;

@@ -1,11 +1,13 @@
 ﻿using QFramework;
+using QuickLinker.Utils;
+using System.IO;
 
 namespace QuickLinker.Systems
 {
     public interface IStroeSystem : ISystem
     {
-        T Load<T>();
-        void Save(object obj);
+        T Load<T>(T def);
+        bool Save(object obj);
     }
     internal class DefalutStoreSystem : AbstractSystem, IStroeSystem
     {
@@ -13,15 +15,24 @@ namespace QuickLinker.Systems
         {
 
         }
-        public T Load<T>()
+        public T Load<T>(T def)
         {
             var configName = typeof(T).Name;
-            return default;
+            var basePath = this.GetUtility<IBasePath>();
+            var jsonFile = Path.Combine(basePath.ConfigPath, configName + ".json");
+            if(!File.Exists(jsonFile))
+                return def;
+            var serializer = this.GetUtility<IJsonSerializeUtility>();
+            return serializer.JsonDeserializeByFile<T>(jsonFile);
         }
 
-        public void Save(object obj)
+        public bool Save(object obj)
         {
-
+            var configName = obj.GetType().Name;
+            var basePath = this.GetUtility<IBasePath>();
+            var jsonFile = Path.Combine(basePath.ConfigPath, configName + ".json");
+            var serializer = this.GetUtility<IJsonSerializeUtility>();
+            return serializer.JsonSerializeToFile(jsonFile, obj);
         }
     }
 }

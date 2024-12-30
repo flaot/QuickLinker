@@ -4,6 +4,7 @@ using QuickLinker.QuickLaunch.Utils;
 using QuickLinker.Utils;
 using System;
 using System.Drawing;
+using System.IO;
 using System.Windows.Forms;
 
 namespace QuickLinker
@@ -21,9 +22,9 @@ namespace QuickLinker
         {
             Txt_IconPath.TextChanged -= Txt_IconPath_TextChanged;
             MumericUpDown_CurIndex.ValueChanged -= MumericUpDown_CurIndex_ValueChanged;
-            Txt_IconPath.Text = _entity.imagePath;
+            Txt_IconPath.Text = _entity.ImagePath;
             pictureBox1.Image = _entity.bitmapImage;
-            var iconTotalCount = FileIcon.PrivateExtractIcons(_entity.imagePath, 0, 0, 0, null, null, 0, 0);
+            var iconTotalCount = FileIcon.PrivateExtractIcons(_entity.ImagePath, 0, 0, 0, null, null, 0, 0);
             if (iconTotalCount > 0)
             {
                 MumericUpDown_CurIndex.Value = _entity.imageIndex + 1;
@@ -80,7 +81,7 @@ namespace QuickLinker
 
         private void Btn_OK_Click(object sender, EventArgs e)
         {
-            _entity.imagePath = Txt_IconPath.Text.Trim();
+            _entity.ImagePath = Txt_IconPath.Text.Trim();
             _entity.bitmapImage = (Bitmap)pictureBox1.Image;
             _entity.imageIndex = ((int)MumericUpDown_CurIndex.Value) - 1;
             DialogResult = DialogResult.OK;
