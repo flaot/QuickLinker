@@ -6,20 +6,33 @@ namespace QuickLinker
 {
     public partial class GroupNameForm : Form
     {
-        public string GroupName { get; set; } = string.Empty;
-        public GroupNameForm()
+        private string _groupName = string.Empty;
+
+        public GroupNameForm(string groupName)
         {
             InitializeComponent();
         }
         private void GroupNameForm_Load(object sender, EventArgs e)
         {
-            Txt_GroupName.Text = GroupName;
+            Txt_GroupName.Text = _groupName;
         }
         private void Btn_Ok_Click(object sender, EventArgs e)
         {
-            GroupName = Txt_GroupName.Text;
+            _groupName = Txt_GroupName.Text;
             DialogResult = DialogResult.OK;
             Close();
+        }
+
+        public static string Show(string groupName)
+        {
+            using (GroupNameForm groupNameForm = new GroupNameForm(groupName))
+            {
+                if (groupNameForm.ShowDialog() != DialogResult.OK)
+                    return string.Empty;
+                if (string.Equals(groupNameForm._groupName, groupName))
+                    return string.Empty;
+                return groupNameForm._groupName;
+            }
         }
     }
 }

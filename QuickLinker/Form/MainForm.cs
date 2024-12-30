@@ -24,13 +24,13 @@ namespace QuickLinker
     public partial class MainForm : Form, IController
     {
         private BindableProperty<OptType> _optType = new BindableProperty<OptType>();
-        private TPanel _optFirstTemp; //ÁÙÊ±Êı¾İ£ºÈç½»»»¡¢ÅÅÁĞ
+        private TPanel _optFirstTemp; //ä¸´æ—¶æ•°æ®ï¼šå¦‚äº¤æ¢ã€æ’åˆ—
         private Timer _dateTimer;
         private int _lastRow;
         private int _lastColumn;
 
-        private bool formMove = false;//´°ÌåÊÇ·ñÒÆ¶¯
-        private Point formPoint;//¼ÇÂ¼´°ÌåµÄÎ»ÖÃ
+        private bool formMove = false;//çª—ä½“æ˜¯å¦ç§»åŠ¨
+        private Point formPoint;//è®°å½•çª—ä½“çš„ä½ç½®
         private int _oldGroupCount;
         private Size _offsetSize = Size.Empty;
         ToolTip _toolTip = new ToolTip();
@@ -57,7 +57,7 @@ namespace QuickLinker
             }
             catch (Exception ex)
             {
-                LogKit.E(ex, "½¨Á¢Ïà¶ÔÂ·¾¶³ö´í:fromPath:" + fromPath + ",toPath:" + toPath);
+                LogKit.E(ex, "å»ºç«‹ç›¸å¯¹è·¯å¾„å‡ºé”™:fromPath:" + fromPath + ",toPath:" + toPath);
             }
             return relativePath;
         }
@@ -196,8 +196,8 @@ namespace QuickLinker
             formPoint = new Point();
             if (e.Button == MouseButtons.Left)
             {
-                formPoint = e.Location;//»ñÈ¡Êó±êÔÚ´°¿ÚÉÏµÄ×ø±ê
-                formMove = true;//¿ªÊ¼ÒÆ¶¯
+                formPoint = e.Location;//è·å–é¼ æ ‡åœ¨çª—å£ä¸Šçš„åæ ‡
+                formMove = true;//å¼€å§‹ç§»åŠ¨
             }
         }
         private void TabControl1_MouseMove(object sender, MouseEventArgs e)
@@ -212,9 +212,9 @@ namespace QuickLinker
         }
         private void TabControl1_MouseUp(object sender, MouseEventArgs e)
         {
-            if (e.Button == MouseButtons.Left)//°´ÏÂµÄÊÇÊó±ê×ó¼ü
+            if (e.Button == MouseButtons.Left)//æŒ‰ä¸‹çš„æ˜¯é¼ æ ‡å·¦é”®
             {
-                formMove = false;//Í£Ö¹ÒÆ¶¯
+                formMove = false;//åœæ­¢ç§»åŠ¨
             }
         }
         private void tabControl1_MouseDown_1(object sender, MouseEventArgs e)
@@ -257,12 +257,12 @@ namespace QuickLinker
                 _optType.Value = OptType.None;
                 return;
             }
-            if ((ModifierKeys & Keys.Control) != 0) //Ctrl+×ó¼ü ´ò¿ªËùÔÚÄ¿Â¼
+            if ((ModifierKeys & Keys.Control) != 0) //Ctrl+å·¦é”® æ‰“å¼€æ‰€åœ¨ç›®å½•
             {
                 if (panel.Entity != null)
                     this.SendCommand(new QuickEntityShowInExploreCommand() { index = panel.Index });
             }
-            else //Ö»ÓĞÊó±ê×ó¼ü ´ò¿ªÓ¦ÓÃ
+            else //åªæœ‰é¼ æ ‡å·¦é”® æ‰“å¼€åº”ç”¨
             {
                 if (panel.Entity == null)
                 {
@@ -563,14 +563,14 @@ namespace QuickLinker
             foreach (TabPage tabPage in tabControl1.TabPages)
                 foreach (TPanel control in tabPage.Controls)
                     controls.Add(control);
-            //Ôö¼Ó
+            //å¢åŠ 
             for (int i = lastPageGridCount; i < pageGridCount; i++)
             {
                 var tPanel = new TPanel(i);
                 tPanel.Size = new Size(config.gridSize.Value, config.gridSize.Value);
                 controls.Add(tPanel);
             }
-            //¼õÉÙ
+            //å‡å°‘
             for (int i = lastPageGridCount - 1; i >= pageGridCount; i--)
             {
                 var tPanel = controls[i];
@@ -578,7 +578,7 @@ namespace QuickLinker
                 var tabPage = tPanel.Parent as TabPage;
                 tabPage.Controls.Remove(tPanel);
             }
-            //µ÷ÕûpageÖĞµÄ¸ñ×ÓËùÊôÈİÆ÷
+            //è°ƒæ•´pageä¸­çš„æ ¼å­æ‰€å±å®¹å™¨
             for (int i = 0; i < tabControl1.TabPages.Count; i++)
             {
                 int startIndex = i * config.gridColumn.Value * config.gridRow.Value;
@@ -592,12 +592,12 @@ namespace QuickLinker
                 }
             }
             tabControl1.ResumeLayout(false);
-            //¶ÔÊı¾İ²ã½øĞĞ¸ü¸Ä
+            //å¯¹æ•°æ®å±‚è¿›è¡Œæ›´æ”¹
             for (int pageIndex = tabControl1.TabPages.Count - 1; pageIndex >= 0; pageIndex--)
             {
                 int lastPageCount = pageIndex * _lastColumn * _lastRow;
                 int newPageCount = pageIndex * config.gridColumn.Value * config.gridRow.Value;
-                //¼õÉÙĞĞ
+                //å‡å°‘è¡Œ
                 for (int row = _lastRow - 1; row >= config.gridRow.Value; row--)
                 {
                     for (int column = config.gridColumn.Value - 1; column >= 0; column--)
@@ -610,19 +610,19 @@ namespace QuickLinker
                         }
                     }
                 }
-                //¼õÉÙÁĞ(±ØĞëÏÈ±éÀúĞĞ)
+                //å‡å°‘åˆ—(å¿…é¡»å…ˆéå†è¡Œ)
                 for (int row = config.gridRow.Value - 1; row >= 0; row--)
                 {
                     for (int column = _lastColumn - 1; column >= config.gridColumn.Value; column--)
                     {
                         var defalutIndex = row * _lastColumn + column + lastPageCount;
                         this.SendCommand(new QuickEntityRemoveCommand() { index = defalutIndex });
-                        //ÔÚ¼õÉÙÁĞÊ±£¬ĞèÒª½øĞĞÒ»´ÎÅÅÁĞ£¬°ÑÆäÖĞµÄÍ¼±ê¼·µ½Ö¸¶¨Î»ÖÃ
+                        //åœ¨å‡å°‘åˆ—æ—¶ï¼Œéœ€è¦è¿›è¡Œä¸€æ¬¡æ’åˆ—ï¼ŒæŠŠå…¶ä¸­çš„å›¾æ ‡æŒ¤åˆ°æŒ‡å®šä½ç½®
                         if (defalutIndex != lastPageGridCount - 1)
                             this.SendCommand(new QuickEntityOptCommand() { optType = OptType.Align, fromIndex = defalutIndex, index = lastPageGridCount - 1 });
                     }
                 }
-                //Ôö¼ÓĞĞ
+                //å¢åŠ è¡Œ
                 for (int row = _lastRow; row < config.gridRow.Value; row++)
                 {
                     for (int column = 0; column < config.gridColumn.Value; column++)
@@ -635,13 +635,13 @@ namespace QuickLinker
                     }
                 }
                 //LogPage(new Point(_lastRow, _lastColumn), new Point(_lastRow, _lastColumn));
-                //Ôö¼ÓÁĞ
+                //å¢åŠ åˆ—
                 for (int column = _lastColumn; column < config.gridColumn.Value; column++)
                 {
                     for (int row = config.gridRow.Value - 1; row >= 0; row--)
                     {
                         var defalutIndex = row * _lastColumn + column + lastPageCount;
-                        //ÔÚÔö¼ÓÁĞÊ±£¬ĞèÒª½øĞĞÒ»´ÎÅÅÁĞ£¬°ÑÆäÖĞµÄÍ¼±ê¼·µ½Ö¸¶¨Î»ÖÃ
+                        //åœ¨å¢åŠ åˆ—æ—¶ï¼Œéœ€è¦è¿›è¡Œä¸€æ¬¡æ’åˆ—ï¼ŒæŠŠå…¶ä¸­çš„å›¾æ ‡æŒ¤åˆ°æŒ‡å®šä½ç½®
                         if (defalutIndex < lastPageGridCount)
                             this.SendCommand(new QuickEntityOptCommand() { optType = OptType.Align, fromIndex = pageGridCount, index = defalutIndex });
                     }
@@ -748,21 +748,17 @@ namespace QuickLinker
         }
         private void TabMenuItem_Rename_Click(object sender, EventArgs e)
         {
-            using (GroupNameForm groupNameForm = new GroupNameForm())
-            {
-                string pageText = tabControl1.TabPages[tabControl1.SelectedIndex].Text;
-                groupNameForm.GroupName = pageText;
-                if (groupNameForm.ShowDialog() != DialogResult.OK)
-                    return;
-                if (string.Equals(groupNameForm.GroupName, pageText))
-                    return;
-                var config = this.GetModel<AppConfig>();
-                var groupArray = config.groupArray;
-                string[] tempArray = new string[groupArray.Value.Length];
-                Array.Copy(groupArray.Value, tempArray, tempArray.Length);
-                tempArray[tabControl1.SelectedIndex] = groupNameForm.GroupName;
-                config.groupArray.Value = tempArray;
-            }
+            string pageText = tabControl1.TabPages[tabControl1.SelectedIndex].Text;
+            string groupName = GroupNameForm.Show(pageText);
+            if (string.IsNullOrEmpty(groupName))
+                return;
+
+            var config = this.GetModel<AppConfig>();
+            var groupArray = config.groupArray;
+            string[] tempArray = new string[groupArray.Value.Length];
+            Array.Copy(groupArray.Value, tempArray, tempArray.Length);
+            tempArray[tabControl1.SelectedIndex] = groupName;
+            config.groupArray.Value = tempArray;
         }
         private void TabMenuItem_Delete_Click(object sender, EventArgs e)
         {

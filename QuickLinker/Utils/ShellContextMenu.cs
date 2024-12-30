@@ -497,8 +497,8 @@ namespace QuickLinker.Utils
                     CMF.NORMAL |
                     ((System.Windows.Forms.Control.ModifierKeys & Keys.Shift) != 0 ? CMF.EXTENDEDVERBS : 0));
 
-                Marshal.QueryInterface(iContextMenuPtr, ref IID_IContextMenu2, out iContextMenuPtr2);
-                Marshal.QueryInterface(iContextMenuPtr, ref IID_IContextMenu3, out iContextMenuPtr3);
+                Marshal.QueryInterface(iContextMenuPtr, in IID_IContextMenu2, out iContextMenuPtr2);
+                Marshal.QueryInterface(iContextMenuPtr, in IID_IContextMenu3, out iContextMenuPtr3);
 
                 _oContextMenu2 = (IContextMenu2)Marshal.GetTypedObjectForIUnknown(iContextMenuPtr2, typeof(IContextMenu2));
                 _oContextMenu3 = (IContextMenu3)Marshal.GetTypedObjectForIUnknown(iContextMenuPtr3, typeof(IContextMenu3));

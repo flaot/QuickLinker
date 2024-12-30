@@ -27,11 +27,12 @@ namespace QuickLinker
 
         private Image showImage;
         bool _leftClick;
+        private string _title;
 
         /// <summary> 一般情况下，可使用index反推出几行几列 </summary>
         public int Index { get => _defaultIndex; }
         public Entity Entity => _entity;
-        public string Title { get; private set; }
+        public string Title => _title;
 
         public IArchitecture GetArchitecture() => AppArchitecture.Interface;
         public TPanel()
@@ -155,13 +156,13 @@ namespace QuickLinker
                 if (_invertImage)
                     showImage = InvertImage(_entity.bitmapImage);
                 _text = string.IsNullOrWhiteSpace(_entity.desc) ? _entity.path : _entity.desc;
-                Title = _text;
+                _title = _text;
             }
             else
             {
                 showImage = null;
                 _text = string.Empty;
-                Title = Resources.TPanel_None;
+                _title = Resources.TPanel_None;
             }
             if (refresh)
                 Refresh();
