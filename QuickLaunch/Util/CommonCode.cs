@@ -4,7 +4,6 @@ using QuickLinker.QuickLaunch.Models;
 using System;
 using System.Drawing;
 using System.IO;
-using System.Text.Json;
 using File = System.IO.File;
 
 namespace QuickLinker.QuickLaunch.Utils

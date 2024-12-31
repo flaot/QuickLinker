@@ -26,7 +26,11 @@ namespace QuickLinker.QuickLaunch.Systems
         protected override void OnInit()
         {
             var stroe = this.GetSystem<IStroeSystem>();
-            entitieCache = stroe.Load<EntityCache>(new EntityCache());
+            entitieCache = stroe.Load<EntityCache>();
+            if (entitieCache == null)
+                entitieCache = new EntityCache();
+            foreach (var item in entitieCache.entities)
+                item.bitmapImage = ImageUtil.ByteArrToImage(item.imageByteArr);
         }
 
         /// <summary>
@@ -43,6 +47,7 @@ namespace QuickLinker.QuickLaunch.Systems
 
             //按指定空位插入Entity
             Entity entity = CommonCode.GetIconInfoByPath(filePath, canParse);
+            entity.needSave.Value = true;
             return Insert(entity, index);
         }
         internal bool Insert(Entity entity, int index)

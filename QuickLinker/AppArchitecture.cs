@@ -1,6 +1,7 @@
 ﻿using QFramework;
 using QuickLinker.Model;
 using QuickLinker.QuickLaunch.Systems;
+using QuickLinker.Systems;
 using QuickLinker.Utils;
 
 namespace QuickLinker
@@ -10,7 +11,11 @@ namespace QuickLinker
         protected override void Init()
         {
             base.Init();
-            this.RegisterModel(new AppConfig());
+
+            var appConfig = GetSystem<IStroeSystem>().Load<AppConfig>();
+            if (appConfig == null)
+                appConfig = new AppConfig();
+            this.RegisterModel(appConfig);
 
             this.RegisterSystem(new QuickEntitySystem());
             this.RegisterSystem(new HotKeyManager());

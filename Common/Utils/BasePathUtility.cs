@@ -5,6 +5,7 @@ namespace QuickLinker.Utils
 {
     public interface IBasePath : IUtility
     {
+        /// <summary> 配置存放目录 </summary>
         string ConfigPath { get; }
     }
     internal class BasePathUtility : IBasePath

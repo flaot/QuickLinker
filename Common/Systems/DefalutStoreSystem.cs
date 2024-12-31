@@ -6,7 +6,7 @@ namespace QuickLinker.Systems
 {
     public interface IStroeSystem : ISystem
     {
-        T Load<T>(T def);
+        T Load<T>();
         bool Save(object obj);
     }
     internal class DefalutStoreSystem : AbstractSystem, IStroeSystem
@@ -15,13 +15,13 @@ namespace QuickLinker.Systems
         {
 
         }
-        public T Load<T>(T def)
+        public T Load<T>()
         {
             var configName = typeof(T).Name;
             var basePath = this.GetUtility<IBasePath>();
             var jsonFile = Path.Combine(basePath.ConfigPath, configName + ".json");
             if(!File.Exists(jsonFile))
-                return def;
+                return default;
             var serializer = this.GetUtility<IJsonSerializeUtility>();
             return serializer.JsonDeserializeByFile<T>(jsonFile);
         }

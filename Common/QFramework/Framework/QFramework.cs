@@ -28,6 +28,8 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text.Json.Serialization;
+using System.Xml.Serialization;
 #if UNITY_5_6_OR_NEWER
 using UnityEngine;
 using UnityEngine.SceneManagement;
@@ -236,6 +238,7 @@ namespace QFramework
 
         void ICanSetArchitecture.SetArchitecture(IArchitecture architecture) => mArchitecture = architecture;
 
+        [JsonIgnore, XmlIgnore]
         public bool Initialized { get; set; }
         void ICanInit.Init() => OnInit();
 
@@ -264,6 +267,7 @@ namespace QFramework
 
         void ICanSetArchitecture.SetArchitecture(IArchitecture architecture) => mArchitecturel = architecture;
 
+        [JsonIgnore, XmlIgnore]
         public bool Initialized { get; set; }
         void ICanInit.Init() => OnInit();
         public void Deinit() => OnDeinit();

@@ -4,6 +4,7 @@ using QuickLinker.Properties;
 using QuickLinker.QuickLaunch.Command;
 using QuickLinker.QuickLaunch.Systems;
 using QuickLinker.QuickLaunch.Utils;
+using QuickLinker.Systems;
 using QuickLinker.Utils;
 using System;
 using System.Collections.Generic;
@@ -117,20 +118,20 @@ namespace QuickLinker
                 this.SendCommand(new QuickEntityAutoStartCommand());
 
             var system = this.GetSystem<QuickEntitySystem>();
-            Dictionary<int, string> paths = new Dictionary<int, string> {
-            //{ 4, "D:\\LOG.TXT"},
-            //{ 2, "D:\\padddle_fast_test.zip"},
-            //{ 3, "D:\\LOG.TXT"},
-            //{ -1, "D:\\LOG.TXT"},
-            { 28, "D:\\LOG.TXT"},
-            { 31, "D:\\LOG.TXT"},
-            { 16, "D:\\LOG.TXT"},
-            { 19, "D:\\LOG.TXT"},
-            };
-            foreach (var item in paths)
-            {
-                this.SendCommand(new QuickEntityInsertCommand() { filePath = item.Value, index = item.Key, canParse = true });
-            }
+            //Dictionary<int, string> paths = new Dictionary<int, string> {
+            ////{ 4, "D:\\LOG.TXT"},
+            ////{ 2, "D:\\padddle_fast_test.zip"},
+            ////{ 3, "D:\\LOG.TXT"},
+            ////{ -1, "D:\\LOG.TXT"},
+            //{ 28, "D:\\LOG.TXT"},
+            //{ 31, "D:\\LOG.TXT"},
+            //{ 16, "D:\\LOG.TXT"},
+            //{ 19, "D:\\LOG.TXT"},
+            //};
+            //foreach (var item in paths)
+            //{
+            //    this.SendCommand(new QuickEntityInsertCommand() { filePath = item.Value, index = item.Key, canParse = true });
+            //}
             var hotKeyMgr = this.GetSystem<HotKeyManager>();
             hotKeyMgr.HotKeyListener.HotkeyPressed += HotkeyListener_HotkeyPressed;
             hotKeyMgr.InitializeQuickActionsHotKeys();
@@ -140,6 +141,8 @@ namespace QuickLinker
             //{
             //    Console.WriteLine(item.index);
             //}
+            //var appconfig = this.GetSystem<IStroeSystem>().Load<AppConfig>(new AppConfig());
+
         }
         private void MainForm_FormClosing(object sender, FormClosingEventArgs e)
         {

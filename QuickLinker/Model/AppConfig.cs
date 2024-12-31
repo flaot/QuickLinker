@@ -1,5 +1,8 @@
 ﻿using QFramework;
+using System.Reflection;
+using System.Text.Json.Serialization;
 using System.Windows.Forms;
+using System.Xml.Serialization;
 
 namespace QuickLinker.Model
 {
@@ -75,8 +78,23 @@ namespace QuickLinker.Model
         /// <summary> 自动最小化或上卷 </summary>
         public BindableProperty<AppHideType> appHideType = new BindableProperty<AppHideType>();
 
+        [JsonIgnore, XmlIgnore]
+        public EasyEvent TirggerSaveEvent = new EasyEvent();
         protected override void OnInit()
         {
+            foreach (var fieldInfo in typeof(AppConfig).GetFields()) 
+            {
+                if (!fieldInfo.FieldType.IsGenericType)
+                    continue;
+                if (fieldInfo.FieldType.GetGenericTypeDefinition() != typeof(BindableProperty<>))
+                    continue;
+                var easyEvent = (IEasyEvent)fieldInfo.GetValue(this);
+                easyEvent.Register(Event_TirggerSave);
+            }
+        }
+        private void Event_TirggerSave()
+        {
+            TirggerSaveEvent.Trigger();
         }
     }
 }

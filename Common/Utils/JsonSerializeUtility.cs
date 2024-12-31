@@ -1,11 +1,12 @@
 ﻿using QFramework;
 using System;
-using System.Collections.Generic;
 using System.IO;
-using System.Linq;
+using System.Reflection;
 using System.Text;
+using System.Text.Encodings.Web;
 using System.Text.Json;
-using System.Threading.Tasks;
+using System.Text.Json.Serialization;
+using System.Text.Unicode;
 
 namespace QuickLinker.Utils
 {
@@ -22,6 +23,7 @@ namespace QuickLinker.Utils
         /// <summary> obj序列化成Json文本 </summary>
         string JsonSerializeToStr(object obj);
     }
+
     internal class JsonSerializeUtility : IJsonSerializeUtility
     {
         private JsonSerializerOptions _options;
@@ -34,6 +36,8 @@ namespace QuickLinker.Utils
                     _options = new JsonSerializerOptions();
                     _options.IncludeFields = true;
                     _options.WriteIndented = true;
+                    _options.Encoder = JavaScriptEncoder.Create(UnicodeRanges.All);
+                    _options.Converters.Add(new BindablePropertyConverter());
                 }
                 return _options;
             }
@@ -134,6 +138,61 @@ namespace QuickLinker.Utils
                 Console.WriteLine("此类无法转换成Json " + obj.GetType()?.ToString() + "," + ex);
             }
             return string.Empty;
+        }
+    }
+    internal class BindablePropertyConverter : JsonConverterFactory
+    {
+        public override bool CanConvert(Type typeToConvert)
+        {
+            if (!typeToConvert.IsGenericType)
+                return false;
+
+            if (typeToConvert.GetGenericTypeDefinition() != typeof(BindableProperty<>))
+                return false;
+
+            return true;
+        }
+
+        public override JsonConverter CreateConverter(
+            Type type,
+            JsonSerializerOptions options)
+        {
+            Type[] typeArguments = type.GetGenericArguments();
+            Type keyType = typeArguments[0];
+
+            JsonConverter converter = (JsonConverter)Activator.CreateInstance(
+                typeof(BindablePropertyJsonConverter<>).MakeGenericType(
+                    [keyType]),
+                BindingFlags.Instance | BindingFlags.Public,
+                binder: null,
+                args: [options],
+                culture: null)!;
+
+            return converter;
+        }
+
+        internal class BindablePropertyJsonConverter<T> : JsonConverter<BindableProperty<T>>
+        {
+            private JsonConverter<T> s_defaultConverter;
+            public BindablePropertyJsonConverter(JsonSerializerOptions options)
+            {
+                s_defaultConverter = (JsonConverter<T>)options.GetConverter(typeof(T));
+            }
+            public override BindableProperty<T> Read(ref Utf8JsonReader reader, Type typeToConvert, JsonSerializerOptions options)
+            {
+                BindableProperty<T> reault = new BindableProperty<T>();
+                T t = s_defaultConverter.Read(ref reader, typeof(T), options);
+                reault.SetValueWithoutEvent(t);
+                return reault;
+            }
+
+            public override void Write(
+                Utf8JsonWriter writer,
+                BindableProperty<T> objectToWrite,
+                JsonSerializerOptions options)
+            {
+                s_defaultConverter.Write(writer, objectToWrite.Value, options);
+            }
         }
     }
 }
