@@ -6,6 +6,8 @@
     <Nullable>disable</Nullable>
     <RootNamespace>QuickLinker.$(MSBuildProjectName.Replace(" ", "_"))</RootNamespace>
     <AllowUnsafeBlocks>True</AllowUnsafeBlocks>
+    <Authors>flaot</Authors>
+    <Copyright>flaot</Copyright>
   </PropertyGroup>
 
   <ItemGroup>

@@ -5,6 +5,8 @@
     <ImplicitUsings>disable</ImplicitUsings>
     <Nullable>disable</Nullable>
     <RootNamespace>QuickLinker</RootNamespace>
+    <Authors>flaot</Authors>
+    <Copyright>flaot</Copyright>
   </PropertyGroup>
 
 </Project>
