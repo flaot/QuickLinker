@@ -107,6 +107,15 @@ namespace QuickLinker.Properties {
         }
         
         /// <summary>
+        ///   查找类似 存在TurboLaunch配置,是否使用该配置进行初始化? 的本地化字符串。
+        /// </summary>
+        internal static string FromTurboLaunch_Switch {
+            get {
+                return ResourceManager.GetString("FromTurboLaunch_Switch", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   查找类似 图标文件|*.exe*.icon*.dll|所有文件(*.*)|*.* 的本地化字符串。
         /// </summary>
         internal static string IconFrom_OpenFile {
@@ -203,6 +212,15 @@ namespace QuickLinker.Properties {
         internal static string MainForm_SysMenu_TopMost {
             get {
                 return ResourceManager.GetString("MainForm_SysMenu_TopMost", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 提示 的本地化字符串。
+        /// </summary>
+        internal static string MSGBox_Tip {
+            get {
+                return ResourceManager.GetString("MSGBox_Tip", resourceCulture);
             }
         }
         

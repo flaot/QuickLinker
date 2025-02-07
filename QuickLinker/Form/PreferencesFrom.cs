@@ -25,6 +25,7 @@ namespace QuickLinker
         private void SettingForm_Load(object sender, EventArgs e)
         {
             var appConfig = this.GetModel<AppConfig>();
+            this.TopMost = appConfig.topWindow.Value;
             //常规
             RegisterBool(appConfig.topWindow, checkBox1);
             RegisterBool(appConfig.analyzeDrapLink, checkBox2);

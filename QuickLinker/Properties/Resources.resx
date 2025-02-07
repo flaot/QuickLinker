@@ -133,6 +133,9 @@
   <data name="CUR_COPY" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\res\cursor\CUR_COPY.cur;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
+  <data name="FromTurboLaunch_Switch" xml:space="preserve">
+    <value>存在TurboLaunch配置,是否使用该配置进行初始化?</value>
+  </data>
   <data name="IconFrom_OpenFile" xml:space="preserve">
     <value>图标文件|*.exe*.icon*.dll|所有文件(*.*)|*.*</value>
   </data>
@@ -172,6 +175,9 @@
   </data>
   <data name="MainForm_SysMenu_TopMost" xml:space="preserve">
     <value>总在最前面(&amp;T)</value>
+  </data>
+  <data name="MSGBox_Tip" xml:space="preserve">
+    <value>提示</value>
   </data>
   <data name="TPanel_None" xml:space="preserve">
     <value>&lt;未配置&gt;</value>

@@ -24,8 +24,10 @@ namespace QuickLinker
 
         public static DialogResult Show(TPanel tPanel)
         {
+            var config = AppArchitecture.Interface.GetModel<AppConfig>();
             using (var properties = new BtnPropertiesFrom())
             {
+                properties.TopMost = config.topWindow.Value;
                 properties.SetTPanel(tPanel);
                 return properties.ShowDialog();
             }

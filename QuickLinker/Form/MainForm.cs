@@ -1,3 +1,4 @@
+using Microsoft.Win32;
 using QFramework;
 using QuickLinker.Model;
 using QuickLinker.Properties;
@@ -12,6 +13,7 @@ using System.Drawing;
 using System.IO;
 using System.Linq;
 using System.Media;
+using System.Reflection;
 using System.Runtime.InteropServices;
 using System.Text;
 using System.Windows.Forms;
@@ -142,7 +144,53 @@ namespace QuickLinker
             //    Console.WriteLine(item.index);
             //}
             //var appconfig = this.GetSystem<IStroeSystem>().Load<AppConfig>(new AppConfig());
+            var appConfig = this.GetSystem<IStroeSystem>().Load<AppConfig>();
+            if (appConfig == null)
+            {
+                var turboLaunchRoot = Registry.CurrentUser.OpenSubKey("Software\\TurboLaunch");
+                if (turboLaunchRoot == null)
+                    return;
+                if (MessageBox.Show(Resources.FromTurboLaunch_Switch, Resources.MSGBox_Tip, MessageBoxButtons.OKCancel) == DialogResult.OK)
+                {
+                    var entytys = system.QueryDataWithAnyFlag(Array.Empty<string>());
+                    foreach (var item in entytys)
+                        this.SendCommand(new QuickEntityRemoveCommand() { index = item.index });
 
+                    config.gridRow.Value = turboLaunchRoot.ReadDword("Rows", config.gridRow.Value);
+                    config.gridColumn.Value = turboLaunchRoot.ReadDword("Columns", config.gridColumn.Value);
+                    config.gridGroup.Value = turboLaunchRoot.ReadDword("Groups", config.gridGroup.Value);
+                    config.gridSize.Value = turboLaunchRoot.ReadDword("IconSize", config.gridSize.Value);
+                    config.topWindow.Value = turboLaunchRoot.ReadDword("AlwaysOnTop", config.topWindow.Value ? 1 : 0) == 1;
+                    config.showToolTip.Value = turboLaunchRoot.ReadDword("ShowToolTips", config.showToolTip.Value ? 1 : 0) == 1;
+                    var groupsKey = turboLaunchRoot.OpenSubKey("GroupNames");
+                    List<string> names = new List<string>();
+                    for (int i = 0; i < config.gridGroup.Value; i++)
+                    {
+                        string name = groupsKey.ReadSz(string.Format("{0:000}", i + 1), string.Format(Resources.BtnPropertiesFrom_GroupDefName, i + 1));
+                        names.Add(name);
+                    }
+                    config.groupArray.Value = names.ToArray();
+                    var configsKey = turboLaunchRoot.OpenSubKey("ButtonConfigs");
+                    foreach (var subKeyName in configsKey.GetSubKeyNames())
+                    {
+                        if (!int.TryParse(subKeyName, out var inIndex))
+                            continue;
+                        var subKey = configsKey.OpenSubKey(subKeyName);
+                        if (subKey.ReadDword("Initialized") == 0)
+                            continue;
+                        string exeFile = subKey.ReadSz("Command", string.Empty);
+                        if (string.IsNullOrEmpty(exeFile) || !File.Exists(exeFile))
+                            continue;
+                        this.SendCommand(new QuickEntityInsertCommand() { filePath = exeFile, index = inIndex - 1, canParse = false });
+                        string description = subKey.ReadSz("Description", string.Empty);
+                        if (!string.IsNullOrEmpty(description))
+                            this.SendCommand(new QuickEntitySetCommand() { index = inIndex - 1, desc = description });
+                        string workingDir = subKey.ReadSz("WorkingDir", string.Empty);
+                        if (!string.IsNullOrEmpty(workingDir))
+                            this.SendCommand(new QuickEntitySetCommand() { index = inIndex - 1, workFolder = workingDir });
+                    }
+                }
+            }
         }
         private void MainForm_FormClosing(object sender, FormClosingEventArgs e)
         {

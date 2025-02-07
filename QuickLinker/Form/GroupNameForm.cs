@@ -1,4 +1,5 @@
 ﻿
+using QuickLinker.Model;
 using System;
 using System.Windows.Forms;
 
@@ -25,8 +26,10 @@ namespace QuickLinker
 
         public static string Show(string groupName)
         {
+            var config = AppArchitecture.Interface.GetModel<AppConfig>();
             using (GroupNameForm groupNameForm = new GroupNameForm(groupName))
             {
+                groupNameForm.TopMost = config.topWindow.Value;
                 if (groupNameForm.ShowDialog() != DialogResult.OK)
                     return string.Empty;
                 if (string.Equals(groupNameForm._groupName, groupName))
