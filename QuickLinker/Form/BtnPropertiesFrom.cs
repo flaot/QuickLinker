@@ -172,12 +172,8 @@ namespace QuickLinker
 
         private void Btn_ChangeIcon_Click(object sender, EventArgs e)
         {
-            using (IconForm iconForm = new IconForm(_tempEntity))
-            {
-                if (iconForm.ShowDialog() != DialogResult.OK)
-                    return;
+            if (IconForm.Show(_tempEntity))
                 SetEntitiy(_tempEntity, false);
-            }
         }
     }
 }

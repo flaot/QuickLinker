@@ -6,6 +6,7 @@ using System;
 using System.Drawing;
 using System.IO;
 using System.Windows.Forms;
+using QuickLinker.Model;
 
 namespace QuickLinker
 {
@@ -86,6 +87,18 @@ namespace QuickLinker
             _entity.imageIndex = ((int)MumericUpDown_CurIndex.Value) - 1;
             DialogResult = DialogResult.OK;
             Close();
+        }
+
+        public static bool Show(Entity entity)
+        {
+            var config = AppArchitecture.Interface.GetModel<AppConfig>();
+            using (IconForm iconForm = new IconForm(entity))
+            {
+                iconForm.TopMost = config.topWindow.Value;
+                if (iconForm.ShowDialog() != DialogResult.OK)
+                    return false;
+                return true;
+            }
         }
     }
 }
