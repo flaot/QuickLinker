@@ -57,4 +57,7 @@ namespace QuickLinker.Model
         public TPanel tPanel;
         public ClickMenuTPanelEvent(TPanel tPanel) => this.tPanel = tPanel;
     }
+
+    /// <summary> 无配置情况下首次启动 </summary>
+    public struct NoSettingStratEvent { }
 }

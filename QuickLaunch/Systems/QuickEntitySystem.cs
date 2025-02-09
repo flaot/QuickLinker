@@ -188,7 +188,7 @@ namespace QuickLinker.QuickLaunch.Systems
             for (int i = 0; i < entitieCache.entities.Count; i++)
             {
                 var item = entitieCache.entities[i];
-                if (item.autoRun)
+                if (item.launchOnStartup)
                     ProcessUtil.StartIconEntity(item);
             }
         }

@@ -15,7 +15,9 @@ namespace QuickLinker.QuickLaunch.Models
         /// <summary> 始终管理员方式启动 </summary>
         public bool adminStartUp = false;
         /// <summary> 跟随启动则触发运行 </summary>
-        public bool autoRun = false;
+        public bool launchOnStartup = false;
+        /// <summary> 拖放启动/文件 </summary>
+        public bool dropNLaunch = false;
 
         /// <summary> 打开方式 </summary>
         public OpenType iconType = OpenType.OTHER;
@@ -37,6 +39,8 @@ namespace QuickLinker.QuickLaunch.Models
         public string desc = string.Empty;
         /// <summary> 可以再次解析 </summary>
         public bool canParse;
+        /// <summary> 唤醒快捷键 </summary>
+        public string actionHotKey = string.Empty;
         /// <summary> 窗口样式 </summary>
         public WindowStyle windowStyle = WindowStyle.Normal;
         /// <summary> 优先级 </summary>

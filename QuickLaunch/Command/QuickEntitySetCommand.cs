@@ -15,6 +15,9 @@ namespace QuickLinker.QuickLaunch.Command
         public string desc;
         public string workFolder;
         public Bitmap bitmapImage;
+        public string actionHotKey;
+        public bool? dropNLaunch;
+        public bool? launchOnStartup;
         protected override void OnExecute()
         {
             var entitySystem = this.GetSystem<QuickEntitySystem>();
@@ -52,6 +55,21 @@ namespace QuickLinker.QuickLaunch.Command
                 change |= true;
                 entity.bitmapImage = bitmapImage;
                 entity.imageByteArr = ImageUtil.BitmapImageToByte(bitmapImage);
+            }
+            if (actionHotKey != null && !string.Equals(entity.actionHotKey, actionHotKey))
+            {
+                change |= true;
+                entity.actionHotKey = actionHotKey;
+            }
+            if (dropNLaunch.HasValue && dropNLaunch.Value != entity.dropNLaunch)
+            {
+                change |= true;
+                entity.dropNLaunch = dropNLaunch.Value;
+            }
+            if (launchOnStartup.HasValue && launchOnStartup.Value != entity.launchOnStartup)
+            {
+                change |= true;
+                entity.launchOnStartup = launchOnStartup.Value;
             }
             if (change)
             {

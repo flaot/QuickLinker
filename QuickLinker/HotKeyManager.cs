@@ -1,5 +1,6 @@
 ﻿using QFramework;
 using QuickLinker.Model;
+using QuickLinker.Utils;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -97,7 +98,7 @@ namespace QuickLinker
 
             // check if it's configured
             if (string.IsNullOrWhiteSpace(appConfig.actionHotKey.Value)) return;
-            var hotKey = new Hotkey(appConfig.actionHotKey.Value);
+            var hotKey = HotKeyUtil.Convert(appConfig.actionHotKey.Value);
             if (hotKey.ToString() == "None") return;
             // all good, bind
             HotKeyListener?.Add(hotKey);
@@ -112,7 +113,7 @@ namespace QuickLinker
             {
                 try
                 {
-                    HotKeyListener?.Add(new Hotkey(quickAcion.HotKey));
+                    HotKeyListener?.Add(HotKeyUtil.Convert(quickAcion.HotKey));
                     count++;
                 }
                 catch (Exception ex)

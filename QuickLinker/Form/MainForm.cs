@@ -106,6 +106,7 @@ namespace QuickLinker
             TypeEventSystem.Global.Register<ShowToolTipEvent>(Event_ShowToolTip);
             TypeEventSystem.Global.Register<ClickTPanelEvent>(TPanel_OnClick);
             TypeEventSystem.Global.Register<ClickMenuTPanelEvent>(TPanel_OnClickMenu);
+            TypeEventSystem.Global.Register<NoSettingStratEvent>(NoSettingStartEvent);
 
             _dateTimer = new Timer();
             _dateTimer.Tick += Event_RefreshShowTime;
@@ -144,53 +145,7 @@ namespace QuickLinker
             //    Console.WriteLine(item.index);
             //}
             //var appconfig = this.GetSystem<IStroeSystem>().Load<AppConfig>(new AppConfig());
-            var appConfig = this.GetSystem<IStroeSystem>().Load<AppConfig>();
-            if (appConfig == null)
-            {
-                var turboLaunchRoot = Registry.CurrentUser.OpenSubKey("Software\\TurboLaunch");
-                if (turboLaunchRoot == null)
-                    return;
-                if (MessageBox.Show(Resources.FromTurboLaunch_Switch, Resources.MSGBox_Tip, MessageBoxButtons.OKCancel) == DialogResult.OK)
-                {
-                    var entytys = system.QueryDataWithAnyFlag(Array.Empty<string>());
-                    foreach (var item in entytys)
-                        this.SendCommand(new QuickEntityRemoveCommand() { index = item.index });
-
-                    config.gridRow.Value = turboLaunchRoot.ReadDword("Rows", config.gridRow.Value);
-                    config.gridColumn.Value = turboLaunchRoot.ReadDword("Columns", config.gridColumn.Value);
-                    config.gridGroup.Value = turboLaunchRoot.ReadDword("Groups", config.gridGroup.Value);
-                    config.gridSize.Value = turboLaunchRoot.ReadDword("IconSize", config.gridSize.Value);
-                    config.topWindow.Value = turboLaunchRoot.ReadDword("AlwaysOnTop", config.topWindow.Value ? 1 : 0) == 1;
-                    config.showToolTip.Value = turboLaunchRoot.ReadDword("ShowToolTips", config.showToolTip.Value ? 1 : 0) == 1;
-                    var groupsKey = turboLaunchRoot.OpenSubKey("GroupNames");
-                    List<string> names = new List<string>();
-                    for (int i = 0; i < config.gridGroup.Value; i++)
-                    {
-                        string name = groupsKey.ReadSz(string.Format("{0:000}", i + 1), string.Format(Resources.BtnPropertiesFrom_GroupDefName, i + 1));
-                        names.Add(name);
-                    }
-                    config.groupArray.Value = names.ToArray();
-                    var configsKey = turboLaunchRoot.OpenSubKey("ButtonConfigs");
-                    foreach (var subKeyName in configsKey.GetSubKeyNames())
-                    {
-                        if (!int.TryParse(subKeyName, out var inIndex))
-                            continue;
-                        var subKey = configsKey.OpenSubKey(subKeyName);
-                        if (subKey.ReadDword("Initialized") == 0)
-                            continue;
-                        string exeFile = subKey.ReadSz("Command", string.Empty);
-                        if (string.IsNullOrEmpty(exeFile) || !File.Exists(exeFile))
-                            continue;
-                        this.SendCommand(new QuickEntityInsertCommand() { filePath = exeFile, index = inIndex - 1, canParse = false });
-                        string description = subKey.ReadSz("Description", string.Empty);
-                        if (!string.IsNullOrEmpty(description))
-                            this.SendCommand(new QuickEntitySetCommand() { index = inIndex - 1, desc = description });
-                        string workingDir = subKey.ReadSz("WorkingDir", string.Empty);
-                        if (!string.IsNullOrEmpty(workingDir))
-                            this.SendCommand(new QuickEntitySetCommand() { index = inIndex - 1, workFolder = workingDir });
-                    }
-                }
-            }
+            TypeEventSystem.Global.Send(new NoSettingStratEvent());
         }
         private void MainForm_FormClosing(object sender, FormClosingEventArgs e)
         {
@@ -225,10 +180,11 @@ namespace QuickLinker
         {
             var hotKeyMgr = this.GetSystem<HotKeyManager>();
             var config = this.GetModel<AppConfig>();
-            if (e.Hotkey.ToString() == config.actionHotKey.Value)
+            if (e.Hotkey.ToString() == HotKeyUtil.Convert(config.actionHotKey.Value).ToString())
             {
-                Show();
                 WindowState = FormWindowState.Normal;
+                Show();
+                Activate();
                 if (config.showMouse.Value)
                 {
                     var showPos = MousePosition;
@@ -434,6 +390,13 @@ namespace QuickLinker
             BtnPropertiesFrom.Show(tPanel);
             tPanel.Invert(false);
         }
+        private void MenuStrip_Test_Click(object sender, EventArgs e)
+        {
+            var stripMenuItem = sender as ToolStripMenuItem;
+            var tPanel = stripMenuItem.Owner.Tag as TPanel;
+            Bitmap bi = ImageUtil.GetBitmapIconByPath(tPanel.Entity.Path);
+            bi.Save("C:\\test.png", System.Drawing.Imaging.ImageFormat.Png);
+        }
 
         public const int WM_SYSCOMMAND = 0x112;
         public const int SC_MOVE = 0xF012;
@@ -507,17 +470,17 @@ namespace QuickLinker
             switch (config.dateTimeType.Value)
             {
                 case DateTimeType.Time:
-                    showDateOrTime = config.showLongFormatTime.Value ?
+                    showDateOrTime = config.useLongTime.Value ?
                         dateTime.ToLongTimeString() : dateTime.ToShortTimeString();
                     break;
                 case DateTimeType.Date:
-                    showDateOrTime = config.showLongFormatDate.Value ?
+                    showDateOrTime = config.useLongDate.Value ?
                         dateTime.ToLongDateString() : dateTime.ToShortDateString();
                     break;
                 case DateTimeType.DateTime:
-                    var time = config.showLongFormatTime.Value ?
+                    var time = config.useLongTime.Value ?
                     dateTime.ToLongTimeString() : dateTime.ToShortTimeString();
-                    var date = config.showLongFormatDate.Value ?
+                    var date = config.useLongDate.Value ?
                     dateTime.ToLongDateString() : dateTime.ToShortDateString();
                     showDateOrTime = time + " - " + date;
                     break;
@@ -834,6 +797,80 @@ namespace QuickLinker
         {
             var config = this.GetModel<AppConfig>();
             config.tabAppearance.Value = TabAppearance.FlatButtons;
+        }
+
+        private void NoSettingStartEvent(NoSettingStratEvent _)
+        {
+            var appConfig = this.GetSystem<IStroeSystem>().Load<AppConfig>();
+            if (appConfig != null)
+                return;
+
+            var config = this.GetModel<AppConfig>();
+            var system = this.GetSystem<QuickEntitySystem>();
+
+            var turboLaunchRoot = Registry.CurrentUser.OpenSubKey("Software\\TurboLaunch");
+            if (turboLaunchRoot == null)
+                return;
+            if (MessageBox.Show(Resources.FromTurboLaunch_Switch, Resources.MSGBox_Tip, MessageBoxButtons.OKCancel) != DialogResult.OK)
+                return;
+            var entytys = system.QueryDataWithAnyFlag(Array.Empty<string>());
+            foreach (var item in entytys)
+                this.SendCommand(new QuickEntityRemoveCommand() { index = item.index });
+
+            config.gridRow.Value = turboLaunchRoot.ReadDword("Rows", config.gridRow.Value);
+            config.gridColumn.Value = turboLaunchRoot.ReadDword("Columns", config.gridColumn.Value);
+            config.gridGroup.Value = turboLaunchRoot.ReadDword("Groups", config.gridGroup.Value);
+            config.gridSize.Value = turboLaunchRoot.ReadDword("IconSize", config.gridSize.Value);
+            config.topWindow.Value = turboLaunchRoot.ReadDword("AlwaysOnTop", config.topWindow.Value ? 1 : 0) == 1;
+            config.showToolTip.Value = turboLaunchRoot.ReadDword("ShowToolTips", config.showToolTip.Value ? 1 : 0) == 1;
+            config.ignoreZeroButton.Value = turboLaunchRoot.ReadDword("IgnoreBlankClicks", config.ignoreZeroButton.Value ? 1 : 0) == 1;
+            config.showInTray.Value = turboLaunchRoot.ReadDword("ShowInTaskBar", config.showInTray.Value ? 1 : 0) == 1;
+            config.showStateTip.Value = turboLaunchRoot.ReadDword("ShowStatusBar", config.showStateTip.Value ? 1 : 0) == 1;
+            config.showToolTip.Value = turboLaunchRoot.ReadDword("ShowToolTips", config.showToolTip.Value ? 1 : 0) == 1;
+            config.showButtonTip.Value = turboLaunchRoot.ReadDword("ShowButtonCaptions", config.showButtonTip.Value ? 1 : 0) == 1;
+            config.titleStyle.Value = (TitleStyle)turboLaunchRoot.ReadDword("TitleBar", 0);
+            config.windowAlpha.Value = turboLaunchRoot.ReadDword("Transparency", 256) / 256 * 100;
+            config.useLongDate.Value = turboLaunchRoot.ReadDword("UseLongDate", config.useLongDate.Value ? 1 : 0) == 1;
+            config.useLongTime.Value = turboLaunchRoot.ReadDword("UseLongTime", config.useLongTime.Value ? 1 : 0) == 1;
+            var groupsKey = turboLaunchRoot.OpenSubKey("GroupNames");
+            List<string> names = new List<string>();
+            for (int i = 0; i < config.gridGroup.Value; i++)
+            {
+                string name = groupsKey.ReadSz(string.Format("{0:000}", i + 1), string.Format(Resources.BtnPropertiesFrom_GroupDefName, i + 1));
+                names.Add(name);
+            }
+            config.groupArray.Value = names.ToArray();
+            var configsKey = turboLaunchRoot.OpenSubKey("ButtonConfigs");
+            foreach (var subKeyName in configsKey.GetSubKeyNames())
+            {
+                if (!int.TryParse(subKeyName, out var inIndex))
+                    continue;
+                var subKey = configsKey.OpenSubKey(subKeyName);
+                if (subKey.ReadDword("Initialized") == 0)
+                    continue;
+                string exeFile = subKey.ReadSz("Command", string.Empty);
+                if (string.IsNullOrEmpty(exeFile) || !(File.Exists(exeFile) || Directory.Exists(exeFile)))
+                    continue;
+                this.SendCommand(new QuickEntityInsertCommand() { filePath = exeFile, index = inIndex - 1, canParse = false });
+                string description = subKey.ReadSz("Description", string.Empty);
+                if (!string.IsNullOrEmpty(description))
+                    this.SendCommand(new QuickEntitySetCommand() { index = inIndex - 1, desc = description });
+                string workingDir = subKey.ReadSz("WorkingDir", string.Empty);
+                if (!string.IsNullOrEmpty(workingDir))
+                    this.SendCommand(new QuickEntitySetCommand() { index = inIndex - 1, workFolder = workingDir });
+                string hotKey = subKey.ReadSz("HotKey", string.Empty);
+                if (!string.IsNullOrEmpty(hotKey))
+                    this.SendCommand(new QuickEntitySetCommand() { index = inIndex - 1, actionHotKey = hotKey });
+                bool dropNLaunch = subKey.ReadDword("DropNLaunch", 0) == 1;
+                if (dropNLaunch)
+                    this.SendCommand(new QuickEntitySetCommand() { index = inIndex - 1, dropNLaunch = dropNLaunch });
+                bool launchOnStartup = subKey.ReadDword("LaunchOnStartup", 0) == 1;
+                if (dropNLaunch)
+                    this.SendCommand(new QuickEntitySetCommand() { index = inIndex - 1, launchOnStartup = launchOnStartup });
+                string parameters = subKey.ReadSz("Parameters", string.Empty);
+                if (!string.IsNullOrEmpty(parameters))
+                    this.SendCommand(new QuickEntitySetCommand() { index = inIndex - 1, startArg = parameters });
+            }
         }
     }
 }

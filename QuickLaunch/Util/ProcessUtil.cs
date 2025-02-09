@@ -66,8 +66,8 @@ namespace QuickLinker.QuickLaunch.Utils
                                     p.StartInfo.UseShellExecute = true;
                                     break;
                                 case IconStartType.SHOW_IN_EXPLORE:
+                                    p.StartInfo.Arguments = "/e,/select," + p.StartInfo.FileName;
                                     p.StartInfo.FileName = "Explorer.exe";
-                                    p.StartInfo.Arguments = "/e,/select," + icon.Path;
                                     break;
                             }
                         }
@@ -76,7 +76,8 @@ namespace QuickLinker.QuickLaunch.Utils
                             //以正确启动应用的路径为准
                             if (icon.iconType == OpenType.OTHER)
                             {
-                                if (!string.Equals(p.StartInfo.FileName, icon.Path))
+                                if (type != IconStartType.SHOW_IN_EXPLORE 
+                                    && !string.Equals(p.StartInfo.FileName, icon.Path))
                                 { 
                                     icon.Path = p.StartInfo.FileName;
                                     icon.needSave.Value = true;

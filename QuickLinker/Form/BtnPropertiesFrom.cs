@@ -1,4 +1,5 @@
 ﻿using QFramework;
+using QuickLinker.Model;
 using QuickLinker.Properties;
 using QuickLinker.QuickLaunch.Command;
 using QuickLinker.QuickLaunch.Models;
@@ -24,17 +25,31 @@ namespace QuickLinker
 
         public static DialogResult Show(TPanel tPanel)
         {
+            DialogResult dialogResult;
             var config = AppArchitecture.Interface.GetModel<AppConfig>();
-            using (var properties = new BtnPropertiesFrom())
+            var hotKeySys = AppArchitecture.Interface.GetSystem<HotKeyManager>();
+            hotKeySys.HotKeyListener?.RemoveAll();
+            try
             {
-                properties.TopMost = config.topWindow.Value;
-                properties.SetTPanel(tPanel);
-                return properties.ShowDialog();
+                using (var properties = new BtnPropertiesFrom())
+                {
+                    properties.TopMost = config.topWindow.Value;
+                    properties.SetTPanel(tPanel);
+                    dialogResult = properties.ShowDialog();
+                }
             }
+            finally
+            {
+                hotKeySys.InitializeQuickActionsHotKeys();
+            }
+            return dialogResult;
         }
         private void SetTPanel(TPanel tPanel)
         {
             var appConfig = this.GetModel<AppConfig>();
+            Txt_HotKey.KeyUp += HotKeyUtil.Control_KeyUp;
+            Txt_HotKey.KeyDown += HotKeyUtil.Control_KeyDown;
+            Txt_HotKey.KeyDown += Txt_HotKey_KeyDown;
             _OptIndex = tPanel.Index;
             int pageGridCount = appConfig.gridColumn.Value * appConfig.gridRow.Value;
             var groupNum = _OptIndex / pageGridCount;
@@ -44,7 +59,7 @@ namespace QuickLinker
             SetEntitiy(tPanel.Entity, true);
             if (_inputEntity != null)
             {
-                CheckBox_AutoRun.Checked = _inputEntity.autoRun;
+                CheckBox_AutoRun.Checked = _inputEntity.launchOnStartup;
             }
         }
         private void SetEntitiy(Entity entity, bool setExtInfo)
@@ -63,6 +78,7 @@ namespace QuickLinker
                 Btn_Ok.Enabled = false;
                 Btn_Clear.Enabled = false;
             }
+            Txt_HotKey.Text = _tempEntity.actionHotKey;
             PictureBox_Icon.Image = _tempEntity.bitmapImage;
             Btn_Parse.Enabled = _tempEntity.canParse;
             ComboBox_WindowStyle.SelectedIndex = (int)_tempEntity.windowStyle;
@@ -145,7 +161,7 @@ namespace QuickLinker
             _tempEntity.startArg = Txt_Args.Text.Trim();
             _tempEntity.windowStyle = (WindowStyle)ComboBox_WindowStyle.SelectedIndex;
             _tempEntity.priorityClass = (PriorityClass)ComboBox_PriorityClass.SelectedIndex;
-            _tempEntity.autoRun = CheckBox_AutoRun.Checked;
+            _tempEntity.launchOnStartup = CheckBox_AutoRun.Checked;
 
             if (_inputEntity != null)
                 this.SendCommand(new QuickEntityRemoveCommand() { index = _inputEntity.index });
@@ -174,6 +190,11 @@ namespace QuickLinker
         {
             if (IconForm.Show(_tempEntity))
                 SetEntitiy(_tempEntity, false);
+        }
+        public void Txt_HotKey_KeyDown(object sender, KeyEventArgs e)
+        {
+            var textBox = sender as Control;
+            _tempEntity.actionHotKey = Txt_HotKey.Text;
         }
     }
 }

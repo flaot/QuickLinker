@@ -6,14 +6,12 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Windows.Forms;
-using WK.Libraries.HotkeyListenerNS;
 
 namespace QuickLinker
 {
     public partial class PreferencesFrom : Form, IController
     {
         private List<IUnRegister> _unRegisters = new List<IUnRegister>();
-        private readonly HotkeySelector _hotkeySelector = new();
 
         private int _oldGroupNumber = -1;
         public PreferencesFrom()
@@ -41,13 +39,9 @@ namespace QuickLinker
             RegisterBool(appConfig.disableAffinity, checkBox18);
             var hotKeySys = this.GetSystem<HotKeyManager>();
             hotKeySys.HotKeyListener?.RemoveAll();
-            _hotkeySelector.EmptyHotkeyText = string.Empty;
-            if (!string.IsNullOrEmpty(appConfig.actionHotKey.Value))
-                _hotkeySelector.Enable(textBox1, new Hotkey(appConfig.actionHotKey.Value));
-            else
-                _hotkeySelector.Enable(textBox1);
-            textBox1.KeyUp += TextBox1_KeyUp;
-            textBox1.KeyDown += TextBox1_KeyUp;
+            textBox1.Text = appConfig.actionHotKey.Value;
+            textBox1.KeyUp += HotKeyUtil.Control_KeyUp;
+            textBox1.KeyDown += HotKeyUtil.Control_KeyDown;
 
             //外观
             RegisterCombox(appConfig.titleStyle, comboBox1);
@@ -56,8 +50,8 @@ namespace QuickLinker
             RegisterBool(appConfig.showButtonTip, checkBox13);
             RegisterCombox(appConfig.appHideType, comboBox2);
             RegisterCombox(appConfig.dateTimeType, comboBox3);
-            RegisterBool(appConfig.showLongFormatTime, checkBox14);
-            RegisterBool(appConfig.showLongFormatDate, checkBox15);
+            RegisterBool(appConfig.useLongTime, checkBox14);
+            RegisterBool(appConfig.useLongDate, checkBox15);
             RegisterBool(appConfig.showInTray, checkBox16);
             RegisterTrackBar(appConfig.windowAlpha, trackBar1);
             _unRegisters.Add(appConfig.windowAlpha.RegisterWithInitValue(Event_ChangeAlphaLabel));
@@ -75,8 +69,6 @@ namespace QuickLinker
         {
             var appConfig = this.GetModel<AppConfig>();
             appConfig.actionHotKey.Value = textBox1.Text;
-            _hotkeySelector?.Disable(textBox1);
-            _hotkeySelector?.Dispose();
             if (_unRegisters != null)
             {
                 _unRegisters.ForEach(item => item.UnRegister());
@@ -84,12 +76,6 @@ namespace QuickLinker
             }
             var hotKeySys = this.GetSystem<HotKeyManager>();
             hotKeySys.InitializeQuickActionsHotKeys();
-        }
-
-        private void TextBox1_KeyUp(object sender, KeyEventArgs e)
-        {
-            if (e.KeyCode == Keys.Escape)
-                _hotkeySelector.Clear(sender as Control);
         }
         private void RegisterBool(BindableProperty<bool> bindable, CheckBox checkBox)
         {

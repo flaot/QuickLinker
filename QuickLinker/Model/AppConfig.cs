@@ -64,9 +64,9 @@ namespace QuickLinker.Model
         /// <summary> 显示时间 </summary>
         public BindableProperty<DateTimeType> dateTimeType = new BindableProperty<DateTimeType>(DateTimeType.DateTime);
         /// <summary> 显示长格式时间 </summary>
-        public BindableProperty<bool> showLongFormatTime = new BindableProperty<bool>(true);
+        public BindableProperty<bool> useLongTime = new BindableProperty<bool>(true);
         /// <summary> 显示长格式日期 </summary>
-        public BindableProperty<bool> showLongFormatDate = new BindableProperty<bool>();
+        public BindableProperty<bool> useLongDate = new BindableProperty<bool>();
         /// <summary> 显示在任务栏而不是托盘 </summary>
         public BindableProperty<bool> showInTray = new BindableProperty<bool>();
         /// <summary> 窗口透明度 </summary>
