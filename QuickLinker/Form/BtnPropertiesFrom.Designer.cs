@@ -52,14 +52,14 @@ namespace QuickLinker
             label5 = new Label();
             Txt_Desc = new TextBox();
             label4 = new Label();
-            Btn_BrowseFolder = new Button();
+            Btn_BrowseFolder = new TButton();
             Txt_WorkFolder = new TextBox();
             label3 = new Label();
-            Btn_BrowseArgFile = new Button();
-            Btn_BrowsePath = new Button();
+            Btn_BrowseArgFile = new TButton();
+            Btn_BrowsePath = new TButton();
             Txt_Args = new TextBox();
             label2 = new Label();
-            Btn_Parse = new Button();
+            Btn_Parse = new TButton();
             Txt_TargetPostion = new TextBox();
             label1 = new Label();
             splitContainer1 = new SplitContainer();
@@ -295,14 +295,12 @@ namespace QuickLinker
             // 
             // Btn_BrowseFolder
             // 
-            Btn_BrowseFolder.FlatAppearance.BorderSize = 0;
             Btn_BrowseFolder.Location = new Point(321, 68);
             Btn_BrowseFolder.Margin = new Padding(0);
             Btn_BrowseFolder.Name = "Btn_BrowseFolder";
             Btn_BrowseFolder.Size = new Size(24, 24);
             Btn_BrowseFolder.TabIndex = 9;
             Btn_BrowseFolder.Text = "button4";
-            Btn_BrowseFolder.UseVisualStyleBackColor = true;
             Btn_BrowseFolder.Click += Btn_BrowseFolder_Click;
             // 
             // Txt_WorkFolder
@@ -327,26 +325,22 @@ namespace QuickLinker
             // 
             // Btn_BrowseArgFile
             // 
-            Btn_BrowseArgFile.FlatAppearance.BorderSize = 0;
             Btn_BrowseArgFile.Location = new Point(322, 40);
             Btn_BrowseArgFile.Margin = new Padding(0);
             Btn_BrowseArgFile.Name = "Btn_BrowseArgFile";
             Btn_BrowseArgFile.Size = new Size(24, 24);
             Btn_BrowseArgFile.TabIndex = 6;
             Btn_BrowseArgFile.Text = "button3";
-            Btn_BrowseArgFile.UseVisualStyleBackColor = true;
             Btn_BrowseArgFile.Click += Btn_BrowseArgFile_Click;
             // 
             // Btn_BrowsePath
             // 
-            Btn_BrowsePath.FlatAppearance.BorderSize = 0;
             Btn_BrowsePath.Location = new Point(322, 12);
             Btn_BrowsePath.Margin = new Padding(0);
             Btn_BrowsePath.Name = "Btn_BrowsePath";
             Btn_BrowsePath.Size = new Size(24, 24);
             Btn_BrowsePath.TabIndex = 5;
             Btn_BrowsePath.Text = "button2";
-            Btn_BrowsePath.UseVisualStyleBackColor = true;
             Btn_BrowsePath.Click += Btn_BrowsePath_Click;
             // 
             // Txt_Args
@@ -371,14 +365,12 @@ namespace QuickLinker
             // 
             // Btn_Parse
             // 
-            Btn_Parse.FlatAppearance.BorderSize = 0;
             Btn_Parse.Location = new Point(293, 12);
             Btn_Parse.Margin = new Padding(0);
             Btn_Parse.Name = "Btn_Parse";
             Btn_Parse.Size = new Size(24, 24);
             Btn_Parse.TabIndex = 2;
             Btn_Parse.Text = "button1";
-            Btn_Parse.UseVisualStyleBackColor = true;
             Btn_Parse.Click += Btn_Parse_Click;
             // 
             // Txt_TargetPostion
@@ -495,14 +487,14 @@ namespace QuickLinker
         private Label label5;
         private TextBox Txt_Desc;
         private Label label4;
-        private Button Btn_BrowseFolder;
+        private TButton Btn_BrowseFolder;
         private TextBox Txt_WorkFolder;
         private Label label3;
-        private Button Btn_BrowseArgFile;
-        private Button Btn_BrowsePath;
+        private TButton Btn_BrowseArgFile;
+        private TButton Btn_BrowsePath;
         private TextBox Txt_Args;
         private Label label2;
-        private Button Btn_Parse;
+        private TButton Btn_Parse;
         private Label label9;
         private Label label8;
         private Label label10;

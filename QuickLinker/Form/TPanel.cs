@@ -279,6 +279,5 @@ namespace QuickLinker
                 TypeEventSystem.Global.Send(new ShowToolTipEvent(this, null));
             _showTip = 0;
         }
-
     }
 }

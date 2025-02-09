@@ -25,6 +25,9 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Compile Update="Form\TButton.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
     <Compile Update="Properties\Resources.Designer.cs">
       <DesignTime>True</DesignTime>
       <AutoGen>True</AutoGen>
@@ -40,7 +43,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Form\" />
     <Folder Include="Systems\" />
   </ItemGroup>
 

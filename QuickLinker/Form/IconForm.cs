@@ -22,7 +22,6 @@ namespace QuickLinker
 
         private void IconForm_Load(object sender, EventArgs e)
         {
-            Btn_Browse.Text = string.Empty;
             Btn_Browse.Image = ImageUtil.ScaleBitmap(ImageUtil.Base64ToBitmapImage(Constants.DEFAULT_DIR_IMAGE_BASE64), Btn_Browse.Width, Btn_Browse.Height);
 
             Txt_IconPath.TextChanged -= Txt_IconPath_TextChanged;

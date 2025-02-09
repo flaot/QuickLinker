@@ -35,7 +35,7 @@ namespace QuickLinker
             label1 = new Label();
             label2 = new Label();
             Txt_IconPath = new TextBox();
-            Btn_Browse = new Button();
+            Btn_Browse = new TButton();
             MumericUpDown_CurIndex = new NumericUpDown();
             Txt_MaxIndex = new Label();
             Btn_OK = new Button();
@@ -83,7 +83,6 @@ namespace QuickLinker
             Btn_Browse.Size = new Size(30, 25);
             Btn_Browse.TabIndex = 3;
             Btn_Browse.Text = "button1";
-            Btn_Browse.UseVisualStyleBackColor = true;
             Btn_Browse.Click += Btn_Browse_Click;
             // 
             // MumericUpDown_CurIndex
@@ -177,7 +176,7 @@ namespace QuickLinker
         private Label label1;
         private Label label2;
         private TextBox Txt_IconPath;
-        private Button Btn_Browse;
+        private TButton Btn_Browse;
         private NumericUpDown MumericUpDown_CurIndex;
         private Label Txt_MaxIndex;
         private Button Btn_OK;
