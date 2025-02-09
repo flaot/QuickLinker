@@ -137,7 +137,7 @@
     <value>存在TurboLaunch配置,是否使用该配置进行初始化?</value>
   </data>
   <data name="IconFrom_OpenFile" xml:space="preserve">
-    <value>图标文件|*.exe*.icon*.dll|所有文件(*.*)|*.*</value>
+    <value>Png 文件(*.png)|*.png|Icon 文件(*.icon)|*.icon|DLL 文件(*.dll)|*.dll|可执行文件(*.exe)|*.exe|所有文件(*.*)|*.*</value>
   </data>
   <data name="MainForm_AlignStats" xml:space="preserve">
     <value>正在排列：请点击目标按钮</value>

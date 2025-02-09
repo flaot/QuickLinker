@@ -116,7 +116,7 @@ namespace QuickLinker.Properties {
         }
         
         /// <summary>
-        ///   查找类似 图标文件|*.exe*.icon*.dll|所有文件(*.*)|*.* 的本地化字符串。
+        ///   查找类似 Png 文件(*.png)|*.png|Icon 文件(*.icon)|*.icon|DLL 文件(*.dll)|*.dll|可执行文件(*.exe)|*.exe|所有文件(*.*)|*.* 的本地化字符串。
         /// </summary>
         internal static string IconFrom_OpenFile {
             get {
