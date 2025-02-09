@@ -119,7 +119,20 @@ namespace QuickLinker.QuickLaunch.Utils
             }
             return null;
         }
-
+        
+        /// <summary>
+        /// 缩放图片
+        /// </summary>
+        public static Bitmap ScaleBitmap(Bitmap originalImage, int newWidth, int newHeight)
+        {
+            Bitmap bmpOut = new Bitmap(newWidth, newHeight);
+            using (Graphics g = Graphics.FromImage(bmpOut))
+            {
+                g.InterpolationMode = InterpolationMode.HighQualityBicubic;
+                g.DrawImage(originalImage, 0, 0, newWidth, newHeight);
+            }
+            return bmpOut;
+        }
 
 
         /// <summary>

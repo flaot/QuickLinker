@@ -1,4 +1,5 @@
-﻿using QFramework;
+﻿using Microsoft.VisualBasic;
+using QFramework;
 using QuickLinker.Model;
 using QuickLinker.Properties;
 using QuickLinker.QuickLaunch.Command;
@@ -6,9 +7,12 @@ using QuickLinker.QuickLaunch.Models;
 using QuickLinker.QuickLaunch.Utils;
 using QuickLinker.Utils;
 using System;
+using System.Drawing;
+using System.Drawing.Drawing2D;
 using System.IO;
 using System.Windows.Forms;
 using AppConfig = QuickLinker.Model.AppConfig;
+using Constants = QuickLinker.QuickLaunch.Constant.Constants;
 
 namespace QuickLinker
 {
@@ -22,7 +26,20 @@ namespace QuickLinker
         {
             InitializeComponent();
         }
+        private void BtnPropertiesFrom_Load(object sender, EventArgs e)
+        {
+            string shellFile = Path.Combine(Environment.SystemDirectory, "SHELL32.dll");
+            Btn_Parse.Text = string.Empty;
+            Btn_BrowsePath.Text = string.Empty;
+            Btn_BrowseArgFile.Text = string.Empty;
+            Btn_BrowseFolder.Text = string.Empty;
+            Btn_Parse.Image = ImageUtil.ScaleBitmap(ImageUtil.GetBitmapIconByPath(shellFile, 263), Btn_Parse.Width, Btn_Parse.Height);
+            Btn_BrowsePath.Image = ImageUtil.ScaleBitmap(ImageUtil.Base64ToBitmapImage(Constants.DEFAULT_DIR_IMAGE_BASE64), Btn_BrowsePath.Width, Btn_BrowsePath.Height);
+            Btn_BrowseArgFile.Image = ImageUtil.ScaleBitmap(ImageUtil.Base64ToBitmapImage(Constants.DEFAULT_DIR_IMAGE_BASE64), Btn_BrowseArgFile.Width, Btn_BrowseArgFile.Height);
+            Btn_BrowseFolder.Image = ImageUtil.ScaleBitmap(ImageUtil.Base64ToBitmapImage(Constants.DEFAULT_DIR_IMAGE_BASE64), Btn_BrowseFolder.Width, Btn_BrowseFolder.Height);
 
+        }
+  
         public static DialogResult Show(TPanel tPanel)
         {
             DialogResult dialogResult;

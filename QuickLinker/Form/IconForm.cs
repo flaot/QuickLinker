@@ -7,6 +7,7 @@ using System.Drawing;
 using System.IO;
 using System.Windows.Forms;
 using QuickLinker.Model;
+using Constants = QuickLinker.QuickLaunch.Constant.Constants;
 
 namespace QuickLinker
 {
@@ -21,6 +22,9 @@ namespace QuickLinker
 
         private void IconForm_Load(object sender, EventArgs e)
         {
+            Btn_Browse.Text = string.Empty;
+            Btn_Browse.Image = ImageUtil.ScaleBitmap(ImageUtil.Base64ToBitmapImage(Constants.DEFAULT_DIR_IMAGE_BASE64), Btn_Browse.Width, Btn_Browse.Height);
+
             Txt_IconPath.TextChanged -= Txt_IconPath_TextChanged;
             MumericUpDown_CurIndex.ValueChanged -= MumericUpDown_CurIndex_ValueChanged;
             Txt_IconPath.Text = _entity.ImagePath;

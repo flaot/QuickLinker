@@ -4,7 +4,7 @@ using System.Configuration;
 
 namespace QuickLinker.QuickLaunch.Constant
 {
-    internal class Constants
+    public class Constants
     {
         public static string APP_DIR = AppDomain.CurrentDomain.BaseDirectory.Trim();
 

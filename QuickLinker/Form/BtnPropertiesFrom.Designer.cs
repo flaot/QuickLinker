@@ -82,7 +82,7 @@ namespace QuickLinker
             tabControl1.Location = new Point(0, 0);
             tabControl1.Name = "tabControl1";
             tabControl1.SelectedIndex = 0;
-            tabControl1.Size = new Size(518, 239);
+            tabControl1.Size = new Size(518, 246);
             tabControl1.TabIndex = 0;
             // 
             // tabPage1
@@ -119,7 +119,7 @@ namespace QuickLinker
             tabPage1.Location = new Point(4, 26);
             tabPage1.Name = "tabPage1";
             tabPage1.Padding = new Padding(3);
-            tabPage1.Size = new Size(510, 209);
+            tabPage1.Size = new Size(510, 216);
             tabPage1.TabIndex = 0;
             tabPage1.Text = "运行一个程序";
             // 
@@ -295,7 +295,9 @@ namespace QuickLinker
             // 
             // Btn_BrowseFolder
             // 
+            Btn_BrowseFolder.FlatAppearance.BorderSize = 0;
             Btn_BrowseFolder.Location = new Point(321, 68);
+            Btn_BrowseFolder.Margin = new Padding(0);
             Btn_BrowseFolder.Name = "Btn_BrowseFolder";
             Btn_BrowseFolder.Size = new Size(24, 24);
             Btn_BrowseFolder.TabIndex = 9;
@@ -325,7 +327,9 @@ namespace QuickLinker
             // 
             // Btn_BrowseArgFile
             // 
+            Btn_BrowseArgFile.FlatAppearance.BorderSize = 0;
             Btn_BrowseArgFile.Location = new Point(322, 40);
+            Btn_BrowseArgFile.Margin = new Padding(0);
             Btn_BrowseArgFile.Name = "Btn_BrowseArgFile";
             Btn_BrowseArgFile.Size = new Size(24, 24);
             Btn_BrowseArgFile.TabIndex = 6;
@@ -335,7 +339,9 @@ namespace QuickLinker
             // 
             // Btn_BrowsePath
             // 
+            Btn_BrowsePath.FlatAppearance.BorderSize = 0;
             Btn_BrowsePath.Location = new Point(322, 12);
+            Btn_BrowsePath.Margin = new Padding(0);
             Btn_BrowsePath.Name = "Btn_BrowsePath";
             Btn_BrowsePath.Size = new Size(24, 24);
             Btn_BrowsePath.TabIndex = 5;
@@ -365,7 +371,9 @@ namespace QuickLinker
             // 
             // Btn_Parse
             // 
+            Btn_Parse.FlatAppearance.BorderSize = 0;
             Btn_Parse.Location = new Point(293, 12);
+            Btn_Parse.Margin = new Padding(0);
             Btn_Parse.Name = "Btn_Parse";
             Btn_Parse.Size = new Size(24, 24);
             Btn_Parse.TabIndex = 2;
@@ -413,7 +421,7 @@ namespace QuickLinker
             splitContainer1.Panel2.Controls.Add(Btn_Ok);
             splitContainer1.Panel2.Controls.Add(Btn_Clear);
             splitContainer1.Size = new Size(518, 272);
-            splitContainer1.SplitterDistance = 239;
+            splitContainer1.SplitterDistance = 246;
             splitContainer1.SplitterWidth = 1;
             splitContainer1.TabIndex = 1;
             // 
@@ -461,6 +469,7 @@ namespace QuickLinker
             ShowInTaskbar = false;
             StartPosition = FormStartPosition.CenterParent;
             Text = "BtnPropertiesFrom";
+            Load += BtnPropertiesFrom_Load;
             tabControl1.ResumeLayout(false);
             tabPage1.ResumeLayout(false);
             tabPage1.PerformLayout();
