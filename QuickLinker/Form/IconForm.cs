@@ -76,7 +76,7 @@ namespace QuickLinker
             Txt_MaxIndex.Text = "/" + MumericUpDown_CurIndex.Maximum;
             var newIconPath = Txt_IconPath.Text.Trim();
             Btn_OK.Enabled = !string.IsNullOrEmpty(newIconPath);
-            pictureBox1.Image = FileIcon.GetBitmapImage(newIconPath, ((int)MumericUpDown_CurIndex.Value) - 1);
+            pictureBox1.Image = ImageUtil.GetBitmapIconByPath(newIconPath, ((int)MumericUpDown_CurIndex.Value) - 1);
             MumericUpDown_CurIndex.ValueChanged += MumericUpDown_CurIndex_ValueChanged;
         }
 
