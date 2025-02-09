@@ -82,7 +82,7 @@ namespace QuickLinker
             tabControl1.Location = new Point(0, 0);
             tabControl1.Name = "tabControl1";
             tabControl1.SelectedIndex = 0;
-            tabControl1.Size = new Size(518, 246);
+            tabControl1.Size = new Size(518, 232);
             tabControl1.TabIndex = 0;
             // 
             // tabPage1
@@ -119,7 +119,7 @@ namespace QuickLinker
             tabPage1.Location = new Point(4, 26);
             tabPage1.Name = "tabPage1";
             tabPage1.Padding = new Padding(3);
-            tabPage1.Size = new Size(510, 216);
+            tabPage1.Size = new Size(510, 202);
             tabPage1.TabIndex = 0;
             tabPage1.Text = "运行一个程序";
             // 
@@ -421,7 +421,7 @@ namespace QuickLinker
             splitContainer1.Panel2.Controls.Add(Btn_Ok);
             splitContainer1.Panel2.Controls.Add(Btn_Clear);
             splitContainer1.Size = new Size(518, 272);
-            splitContainer1.SplitterDistance = 246;
+            splitContainer1.SplitterDistance = 232;
             splitContainer1.SplitterWidth = 1;
             splitContainer1.TabIndex = 1;
             // 
