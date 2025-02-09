@@ -7,6 +7,7 @@ using QuickLinker.QuickLaunch.Systems;
 using System;
 using System.Collections.Generic;
 using System.Drawing;
+using System.Drawing.Drawing2D;
 using System.Windows.Forms;
 using AppConfig = QuickLinker.Model.AppConfig;
 
@@ -189,6 +190,7 @@ namespace QuickLinker
             {
                 Rectangle destRect = new Rectangle(0, 0, Width, Height);
                 Rectangle srcRect = new Rectangle(0, 0, showImage.Width, showImage.Height);
+                e.Graphics.InterpolationMode = InterpolationMode.High;
                 e.Graphics.DrawImage(showImage, destRect, srcRect, GraphicsUnit.Pixel);
             }
             if (_showName && !string.IsNullOrEmpty(_text))
