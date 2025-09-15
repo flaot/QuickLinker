@@ -78,7 +78,6 @@ namespace QuickLinker
             AppMenu_Setting = new ToolStripMenuItem();
             toolStripMenuItem6 = new ToolStripSeparator();
             AppMenu_Quit = new ToolStripMenuItem();
-            MenuStrip_Test = new ToolStripMenuItem();
             tabPage1.SuspendLayout();
             tabControl1.SuspendLayout();
             TabMenuStrip.SuspendLayout();
@@ -196,29 +195,29 @@ namespace QuickLinker
             // TabMenuItem_Stand
             // 
             TabMenuItem_Stand.Name = "TabMenuItem_Stand";
-            TabMenuItem_Stand.Size = new Size(180, 22);
+            TabMenuItem_Stand.Size = new Size(138, 22);
             TabMenuItem_Stand.Text = "标准(&N)";
             TabMenuItem_Stand.Click += TabMenuItem_Stand_Click;
             // 
             // TabMenuItem_Button
             // 
             TabMenuItem_Button.Name = "TabMenuItem_Button";
-            TabMenuItem_Button.Size = new Size(180, 22);
+            TabMenuItem_Button.Size = new Size(138, 22);
             TabMenuItem_Button.Text = "按钮(&B)";
             TabMenuItem_Button.Click += TabMenuItem_Button_Click;
             // 
             // TabMenuItem_Flot
             // 
             TabMenuItem_Flot.Name = "TabMenuItem_Flot";
-            TabMenuItem_Flot.Size = new Size(180, 22);
+            TabMenuItem_Flot.Size = new Size(138, 22);
             TabMenuItem_Flot.Text = "平面按钮(&F)";
             TabMenuItem_Flot.Click += TabMenuItem_Flot_Click;
             // 
             // PageMenuStrip
             // 
-            PageMenuStrip.Items.AddRange(new ToolStripItem[] { MenuStrip_FullPath, toolStripMenuItem3, MenuStrip_CreateQuick, MenuStrip_SystemContextMenu, toolStripMenuItem5, MenuStrip_Copy, MenuStrip_Switch, MenuStrip_Align, MenuStrip_Clear, toolStripMenuItem1, MenuStrip_Attr, MenuStrip_Test });
+            PageMenuStrip.Items.AddRange(new ToolStripItem[] { MenuStrip_FullPath, toolStripMenuItem3, MenuStrip_CreateQuick, MenuStrip_SystemContextMenu, toolStripMenuItem5, MenuStrip_Copy, MenuStrip_Switch, MenuStrip_Align, MenuStrip_Clear, toolStripMenuItem1, MenuStrip_Attr });
             PageMenuStrip.Name = "MenuStrip";
-            PageMenuStrip.Size = new Size(181, 242);
+            PageMenuStrip.Size = new Size(181, 220);
             // 
             // MenuStrip_FullPath
             // 
@@ -430,13 +429,6 @@ namespace QuickLinker
             AppMenu_Quit.Text = "关闭 QuickLinker";
             AppMenu_Quit.Click += AppMenu_Quit_Click;
             // 
-            // MenuStrip_Test
-            // 
-            MenuStrip_Test.Name = "MenuStrip_Test";
-            MenuStrip_Test.Size = new Size(180, 22);
-            MenuStrip_Test.Text = "测试";
-            MenuStrip_Test.Click += MenuStrip_Test_Click;
-            // 
             // MainForm
             // 
             AutoScaleDimensions = new SizeF(7F, 17F);
@@ -516,6 +508,5 @@ namespace QuickLinker
         private ToolStripMenuItem AppMenu_Show;
         private ToolStripMenuItem AppMenu_Setting;
         private ToolStripSeparator toolStripMenuItem6;
-        private ToolStripMenuItem MenuStrip_Test;
     }
 }

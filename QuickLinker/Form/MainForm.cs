@@ -390,13 +390,6 @@ namespace QuickLinker
             BtnPropertiesFrom.Show(tPanel);
             tPanel.Invert(false);
         }
-        private void MenuStrip_Test_Click(object sender, EventArgs e)
-        {
-            var stripMenuItem = sender as ToolStripMenuItem;
-            var tPanel = stripMenuItem.Owner.Tag as TPanel;
-            Bitmap bi = ImageUtil.GetBitmapIconByPath(tPanel.Entity.Path);
-            bi.Save("C:\\test.png", System.Drawing.Imaging.ImageFormat.Png);
-        }
 
         public const int WM_SYSCOMMAND = 0x112;
         public const int SC_MOVE = 0xF012;
