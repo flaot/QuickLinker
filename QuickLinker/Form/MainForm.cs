@@ -74,6 +74,9 @@ namespace QuickLinker
             ToolStatus_Txt.Text = string.Empty;
 
             var config = this.GetModel<AppConfig>();
+            if (config.fontStates.Value.Invalid) config.fontStates.Value = new FontInfo(StatusStrip.Font);
+            if (config.fontGroupTitle.Value.Invalid) config.fontGroupTitle.Value = new FontInfo(tabControl1.Font);
+            if (config.fontBtnTitile.Value.Invalid) config.fontBtnTitile.Value = new FontInfo(tabControl1.Font);
             config.gridGroup.SetValueWithoutEvent(config.groupArray.Value.Length);
 
             _lastRow = config.gridRow.Value;
@@ -104,6 +107,8 @@ namespace QuickLinker
             config.disableAffinity.RegisterWithInitValue(b => SetWindowDisplayAffinity(Handle, (uint)(b ? 0x11 : 0)));
             config.showInTray.RegisterWithInitValue(b => { ShowInTaskbar = b; NotifyIcon.Visible = !b; });
             config.launch.RegisterWithInitValue(this.GetUtility<LaunchUtil>().Set);
+            config.fontStates.RegisterWithInitValue(t => StatusStrip.Font = new Font(t.familyName, t.pointSize, GraphicsUnit.Point));
+            config.fontGroupTitle.RegisterWithInitValue(t => tabControl1.Font = new Font(t.familyName, t.pointSize, GraphicsUnit.Point));
             TypeEventSystem.Global.Register<RefreshStateTextEvent>(Event_RefreshStateText);
             TypeEventSystem.Global.Register<ShowToolTipEvent>(Event_ShowToolTip);
             TypeEventSystem.Global.Register<ClickTPanelEvent>(TPanel_OnClick);

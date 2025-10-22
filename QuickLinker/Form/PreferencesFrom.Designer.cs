@@ -34,11 +34,15 @@ namespace QuickLinker
             DataGridViewCellStyle dataGridViewCellStyle1 = new DataGridViewCellStyle();
             DataGridViewCellStyle dataGridViewCellStyle3 = new DataGridViewCellStyle();
             DataGridViewCellStyle dataGridViewCellStyle2 = new DataGridViewCellStyle();
-            TreeNode treeNode1 = new TreeNode("启动按钮");
-            TreeNode treeNode2 = new TreeNode("切换组");
-            TreeNode treeNode3 = new TreeNode("拖放对象");
-            TreeNode treeNode4 = new TreeNode("按钮操作 （交换、排列、复制）");
-            TreeNode treeNode5 = new TreeNode("QuickLinker 声音事件", new TreeNode[] { treeNode1, treeNode2, treeNode3, treeNode4 });
+            TreeNode treeNode1 = new TreeNode("状态栏");
+            TreeNode treeNode2 = new TreeNode("按钮标题");
+            TreeNode treeNode3 = new TreeNode("组标签");
+            TreeNode treeNode4 = new TreeNode("QuickLinker 字体设置", new TreeNode[] { treeNode1, treeNode2, treeNode3 });
+            TreeNode treeNode5 = new TreeNode("启动按钮");
+            TreeNode treeNode6 = new TreeNode("切换组");
+            TreeNode treeNode7 = new TreeNode("拖放对象");
+            TreeNode treeNode8 = new TreeNode("按钮操作 （交换、排列、复制）");
+            TreeNode treeNode9 = new TreeNode("QuickLinker 声音事件", new TreeNode[] { treeNode5, treeNode6, treeNode7, treeNode8 });
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(PreferencesFrom));
             tabControl1 = new TabControl();
             tabPage1 = new TabPage();
@@ -105,12 +109,15 @@ namespace QuickLinker
             checkBox17 = new CheckBox();
             label12 = new Label();
             label13 = new Label();
-            tabPage4 = new TabPage();
-            linkLabel1 = new LinkLabel();
-            label25 = new Label();
-            label23 = new Label();
+            tabPage6 = new TabPage();
+            Txt_FontChangeTip = new Label();
+            Btn_FontDefault = new Button();
+            Btn_FontChange = new Button();
+            TreeView_Font = new TreeView();
+            label31 = new Label();
+            label32 = new Label();
             tabPage5 = new TabPage();
-            Btn_AudioBrowse = new Button();
+            Btn_AudioBrowse = new TButton();
             Btn_TestAudio = new Button();
             TextBox_AudioFilePath = new TextBox();
             RadioBtn_Custom = new RadioButton();
@@ -120,6 +127,10 @@ namespace QuickLinker
             Txt_AudioChangeTip = new Label();
             label29 = new Label();
             label30 = new Label();
+            tabPage4 = new TabPage();
+            linkLabel1 = new LinkLabel();
+            label25 = new Label();
+            label23 = new Label();
             tabControl1.SuspendLayout();
             tabPage1.SuspendLayout();
             tabPage2.SuspendLayout();
@@ -131,8 +142,9 @@ namespace QuickLinker
             ((System.ComponentModel.ISupportInitialize)numericUpDown3).BeginInit();
             ((System.ComponentModel.ISupportInitialize)numericUpDown2).BeginInit();
             ((System.ComponentModel.ISupportInitialize)numericUpDown1).BeginInit();
-            tabPage4.SuspendLayout();
+            tabPage6.SuspendLayout();
             tabPage5.SuspendLayout();
+            tabPage4.SuspendLayout();
             SuspendLayout();
             // 
             // tabControl1
@@ -140,15 +152,16 @@ namespace QuickLinker
             tabControl1.Controls.Add(tabPage1);
             tabControl1.Controls.Add(tabPage2);
             tabControl1.Controls.Add(tabPage3);
-            tabControl1.Controls.Add(tabPage4);
+            tabControl1.Controls.Add(tabPage6);
             tabControl1.Controls.Add(tabPage5);
+            tabControl1.Controls.Add(tabPage4);
             tabControl1.Dock = DockStyle.Fill;
             tabControl1.Location = new Point(0, 0);
             tabControl1.Margin = new Padding(0);
             tabControl1.Name = "tabControl1";
             tabControl1.Padding = new Point(0, 0);
             tabControl1.SelectedIndex = 0;
-            tabControl1.Size = new Size(447, 271);
+            tabControl1.Size = new Size(448, 271);
             tabControl1.TabIndex = 0;
             // 
             // tabPage1
@@ -172,7 +185,7 @@ namespace QuickLinker
             tabPage1.Location = new Point(4, 26);
             tabPage1.Name = "tabPage1";
             tabPage1.Padding = new Padding(3);
-            tabPage1.Size = new Size(439, 241);
+            tabPage1.Size = new Size(440, 241);
             tabPage1.TabIndex = 0;
             tabPage1.Text = "常规";
             // 
@@ -347,7 +360,7 @@ namespace QuickLinker
             tabPage2.Location = new Point(4, 26);
             tabPage2.Name = "tabPage2";
             tabPage2.Padding = new Padding(3);
-            tabPage2.Size = new Size(439, 241);
+            tabPage2.Size = new Size(440, 241);
             tabPage2.TabIndex = 1;
             tabPage2.Text = "外观";
             // 
@@ -581,7 +594,7 @@ namespace QuickLinker
             tabPage3.Controls.Add(label13);
             tabPage3.Location = new Point(4, 26);
             tabPage3.Name = "tabPage3";
-            tabPage3.Size = new Size(439, 241);
+            tabPage3.Size = new Size(440, 241);
             tabPage3.TabIndex = 2;
             tabPage3.Text = "按钮与组";
             // 
@@ -856,6 +869,231 @@ namespace QuickLinker
             label13.TabIndex = 17;
             label13.Text = "布局";
             // 
+            // tabPage6
+            // 
+            tabPage6.Controls.Add(Txt_FontChangeTip);
+            tabPage6.Controls.Add(Btn_FontDefault);
+            tabPage6.Controls.Add(Btn_FontChange);
+            tabPage6.Controls.Add(TreeView_Font);
+            tabPage6.Controls.Add(label31);
+            tabPage6.Controls.Add(label32);
+            tabPage6.Location = new Point(4, 26);
+            tabPage6.Name = "tabPage6";
+            tabPage6.Size = new Size(440, 241);
+            tabPage6.TabIndex = 6;
+            tabPage6.Text = "字体";
+            // 
+            // Txt_FontChangeTip
+            // 
+            Txt_FontChangeTip.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
+            Txt_FontChangeTip.AutoSize = true;
+            Txt_FontChangeTip.Location = new Point(147, 179);
+            Txt_FontChangeTip.Name = "Txt_FontChangeTip";
+            Txt_FontChangeTip.Size = new Size(128, 17);
+            Txt_FontChangeTip.TabIndex = 34;
+            Txt_FontChangeTip.Text = "请选择要修改的字体。";
+            // 
+            // Btn_FontDefault
+            // 
+            Btn_FontDefault.Location = new Point(357, 175);
+            Btn_FontDefault.Name = "Btn_FontDefault";
+            Btn_FontDefault.Size = new Size(76, 26);
+            Btn_FontDefault.TabIndex = 33;
+            Btn_FontDefault.Text = "默认(&D)";
+            Btn_FontDefault.UseVisualStyleBackColor = true;
+            Btn_FontDefault.Click += Btn_FontDefault_Click;
+            // 
+            // Btn_FontChange
+            // 
+            Btn_FontChange.Location = new Point(357, 143);
+            Btn_FontChange.Name = "Btn_FontChange";
+            Btn_FontChange.Size = new Size(76, 26);
+            Btn_FontChange.TabIndex = 32;
+            Btn_FontChange.Text = "更改(&C)...";
+            Btn_FontChange.UseVisualStyleBackColor = true;
+            Btn_FontChange.Click += Btn_FontChange_Click;
+            // 
+            // TreeView_Font
+            // 
+            TreeView_Font.FullRowSelect = true;
+            TreeView_Font.HideSelection = false;
+            TreeView_Font.Location = new Point(9, 0);
+            TreeView_Font.Name = "TreeView_Font";
+            treeNode1.Name = "节点1";
+            treeNode1.Tag = "1";
+            treeNode1.Text = "状态栏";
+            treeNode2.Name = "节点2";
+            treeNode2.Tag = "2";
+            treeNode2.Text = "按钮标题";
+            treeNode3.Name = "节点3";
+            treeNode3.Tag = "3";
+            treeNode3.Text = "组标签";
+            treeNode4.Name = "节点0";
+            treeNode4.Text = "QuickLinker 字体设置";
+            TreeView_Font.Nodes.AddRange(new TreeNode[] { treeNode4 });
+            TreeView_Font.Size = new Size(424, 118);
+            TreeView_Font.TabIndex = 31;
+            TreeView_Font.AfterSelect += TreeView_Font_AfterSelect;
+            // 
+            // label31
+            // 
+            label31.BorderStyle = BorderStyle.Fixed3D;
+            label31.Location = new Point(72, 132);
+            label31.Name = "label31";
+            label31.Size = new Size(362, 2);
+            label31.TabIndex = 30;
+            label31.Text = "label31";
+            // 
+            // label32
+            // 
+            label32.AutoSize = true;
+            label32.Location = new Point(7, 124);
+            label32.Name = "label32";
+            label32.Size = new Size(56, 17);
+            label32.TabIndex = 29;
+            label32.Text = "字体样式";
+            // 
+            // tabPage5
+            // 
+            tabPage5.Controls.Add(Btn_AudioBrowse);
+            tabPage5.Controls.Add(Btn_TestAudio);
+            tabPage5.Controls.Add(TextBox_AudioFilePath);
+            tabPage5.Controls.Add(RadioBtn_Custom);
+            tabPage5.Controls.Add(RadioBtn_Default);
+            tabPage5.Controls.Add(RadioBtn_Null);
+            tabPage5.Controls.Add(TreeView_Audio);
+            tabPage5.Controls.Add(Txt_AudioChangeTip);
+            tabPage5.Controls.Add(label29);
+            tabPage5.Controls.Add(label30);
+            tabPage5.Location = new Point(4, 26);
+            tabPage5.Name = "tabPage5";
+            tabPage5.Size = new Size(440, 241);
+            tabPage5.TabIndex = 5;
+            tabPage5.Text = "声音";
+            // 
+            // Btn_AudioBrowse
+            // 
+            Btn_AudioBrowse.BackColor = Color.FromArgb(240, 240, 240);
+            Btn_AudioBrowse.BackgroundImageLayout = ImageLayout.Stretch;
+            Btn_AudioBrowse.Enabled = false;
+            Btn_AudioBrowse.Image = null;
+            Btn_AudioBrowse.Location = new Point(334, 204);
+            Btn_AudioBrowse.Margin = new Padding(0);
+            Btn_AudioBrowse.Name = "Btn_AudioBrowse";
+            Btn_AudioBrowse.Size = new Size(24, 24);
+            Btn_AudioBrowse.TabIndex = 30;
+            // 
+            // Btn_TestAudio
+            // 
+            Btn_TestAudio.Location = new Point(357, 143);
+            Btn_TestAudio.Name = "Btn_TestAudio";
+            Btn_TestAudio.Size = new Size(76, 26);
+            Btn_TestAudio.TabIndex = 28;
+            Btn_TestAudio.Text = "测试(&T)";
+            Btn_TestAudio.UseVisualStyleBackColor = true;
+            Btn_TestAudio.Click += Btn_TestAudio_Click;
+            // 
+            // TextBox_AudioFilePath
+            // 
+            TextBox_AudioFilePath.AllowDrop = true;
+            TextBox_AudioFilePath.Enabled = false;
+            TextBox_AudioFilePath.Font = new Font("Microsoft YaHei UI", 8.25F, FontStyle.Regular, GraphicsUnit.Point, 134);
+            TextBox_AudioFilePath.Location = new Point(103, 206);
+            TextBox_AudioFilePath.Name = "TextBox_AudioFilePath";
+            TextBox_AudioFilePath.Size = new Size(226, 21);
+            TextBox_AudioFilePath.TabIndex = 27;
+            TextBox_AudioFilePath.DragDrop += Txt_Path_DragDrop;
+            TextBox_AudioFilePath.DragEnter += Txt_Path_DragEnter;
+            // 
+            // RadioBtn_Custom
+            // 
+            RadioBtn_Custom.AutoSize = true;
+            RadioBtn_Custom.Location = new Point(19, 206);
+            RadioBtn_Custom.Name = "RadioBtn_Custom";
+            RadioBtn_Custom.Size = new Size(90, 21);
+            RadioBtn_Custom.TabIndex = 26;
+            RadioBtn_Custom.Tag = "3";
+            RadioBtn_Custom.Text = "自定义(&C)：";
+            RadioBtn_Custom.UseVisualStyleBackColor = true;
+            RadioBtn_Custom.CheckedChanged += RadioBtn_Custom_CheckedChanged;
+            // 
+            // RadioBtn_Default
+            // 
+            RadioBtn_Default.AutoSize = true;
+            RadioBtn_Default.Checked = true;
+            RadioBtn_Default.Location = new Point(19, 179);
+            RadioBtn_Default.Name = "RadioBtn_Default";
+            RadioBtn_Default.Size = new Size(67, 21);
+            RadioBtn_Default.TabIndex = 25;
+            RadioBtn_Default.TabStop = true;
+            RadioBtn_Default.Tag = "2";
+            RadioBtn_Default.Text = "默认(&D)";
+            RadioBtn_Default.UseVisualStyleBackColor = true;
+            // 
+            // RadioBtn_Null
+            // 
+            RadioBtn_Null.AutoSize = true;
+            RadioBtn_Null.Location = new Point(19, 152);
+            RadioBtn_Null.Name = "RadioBtn_Null";
+            RadioBtn_Null.Size = new Size(56, 21);
+            RadioBtn_Null.TabIndex = 24;
+            RadioBtn_Null.Tag = "1";
+            RadioBtn_Null.Text = "无(&N)";
+            RadioBtn_Null.UseVisualStyleBackColor = true;
+            // 
+            // TreeView_Audio
+            // 
+            TreeView_Audio.FullRowSelect = true;
+            TreeView_Audio.HideSelection = false;
+            TreeView_Audio.Location = new Point(9, 0);
+            TreeView_Audio.Name = "TreeView_Audio";
+            treeNode5.Name = "节点1";
+            treeNode5.Tag = "1";
+            treeNode5.Text = "启动按钮";
+            treeNode6.Name = "节点2";
+            treeNode6.Tag = "2";
+            treeNode6.Text = "切换组";
+            treeNode7.Name = "节点3";
+            treeNode7.Tag = "3";
+            treeNode7.Text = "拖放对象";
+            treeNode8.Name = "节点4";
+            treeNode8.Tag = "4";
+            treeNode8.Text = "按钮操作 （交换、排列、复制）";
+            treeNode9.Name = "节点0";
+            treeNode9.Text = "QuickLinker 声音事件";
+            TreeView_Audio.Nodes.AddRange(new TreeNode[] { treeNode9 });
+            TreeView_Audio.Size = new Size(424, 118);
+            TreeView_Audio.TabIndex = 23;
+            TreeView_Audio.AfterSelect += TreeView_Audio_AfterSelect;
+            // 
+            // Txt_AudioChangeTip
+            // 
+            Txt_AudioChangeTip.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
+            Txt_AudioChangeTip.AutoSize = true;
+            Txt_AudioChangeTip.Location = new Point(147, 179);
+            Txt_AudioChangeTip.Name = "Txt_AudioChangeTip";
+            Txt_AudioChangeTip.Size = new Size(152, 17);
+            Txt_AudioChangeTip.TabIndex = 22;
+            Txt_AudioChangeTip.Text = "请选择要修改的声音事件。";
+            // 
+            // label29
+            // 
+            label29.BorderStyle = BorderStyle.Fixed3D;
+            label29.Location = new Point(72, 132);
+            label29.Name = "label29";
+            label29.Size = new Size(362, 2);
+            label29.TabIndex = 21;
+            label29.Text = "label29";
+            // 
+            // label30
+            // 
+            label30.AutoSize = true;
+            label30.Location = new Point(7, 124);
+            label30.Name = "label30";
+            label30.Size = new Size(56, 17);
+            label30.TabIndex = 20;
+            label30.Text = "声音类型";
+            // 
             // tabPage4
             // 
             tabPage4.BackColor = Color.FromArgb(240, 240, 240);
@@ -864,7 +1102,7 @@ namespace QuickLinker
             tabPage4.Controls.Add(label23);
             tabPage4.Location = new Point(4, 26);
             tabPage4.Name = "tabPage4";
-            tabPage4.Size = new Size(439, 241);
+            tabPage4.Size = new Size(440, 241);
             tabPage4.TabIndex = 4;
             tabPage4.Text = "联系我";
             // 
@@ -896,148 +1134,12 @@ namespace QuickLinker
             label23.TabIndex = 0;
             label23.Text = "QQ";
             // 
-            // tabPage5
-            // 
-            tabPage5.Controls.Add(Btn_AudioBrowse);
-            tabPage5.Controls.Add(Btn_TestAudio);
-            tabPage5.Controls.Add(TextBox_AudioFilePath);
-            tabPage5.Controls.Add(RadioBtn_Custom);
-            tabPage5.Controls.Add(RadioBtn_Default);
-            tabPage5.Controls.Add(RadioBtn_Null);
-            tabPage5.Controls.Add(TreeView_Audio);
-            tabPage5.Controls.Add(Txt_AudioChangeTip);
-            tabPage5.Controls.Add(label29);
-            tabPage5.Controls.Add(label30);
-            tabPage5.Location = new Point(4, 26);
-            tabPage5.Name = "tabPage5";
-            tabPage5.Size = new Size(439, 241);
-            tabPage5.TabIndex = 5;
-            tabPage5.Text = "声音";
-            // 
-            // Btn_AudioBrowse
-            // 
-            Btn_AudioBrowse.Enabled = false;
-            Btn_AudioBrowse.Location = new Point(374, 205);
-            Btn_AudioBrowse.Name = "Btn_AudioBrowse";
-            Btn_AudioBrowse.Size = new Size(41, 23);
-            Btn_AudioBrowse.TabIndex = 29;
-            Btn_AudioBrowse.Text = "浏览";
-            Btn_AudioBrowse.UseVisualStyleBackColor = true;
-            Btn_AudioBrowse.Click += Btn_AudioBrowse_Click;
-            // 
-            // Btn_TestAudio
-            // 
-            Btn_TestAudio.Location = new Point(349, 137);
-            Btn_TestAudio.Name = "Btn_TestAudio";
-            Btn_TestAudio.Size = new Size(75, 23);
-            Btn_TestAudio.TabIndex = 28;
-            Btn_TestAudio.Text = "测试(&T)";
-            Btn_TestAudio.UseVisualStyleBackColor = true;
-            Btn_TestAudio.Click += Btn_TestAudio_Click;
-            // 
-            // TextBox_AudioFilePath
-            // 
-            TextBox_AudioFilePath.Enabled = false;
-            TextBox_AudioFilePath.Location = new Point(123, 205);
-            TextBox_AudioFilePath.Name = "TextBox_AudioFilePath";
-            TextBox_AudioFilePath.Size = new Size(245, 23);
-            TextBox_AudioFilePath.TabIndex = 27;
-            // 
-            // RadioBtn_Custom
-            // 
-            RadioBtn_Custom.AutoSize = true;
-            RadioBtn_Custom.Location = new Point(27, 207);
-            RadioBtn_Custom.Name = "RadioBtn_Custom";
-            RadioBtn_Custom.Size = new Size(90, 21);
-            RadioBtn_Custom.TabIndex = 26;
-            RadioBtn_Custom.Tag = "3";
-            RadioBtn_Custom.Text = "自定义(&C)：";
-            RadioBtn_Custom.UseVisualStyleBackColor = true;
-            RadioBtn_Custom.CheckedChanged += RadioBtn_Custom_CheckedChanged;
-            // 
-            // RadioBtn_Default
-            // 
-            RadioBtn_Default.AutoSize = true;
-            RadioBtn_Default.Checked = true;
-            RadioBtn_Default.Location = new Point(27, 180);
-            RadioBtn_Default.Name = "RadioBtn_Default";
-            RadioBtn_Default.Size = new Size(67, 21);
-            RadioBtn_Default.TabIndex = 25;
-            RadioBtn_Default.TabStop = true;
-            RadioBtn_Default.Tag = "2";
-            RadioBtn_Default.Text = "默认(&D)";
-            RadioBtn_Default.UseVisualStyleBackColor = true;
-            // 
-            // RadioBtn_Null
-            // 
-            RadioBtn_Null.AutoSize = true;
-            RadioBtn_Null.Location = new Point(27, 153);
-            RadioBtn_Null.Name = "RadioBtn_Null";
-            RadioBtn_Null.Size = new Size(56, 21);
-            RadioBtn_Null.TabIndex = 24;
-            RadioBtn_Null.Tag = "1";
-            RadioBtn_Null.Text = "无(&N)";
-            RadioBtn_Null.UseVisualStyleBackColor = true;
-            // 
-            // TreeView_Audio
-            // 
-            TreeView_Audio.FullRowSelect = true;
-            TreeView_Audio.HotTracking = true;
-            TreeView_Audio.Location = new Point(8, 3);
-            TreeView_Audio.Name = "TreeView_Audio";
-            treeNode1.Name = "节点1";
-            treeNode1.Tag = "1";
-            treeNode1.Text = "启动按钮";
-            treeNode2.Name = "节点2";
-            treeNode2.Tag = "2";
-            treeNode2.Text = "切换组";
-            treeNode3.Name = "节点3";
-            treeNode3.Tag = "3";
-            treeNode3.Text = "拖放对象";
-            treeNode4.Name = "节点4";
-            treeNode4.Tag = "4";
-            treeNode4.Text = "按钮操作 （交换、排列、复制）";
-            treeNode5.Name = "节点0";
-            treeNode5.Text = "QuickLinker 声音事件";
-            TreeView_Audio.Nodes.AddRange(new TreeNode[] { treeNode5 });
-            TreeView_Audio.Size = new Size(423, 118);
-            TreeView_Audio.TabIndex = 23;
-            TreeView_Audio.AfterSelect += TreeView_Audio_AfterSelect;
-            // 
-            // Txt_AudioChangeTip
-            // 
-            Txt_AudioChangeTip.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
-            Txt_AudioChangeTip.AutoSize = true;
-            Txt_AudioChangeTip.Location = new Point(147, 174);
-            Txt_AudioChangeTip.Name = "Txt_AudioChangeTip";
-            Txt_AudioChangeTip.Size = new Size(152, 17);
-            Txt_AudioChangeTip.TabIndex = 22;
-            Txt_AudioChangeTip.Text = "请选择要修改的声音事件。";
-            // 
-            // label29
-            // 
-            label29.BorderStyle = BorderStyle.Fixed3D;
-            label29.Location = new Point(77, 132);
-            label29.Name = "label29";
-            label29.Size = new Size(347, 2);
-            label29.TabIndex = 21;
-            label29.Text = "label29";
-            // 
-            // label30
-            // 
-            label30.AutoSize = true;
-            label30.Location = new Point(12, 124);
-            label30.Name = "label30";
-            label30.Size = new Size(56, 17);
-            label30.TabIndex = 20;
-            label30.Text = "声音类型";
-            // 
             // PreferencesFrom
             // 
             AutoScaleDimensions = new SizeF(7F, 17F);
             AutoScaleMode = AutoScaleMode.Font;
             BackColor = Color.FromArgb(240, 240, 240);
-            ClientSize = new Size(447, 271);
+            ClientSize = new Size(448, 271);
             Controls.Add(tabControl1);
             FormBorderStyle = FormBorderStyle.FixedSingle;
             Icon = (Icon)resources.GetObject("$this.Icon");
@@ -1062,10 +1164,12 @@ namespace QuickLinker
             ((System.ComponentModel.ISupportInitialize)numericUpDown3).EndInit();
             ((System.ComponentModel.ISupportInitialize)numericUpDown2).EndInit();
             ((System.ComponentModel.ISupportInitialize)numericUpDown1).EndInit();
-            tabPage4.ResumeLayout(false);
-            tabPage4.PerformLayout();
+            tabPage6.ResumeLayout(false);
+            tabPage6.PerformLayout();
             tabPage5.ResumeLayout(false);
             tabPage5.PerformLayout();
+            tabPage4.ResumeLayout(false);
+            tabPage4.PerformLayout();
             ResumeLayout(false);
         }
 
@@ -1149,8 +1253,15 @@ namespace QuickLinker
         private TreeView TreeView_Audio;
         private RadioButton RadioBtn_Custom;
         private RadioButton RadioBtn_Default;
-        private Button Btn_AudioBrowse;
         private Button Btn_TestAudio;
         private TextBox TextBox_AudioFilePath;
+        private TabPage tabPage6;
+        private TButton Btn_AudioBrowse;
+        private Button Btn_FontChange;
+        private TreeView TreeView_Font;
+        private Label label31;
+        private Label label32;
+        private Button Btn_FontDefault;
+        private Label Txt_FontChangeTip;
     }
 }

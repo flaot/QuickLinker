@@ -1,11 +1,14 @@
 ﻿using QFramework;
 using QuickLinker.Model;
 using QuickLinker.Properties;
+using QuickLinker.QuickLaunch.Constant;
 using QuickLinker.QuickLaunch.Models;
+using QuickLinker.QuickLaunch.Utils;
 using QuickLinker.Systems;
 using QuickLinker.Utils;
 using System;
 using System.Collections.Generic;
+using System.Drawing;
 using System.Linq;
 using System.Media;
 using System.Windows.Forms;
@@ -70,9 +73,12 @@ namespace QuickLinker
 
             //声音
             TreeView_Audio.ExpandAll();
-            var rootNode = TreeView_Audio.Nodes[0];
-            TreeView_Audio.Tag = rootNode;
-            TreeView_Audio.SelectedNode = rootNode;
+            TreeView_Audio.SelectedNode = TreeView_Audio.Nodes[0];
+            Btn_AudioBrowse.Image = ImageUtil.ScaleBitmap(ImageUtil.Base64ToBitmapImage(Constants.DEFAULT_DIR_IMAGE_BASE64), Btn_AudioBrowse.Width, Btn_AudioBrowse.Height);
+
+            //字体
+            TreeView_Font.ExpandAll();
+            TreeView_Font.SelectedNode = TreeView_Font.Nodes[0];
         }
         private void SettingForm_FormClosing(object sender, FormClosingEventArgs e)
         {
@@ -245,6 +251,9 @@ namespace QuickLinker
             }
         }
 
+        private void Txt_Path_DragEnter(object sender, DragEventArgs e) => FromUtil.TextBoxFilePath_DragEnter(sender, e);
+        private void Txt_Path_DragDrop(object sender, DragEventArgs e) => FromUtil.TextBoxFilePath_DragDrop(sender, e);
+        #region 声音
         private void Btn_TestAudio_Click(object sender, EventArgs e)
         {
             var node = TreeView_Audio.SelectedNode;
@@ -337,5 +346,63 @@ namespace QuickLinker
             var senderObj = (TextBox)sender;
             audioInfo.Value.file = senderObj.Text;
         }
+        #endregion
+
+        #region 字体
+        private void TreeView_Font_AfterSelect(object sender, TreeViewEventArgs e)
+        {
+            var node = TreeView_Font.SelectedNode;
+            if (node.Tag == null)
+            {
+                Txt_FontChangeTip.Text = "请选择要修改的字体。";
+                Btn_FontChange.Visible = false;
+                Btn_FontDefault.Visible = false;
+            }
+            else
+            {
+                var appConfig = this.GetModel<AppConfig>();
+                var bindFontInfo = FontConfig((string)node.Tag);
+                FontInfo fontInfo = bindFontInfo.Value.Invalid ? new FontInfo(Font) : bindFontInfo.Value;
+                Txt_FontChangeTip.Text = fontInfo.ToString();
+                Btn_FontChange.Visible = true;
+                Btn_FontDefault.Visible = true;
+            }
+        }
+        private BindableProperty<FontInfo> FontConfig(string mode)
+        {
+            var appConfig = this.GetModel<AppConfig>();
+            switch (mode)
+            {
+                case "1": return appConfig.fontStates;
+                case "2": return appConfig.fontBtnTitile;
+                case "3": return appConfig.fontGroupTitle;
+                default: return null;
+            }
+        }
+        private void Btn_FontChange_Click(object sender, EventArgs e)
+        {
+            var node = TreeView_Font.SelectedNode;
+            var bindFontInfo = FontConfig((string)node.Tag);
+            FontDialog fontDialog = new FontDialog();
+            FontInfo fontInfo = bindFontInfo.Value.Invalid ? new FontInfo(Font) : bindFontInfo.Value;
+            fontDialog.Font = new Font(fontInfo.familyName, fontInfo.pointSize, GraphicsUnit.Point);
+            fontDialog.ShowEffects = false;
+            if (fontDialog.ShowDialog() == DialogResult.Cancel)
+                return;
+            bindFontInfo.Value = new FontInfo(fontDialog.Font);
+            TreeView_Font_AfterSelect(sender, null);
+        }
+        private void Btn_FontDefault_Click(object sender, EventArgs e)
+        {
+            var node = TreeView_Font.SelectedNode;
+            var bindFontInfo = FontConfig((string)node.Tag);
+            FontInfo fontInfo = bindFontInfo.Value.Invalid ? new FontInfo(Font) : bindFontInfo.Value;
+            if (fontInfo.familyName == Font.FontFamily.Name &&
+               fontInfo.pointSize == Font.SizeInPoints)
+                return;
+            bindFontInfo.Value = new FontInfo(Font);
+            TreeView_Font_AfterSelect(sender, null);
+        }
+        #endregion
     }
 }

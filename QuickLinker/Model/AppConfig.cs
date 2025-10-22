@@ -1,5 +1,6 @@
 ﻿using QFramework;
 using QuickLinker.Systems;
+using System.Drawing;
 using System.Reflection;
 using System.Text.Json.Serialization;
 using System.Windows.Forms;
@@ -84,6 +85,10 @@ namespace QuickLinker.Model
         public BindableProperty<AudioInfo> audioDrop = new BindableProperty<AudioInfo>(new AudioInfo());
         public BindableProperty<AudioInfo> audioGroup = new BindableProperty<AudioInfo>(new AudioInfo());
 
+        public BindableProperty<FontInfo> fontStates = new BindableProperty<FontInfo>(new FontInfo());
+        public BindableProperty<FontInfo> fontBtnTitile = new BindableProperty<FontInfo>(new FontInfo());
+        public BindableProperty<FontInfo> fontGroupTitle = new BindableProperty<FontInfo>(new FontInfo());
+
         [JsonIgnore, XmlIgnore]
         public EasyEvent TirggerSaveEvent = new EasyEvent();
         protected override void OnInit()
@@ -102,5 +107,21 @@ namespace QuickLinker.Model
         {
             TirggerSaveEvent.Trigger();
         }
+    }
+    public class FontInfo
+    {
+        public string familyName;
+        public float pointSize;
+
+        public FontInfo() { }
+        public FontInfo(Font font)
+        {
+            this.familyName = font.FontFamily.Name;
+            this.pointSize = font.SizeInPoints;
+        }
+
+        public override string ToString() =>
+            string.Format("{0}, {1}", familyName == null ? string.Empty : familyName, pointSize);
+        public bool Invalid => string.IsNullOrWhiteSpace(familyName) || pointSize <= 0;
     }
 }

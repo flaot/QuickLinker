@@ -63,6 +63,7 @@ namespace QuickLinker
             _unRegisters.Add(config.grid.Register(Event_GridSpace));
             _unRegisters.Add(config.analyzeDrapLink.RegisterWithInitValue(Event_AllowDrop));
             _unRegisters.Add(config.flatButton.Register(Event_FlatButton));
+            _unRegisters.Add(config.fontBtnTitile.Register(Event_FontChange));
 
         }
         public void UnLoad()
@@ -89,6 +90,11 @@ namespace QuickLinker
         private void Event_FlatButton(bool flatButton)
         {
             _haveFlatButton = flatButton;
+            Refresh();
+        }
+        private void Event_FontChange(FontInfo fontInfo)
+        {
+            Font = new Font(fontInfo.familyName, fontInfo.pointSize, GraphicsUnit.Point);
             Refresh();
         }
         public void SetIndex(int index)
