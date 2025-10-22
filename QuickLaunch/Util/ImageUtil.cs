@@ -1,6 +1,6 @@
 ﻿using QFramework;
 using QuickLinker.QuickLaunch.Constant;
-using Svg;
+using QuickLinker.Systems;
 using System;
 using System.Drawing;
 using System.Drawing.Drawing2D;
@@ -99,8 +99,10 @@ namespace QuickLinker.QuickLaunch.Utils
                     return GetThumbnailByFile(filePath, 256, 256);
                 }
                 else
-                { //其它文件
-                    return FileIcon.GetBitmapImage(filePath, index);
+                { 
+                    //其它文件
+                    var fileIconSystem = AbstractPlugin.Architecture.GetSystem<IFileIconSystem>();
+                    return fileIconSystem.GetImage(filePath, index) as Bitmap;
                 }
             }
             else if (Directory.Exists(filePath))
@@ -264,9 +266,6 @@ namespace QuickLinker.QuickLaunch.Utils
             return new Bitmap(ms);
         }
 
-        [DllImport("gdi32.dll")]
-        public static extern bool DeleteObject(IntPtr hObject);
-
         /// <summary>
         /// 图片文件转base64
         /// </summary>
@@ -324,7 +323,6 @@ namespace QuickLinker.QuickLaunch.Utils
             }
         }
 
-
         /// <summary>
         /// 判断是否为系统项
         /// </summary>
@@ -337,63 +335,6 @@ namespace QuickLinker.QuickLaunch.Utils
         protected override void OnInit()
         {
             //throw new NotImplementedException();
-        }
-
-        /// <summary>
-        /// 把Svg文件按指定宽度和高度转为Image对象
-        /// </summary>
-        /// <param name="svgFile">Svg文件完整路径</param>
-        /// <param name="width">转换后的图像宽度</param>
-        /// <param name="height">转换后的图像高度</param>
-        /// <returns>返回转换后的Image对象</returns>
-        public static Bitmap SvgToImage(int width, int height, string svgCode)
-        {
-            Bitmap imgResult = null;
-            using (Stream svgMs = new MemoryStream(Encoding.Default.GetBytes(svgCode)))
-            {
-                SvgDocument sdoc = SvgDocument.Open<SvgDocument>(svgMs);
-
-                //解析Svg文件中的viewBox值
-                string xml = sdoc.ToString();
-                string beginStr = "viewBox=";
-                string endStr = "\" ";
-                int begin = xml.IndexOf(beginStr);
-                if (begin > 0)
-                {
-                    begin = begin + beginStr.Length;
-                    int end = xml.IndexOf(endStr, begin);
-                    string viewBox = xml.Substring(begin, end - begin);
-                    viewBox = viewBox.Replace("\"", String.Empty).Replace("'", String.Empty);
-                    if (!String.IsNullOrEmpty(viewBox))
-                    {
-                        string[] vbs = viewBox.Split(new char[] { ' ' });
-                        if (vbs.Length == 4)
-                        {
-                            float vbx = 0.0f;
-                            float vby = 0.0f;
-                            float vbw = 0.0f;
-                            float vbh = 0.0f;
-                            float.TryParse(vbs[0], out vbx);
-                            float.TryParse(vbs[1], out vby);
-                            float.TryParse(vbs[2], out vbw);
-                            float.TryParse(vbs[3], out vbh);
-                            sdoc.ViewBox = new SvgViewBox(vbx, vby, vbw, vbh);
-                        }
-                    }
-                }
-
-                sdoc.Width = width;
-                sdoc.Height = height;
-                Bitmap bitmap = sdoc.Draw();
-                using (MemoryStream ms = new MemoryStream())
-                {
-                    bitmap.Save(ms, ImageFormat.Png);                    //把svg按照指定宽度和高度转为png后放入内存流中
-                    imgResult = new Bitmap(ms);
-                    //bitmap.Save("e:\\test.png", System.Drawing.Imaging.ImageFormat.Png);      //保存png图片至磁盘
-                }
-            }
-
-            return imgResult;
         }
     }
 }

@@ -9,6 +9,7 @@
     <ApplicationIcon>res\icon.ico</ApplicationIcon>
     <Copyright>flaot</Copyright>
     <Authors>flaot</Authors>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
   </PropertyGroup>
 
   <ItemGroup>
@@ -21,6 +22,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\Common\Common.csproj" />
+    <ProjectReference Include="..\Plugin\Plugin.csproj" />
     <ProjectReference Include="..\QuickLaunch\QuickLaunch.csproj" />
   </ItemGroup>
 
@@ -40,10 +42,6 @@
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
     </EmbeddedResource>
-  </ItemGroup>
-
-  <ItemGroup>
-    <Folder Include="Systems\" />
   </ItemGroup>
 
 </Project>

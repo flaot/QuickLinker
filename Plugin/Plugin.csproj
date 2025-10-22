@@ -1,0 +1,13 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net9.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>disable</Nullable>
+    <PackageId>QuickLinker.$(AssemblyName)</PackageId>
+    <GeneratePackageOnBuild>False</GeneratePackageOnBuild>
+    <Authors>QuickLinker.$(AssemblyName)</Authors>
+    <Product>QuickLinker.$(AssemblyName)</Product>
+  </PropertyGroup>
+
+</Project>

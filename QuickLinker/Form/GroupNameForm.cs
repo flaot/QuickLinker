@@ -27,14 +27,22 @@ namespace QuickLinker
         public static string Show(string groupName)
         {
             var config = AppArchitecture.Interface.GetModel<AppConfig>();
-            using (GroupNameForm groupNameForm = new GroupNameForm(groupName))
+            try
             {
-                groupNameForm.TopMost = config.topWindow.Value;
-                if (groupNameForm.ShowDialog() != DialogResult.OK)
-                    return string.Empty;
-                if (string.Equals(groupNameForm._groupName, groupName))
-                    return string.Empty;
-                return groupNameForm._groupName;
+                MainForm.ignoreDeactivate++;
+                using (GroupNameForm groupNameForm = new GroupNameForm(groupName))
+                {
+                    groupNameForm.TopMost = config.topWindow.Value;
+                    if (groupNameForm.ShowDialog() != DialogResult.OK)
+                        return string.Empty;
+                    if (string.Equals(groupNameForm._groupName, groupName))
+                        return string.Empty;
+                    return groupNameForm._groupName;
+                }
+            }
+            finally
+            {
+                MainForm.ignoreDeactivate--;
             }
         }
     }

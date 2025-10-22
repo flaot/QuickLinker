@@ -43,6 +43,7 @@ namespace QuickLinker
             hotKeySys.HotKeyListener?.RemoveAll();
             try
             {
+                MainForm.ignoreDeactivate++;
                 using (var properties = new BtnPropertiesFrom())
                 {
                     properties.TopMost = config.topWindow.Value;
@@ -52,6 +53,7 @@ namespace QuickLinker
             }
             finally
             {
+                MainForm.ignoreDeactivate--;
                 hotKeySys.InitializeQuickActionsHotKeys();
             }
             return dialogResult;

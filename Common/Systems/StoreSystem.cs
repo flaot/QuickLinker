@@ -9,7 +9,7 @@ namespace QuickLinker.Systems
         T Load<T>();
         bool Save(object obj);
     }
-    internal class DefalutStoreSystem : AbstractSystem, IStroeSystem
+    internal class StoreSystem : AbstractSystem, IStroeSystem
     {
         protected override void OnInit()
         {
@@ -20,7 +20,7 @@ namespace QuickLinker.Systems
             var configName = typeof(T).Name;
             var basePath = this.GetUtility<IBasePath>();
             var jsonFile = Path.Combine(basePath.ConfigPath, configName + ".json");
-            if(!File.Exists(jsonFile))
+            if (!File.Exists(jsonFile))
                 return default;
             var serializer = this.GetUtility<IJsonSerializeUtility>();
             return serializer.JsonDeserializeByFile<T>(jsonFile);

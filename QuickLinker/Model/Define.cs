@@ -48,14 +48,10 @@ namespace QuickLinker.Model
     /// <summary> 鼠标左键单击入口 </summary>
     public struct ClickTPanelEvent
     {
-        public TPanel tPanel;
-        public ClickTPanelEvent(TPanel tPanel) => this.tPanel = tPanel;
     }
     /// <summary> 鼠标右键单击入口 </summary>
     public struct ClickMenuTPanelEvent
     {
-        public TPanel tPanel;
-        public ClickMenuTPanelEvent(TPanel tPanel) => this.tPanel = tPanel;
     }
 
     /// <summary> 无配置情况下首次启动 </summary>

@@ -1,6 +1,9 @@
 using Microsoft.Win32;
 using QFramework;
+using QuickLinker.Menus;
 using QuickLinker.Model;
+using QuickLinker.Plugin;
+using QuickLinker.Plugin.Menu;
 using QuickLinker.Properties;
 using QuickLinker.QuickLaunch.Command;
 using QuickLinker.QuickLaunch.Systems;
@@ -11,9 +14,7 @@ using System;
 using System.Collections.Generic;
 using System.Drawing;
 using System.IO;
-using System.Linq;
 using System.Media;
-using System.Reflection;
 using System.Runtime.InteropServices;
 using System.Text;
 using System.Windows.Forms;
@@ -37,6 +38,7 @@ namespace QuickLinker
         private int _oldGroupCount;
         private Size _offsetSize = Size.Empty;
         ToolTip _toolTip = new ToolTip();
+        public static int ignoreDeactivate = 0;
 
         public MainForm()
         {
@@ -121,31 +123,25 @@ namespace QuickLinker
                 this.SendCommand(new QuickEntityAutoStartCommand());
 
             var system = this.GetSystem<QuickEntitySystem>();
-            //Dictionary<int, string> paths = new Dictionary<int, string> {
-            ////{ 4, "D:\\LOG.TXT"},
-            ////{ 2, "D:\\padddle_fast_test.zip"},
-            ////{ 3, "D:\\LOG.TXT"},
-            ////{ -1, "D:\\LOG.TXT"},
-            //{ 28, "D:\\LOG.TXT"},
-            //{ 31, "D:\\LOG.TXT"},
-            //{ 16, "D:\\LOG.TXT"},
-            //{ 19, "D:\\LOG.TXT"},
-            //};
-            //foreach (var item in paths)
-            //{
-            //    this.SendCommand(new QuickEntityInsertCommand() { filePath = item.Value, index = item.Key, canParse = true });
-            //}
             var hotKeyMgr = this.GetSystem<HotKeyManager>();
             hotKeyMgr.HotKeyListener.HotkeyPressed += HotkeyListener_HotkeyPressed;
             hotKeyMgr.InitializeQuickActionsHotKeys();
-            //this.SendCommand(new QuickEntityOpenCommand() {  index = 2 });
-            //var entytys = system.QueryDataWithAnyFlag(Array.Empty<string>());
-            //foreach (var item in entytys)
-            //{
-            //    Console.WriteLine(item.index);
-            //}
-            //var appconfig = this.GetSystem<IStroeSystem>().Load<AppConfig>(new AppConfig());
             TypeEventSystem.Global.Send(new NoSettingStratEvent());
+
+            var appMenu = new ContextMenuStrip();
+            NotifyIcon.ContextMenuStrip = appMenu;
+            var menuSystem = this.GetSystem<IMenuSystem>();
+            menuSystem.RegisterMenu(new MenuProxy((int)MenuType.App, appMenu));
+            menuSystem.RegisterMenu(new MenuProxy((int)MenuType.Tab, new ContextMenuStrip()));
+            menuSystem.RegisterMenu(new MenuProxy((int)MenuType.Page, new ContextMenuStrip()));
+            menuSystem.RegisterMenu(new MenuProxy((int)MenuType.ToolStatus, new ContextMenuStrip()));
+            menuSystem.InitSystemMenuItem(new AppMenu(this));
+            menuSystem.InitSystemMenuItem(new TabMenu(this));
+            menuSystem.InitSystemMenuItem(this);
+            menuSystem.InitSystemMenuItem(new ToolStatusMenu(this));
+            var pluginSystem = this.GetSystem<IPluginSystem>();
+            pluginSystem.LoadAll();
+            menuSystem.RequestResetAll();
         }
         private void MainForm_FormClosing(object sender, FormClosingEventArgs e)
         {
@@ -168,11 +164,14 @@ namespace QuickLinker
         }
         private void MainForm_Deactivate(object sender, EventArgs e)
         {
-            var config = this.GetModel<AppConfig>();
-            if (config.appHideType.Value == AppHideType.LoseFocusMinimize)
-                Hide();
-            //else if (config.appHideType.Value == AppHideType.RollUp)
-            //    WindowState = FormWindowState.
+            if (ignoreDeactivate <= 0)
+            {
+                var config = this.GetModel<AppConfig>();
+                if (config.appHideType.Value == AppHideType.LoseFocusMinimize)
+                    Hide();
+                //else if (config.appHideType.Value == AppHideType.RollUp)
+                //    WindowState = FormWindowState.
+            }
             this.SendCommand(new QuickEntitySaveCommand());
         }
 
@@ -225,28 +224,30 @@ namespace QuickLinker
                 formMove = false;//停止移动
             }
         }
-        private void tabControl1_MouseDown_1(object sender, MouseEventArgs e)
+        private void tabControl1_MouseUp_1(object sender, MouseEventArgs e)
         {
             if (e.Button != MouseButtons.Right)
                 return;
             var config = this.GetModel<AppConfig>();
-            TabMenuItem_Left.Enabled = tabControl1.SelectedIndex != 0;
-            TabMenuItem_Right.Enabled = tabControl1.SelectedIndex != tabControl1.TabPages.Count - 1;
-            TabMenuItem_Delete.Enabled = tabControl1.TabPages.Count > 1;
-            TabMenuItem_Stand.Checked = config.tabAppearance.Value == TabAppearance.Normal;
-            TabMenuItem_Button.Checked = config.tabAppearance.Value == TabAppearance.Buttons;
-            TabMenuItem_Flot.Checked = config.tabAppearance.Value == TabAppearance.FlatButtons;
-            TabMenuStrip.Show(MousePosition);
+            var menuSystem = this.GetSystem<IMenuSystem>();
+            var menuType = (int)MenuType.Tab;
+            menuSystem.SetEnable(menuType, "左移标签(&L)", tabControl1.SelectedIndex != 0);
+            menuSystem.SetEnable(menuType, "右移标签(&R)", tabControl1.SelectedIndex != tabControl1.TabPages.Count - 1);
+            menuSystem.SetEnable(menuType, "删除(&D)", tabControl1.TabPages.Count > 1);
+            menuSystem.SetChecked(menuType,"外观/标准(&N)", config.tabAppearance.Value == TabAppearance.Normal);
+            menuSystem.SetChecked(menuType,"外观/按钮(&B)", config.tabAppearance.Value == TabAppearance.Buttons);
+            menuSystem.SetChecked(menuType, "外观/平面按钮(&F)", config.tabAppearance.Value == TabAppearance.FlatButtons);
+            this.GetSystem<IMenuSystem>().Show(menuType, MousePosition.X, MousePosition.Y);
         }
         private void tabControl1_SelectedIndexChanged(object sender, EventArgs e)
         {
-            new SoundPlayer(Resources.WAVE_GROUP).Play();
+            this.GetSystem<IAudioSystem>().PlayAudio(AudioType.Group);
         }
 
 
         public void TPanel_OnClick(ClickTPanelEvent info)
         {
-            var panel = info.tPanel;
+            var panel = Selection.activeContext as TPanel;
             if (_optType.Value != OptType.None)
             {
                 _optFirstTemp.Invert(false);
@@ -283,20 +284,25 @@ namespace QuickLinker
                     return;
                 }
                 this.SendCommand(new QuickEntityOpenCommand() { index = panel.Index });
-                new SoundPlayer(Resources.WAVE_CLICK).Play();
+                this.GetSystem<IAudioSystem>().PlayAudio(AudioType.Click);
             }
         }
         public void TPanel_OnClickMenu(ClickMenuTPanelEvent info)
         {
-            var panel = info.tPanel;
+            var panel = Selection.activeContext as TPanel;
             if (_optType.Value != OptType.None)
                 return;
-            PageMenuStrip.Tag = panel;
-            MenuStrip_FullPath.Text = panel.Title;
-            MenuStrip_FullPath.Enabled = panel.Entity != null;
-            MenuStrip_FullPath.Font = new Font(MenuStrip_FullPath.Font, panel.Entity != null ? FontStyle.Bold : FontStyle.Regular);
-            MenuStrip_Attr.Font = new Font(MenuStrip_FullPath.Font, panel.Entity == null ? FontStyle.Bold : FontStyle.Regular);
-            PageMenuStrip.Show(MousePosition);
+            Selection.activeContext = panel;
+            var menuSystem = this.GetSystem<IMenuSystem>();
+            var menuType = (int)MenuType.Page;
+            menuSystem.SetEnable(menuType, "(未配置)", panel.Entity != null);
+            var menuProxy = menuSystem.GetMenu(menuType) as MenuProxy;
+            var menuFullPath = menuProxy.FindStripMenuItem("(未配置)");
+            menuFullPath.Text = panel.Title;
+            menuFullPath.Font = new Font(menuFullPath.Font, panel.Entity != null ? FontStyle.Bold : FontStyle.Regular);
+            var menuAttr = menuProxy.FindStripMenuItem("属性(&P)");
+            menuAttr.Font = new Font(menuAttr.Font, panel.Entity == null ? FontStyle.Bold : FontStyle.Regular);
+            menuSystem.Show(menuType, MousePosition.X, MousePosition.Y);
         }
         private void Event_ChengOptType(OptType type)
         {
@@ -324,7 +330,7 @@ namespace QuickLinker
             {
                 ToolStatus_Txt.Text = string.Empty;
                 tabControl1.Cursor = Cursors.Default;
-                new SoundPlayer(Resources.WAVE_BUTTON).Play();
+                this.GetSystem<IAudioSystem>().PlayAudio(AudioType.Button);
             }
         }
 
@@ -429,31 +435,12 @@ namespace QuickLinker
         }
         private void Event_RefreshShowMenu(DateTimeType dateTime)
         {
-            ToolStatusMenu_Time.Checked = false;
-            ToolStatusMenu_Time.Tag = DateTimeType.Time;
-            ToolStatusMenu_Date.Checked = false;
-            ToolStatusMenu_Date.Tag = DateTimeType.Date;
-            ToolStatusMenu_DateTime.Checked = false;
-            ToolStatusMenu_DateTime.Tag = DateTimeType.DateTime;
-            ToolStatusMenu_None.Checked = false;
-            ToolStatusMenu_None.Tag = DateTimeType.None;
-            switch (dateTime)
-            {
-                case DateTimeType.None:
-                    ToolStatusMenu_None.Checked = true;
-                    break;
-                case DateTimeType.Time:
-                    ToolStatusMenu_Time.Checked = true;
-                    break;
-                case DateTimeType.Date:
-                    ToolStatusMenu_Date.Checked = true;
-                    break;
-                case DateTimeType.DateTime:
-                    ToolStatusMenu_DateTime.Checked = true;
-                    break;
-                default:
-                    break;
-            }
+            var menuSystem = this.GetSystem<IMenuSystem>();
+            var menuType = (int)MenuType.ToolStatus;
+            menuSystem.SetChecked(menuType, "时间(&T)", dateTime == DateTimeType.Time);
+            menuSystem.SetChecked(menuType, "无(&N)", dateTime == DateTimeType.None);
+            menuSystem.SetChecked(menuType, "日期(&D)", dateTime == DateTimeType.Date);
+            menuSystem.SetChecked(menuType, "时间与日期(&A)", dateTime == DateTimeType.DateTime);
         }
         private void Event_RefreshShowTime(object sender, EventArgs e)
         {
@@ -486,12 +473,11 @@ namespace QuickLinker
             else
                 ToolStatus_DateTime.Text = showDateOrTime;
         }
-        private void ToolStatusMenu_Item_Click(object sender, EventArgs e)
+        private void StatusStrip_MouseUp(object sender, MouseEventArgs e)
         {
-            var menuItem = sender as ToolStripMenuItem;
-            var type = (DateTimeType)menuItem.Tag;
-            var config = this.GetModel<AppConfig>();
-            config.dateTimeType.Value = type;
+            if (e.Button != MouseButtons.Right)
+                return;
+            this.GetSystem<IMenuSystem>().Show((int)MenuType.ToolStatus, MousePosition.X, MousePosition.Y);
         }
         private void Event_RefreshStateText(RefreshStateTextEvent info)
         {
@@ -512,13 +498,6 @@ namespace QuickLinker
             SystemMenu.OnHandleCreated(e, this);
         }
 
-        public void OpenSettingWindow()
-        {
-            using (var settingForm = new PreferencesFrom())
-            {
-                settingForm.ShowDialog();
-            }
-        }
         private void AutoWindowSize()
         {
             var config = this.GetModel<AppConfig>();
@@ -712,84 +691,15 @@ namespace QuickLinker
         private static extern uint SetWindowDisplayAffinity(IntPtr hWnd, uint dwAffinity);
 
         //NotifyIcon
-        private void NotifyIcon_MouseDoubleClick(object sender, MouseEventArgs e)
+        private void NotifyIcon_MouseClick(object sender, MouseEventArgs e)
         {
-            NotifyIcon.Visible = true;
-            Show();
-            WindowState = FormWindowState.Normal;
-            Focus();
-        }
-        private void AppMenu_Quit_Click(object sender, EventArgs e)
-        {
-            NotifyIcon.Visible = false;
-            base.Close();
-            base.Dispose();
-            Application.Exit();
-        }
-        private void AppMenu_Setting_Click(object sender, EventArgs e)
-        {
-            AppMenu_Show_Click(sender, e);
-            OpenSettingWindow();
-        }
-        private void AppMenu_Show_Click(object sender, EventArgs e)
-        {
-            NotifyIcon.Visible = true;
-            Show();
-            WindowState = FormWindowState.Normal;
-            Focus();
-        }
-
-        //TabMenuItem
-        private void TabMenuItem_Left_Click(object sender, EventArgs e)
-        {
-            int curIndex = tabControl1.SelectedIndex;
-            int swapIndex = curIndex - 1;
-            this.SwitchPage(curIndex, swapIndex);
-            tabControl1.SelectedIndex = swapIndex;
-        }
-        private void TabMenuItem_Right_Click(object sender, EventArgs e)
-        {
-            int curIndex = tabControl1.SelectedIndex;
-            int swapIndex = curIndex + 1;
-            this.SwitchPage(curIndex, swapIndex);
-            tabControl1.SelectedIndex = swapIndex;
-        }
-        private void TabMenuItem_Rename_Click(object sender, EventArgs e)
-        {
-            string pageText = tabControl1.TabPages[tabControl1.SelectedIndex].Text;
-            string groupName = GroupNameForm.Show(pageText);
-            if (string.IsNullOrEmpty(groupName))
-                return;
-
-            var config = this.GetModel<AppConfig>();
-            var groupArray = config.groupArray;
-            string[] tempArray = new string[groupArray.Value.Length];
-            Array.Copy(groupArray.Value, tempArray, tempArray.Length);
-            tempArray[tabControl1.SelectedIndex] = groupName;
-            config.groupArray.Value = tempArray;
-        }
-        private void TabMenuItem_Delete_Click(object sender, EventArgs e)
-        {
-            int curIndex = tabControl1.SelectedIndex;
-            var config = this.GetModel<AppConfig>();
-            var groupArray = config.groupArray.Value.ToList();
-            groupArray.RemoveAt(curIndex);
-            config.groupArray.Value = groupArray.ToArray();
-        }
-        private void TabMenuItem_Stand_Click(object sender, EventArgs e)
-        {
-            var config = this.GetModel<AppConfig>();
-            config.tabAppearance.Value = TabAppearance.Normal;
-        }
-        private void TabMenuItem_Button_Click(object sender, EventArgs e)
-        {
-            var config = this.GetModel<AppConfig>();
-            config.tabAppearance.Value = TabAppearance.Buttons;
-        }
-        private void TabMenuItem_Flot_Click(object sender, EventArgs e)
-        {
-            var config = this.GetModel<AppConfig>();
-            config.tabAppearance.Value = TabAppearance.FlatButtons;
+            if (e.Button == MouseButtons.Left)
+            {
+                NotifyIcon.Visible = true;
+                Show();
+                WindowState = FormWindowState.Normal;
+                this.Activate();
+            }
         }
 
         private void NoSettingStartEvent(NoSettingStratEvent _)

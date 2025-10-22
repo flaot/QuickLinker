@@ -1,5 +1,7 @@
 ﻿using QFramework;
 using QuickLinker.Model;
+using QuickLinker.Plugin;
+using QuickLinker.Plugin.Events;
 using QuickLinker.Properties;
 using QuickLinker.QuickLaunch.Command;
 using QuickLinker.QuickLaunch.Models;
@@ -13,7 +15,7 @@ using AppConfig = QuickLinker.Model.AppConfig;
 
 namespace QuickLinker
 {
-    public partial class TPanel : UserControl, IController
+    public partial class TPanel : UserControl, IController, IItem
     {
         private List<IUnRegister> _unRegisters;
         private Entity _entity;
@@ -237,7 +239,13 @@ namespace QuickLinker
                 BorderStyle = BorderStyle.Fixed3D;
             }
             if (e.Button == MouseButtons.Right)
-                TypeEventSystem.Global.Send(new ClickMenuTPanelEvent(this));
+            {
+                Selection.activeContext = this;
+                TypeEventSystem.Global.Send(new ShowItemMenuPreEvent());
+                if (Selection.activeContext != null)
+                    TypeEventSystem.Global.Send(new ClickMenuTPanelEvent());
+                TypeEventSystem.Global.Send(new ShowItemMenuPostEvent());
+            }
         }
         private void TPanel_MouseMove(object sender, MouseEventArgs e)
         {
@@ -255,7 +263,13 @@ namespace QuickLinker
             bool click = BorderStyle == BorderStyle.Fixed3D;
             BorderStyle = BorderStyle.None;
             if (click)
-                TypeEventSystem.Global.Send(new ClickTPanelEvent(this));
+            {
+                Selection.activeContext = this;
+                TypeEventSystem.Global.Send(new ClickItemPreEvent());
+                if (Selection.activeContext != null)
+                    TypeEventSystem.Global.Send(new ClickTPanelEvent());
+                TypeEventSystem.Global.Send(new ClickItemPostEvent());
+            }
         }
         private void TPanel_MouseEnter(object sender, EventArgs e)
         {

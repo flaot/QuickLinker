@@ -29,7 +29,7 @@ namespace QuickLinker
             new(SystemMenuItem.TopMost, Resources.MainForm_SysMenu_TopMost, (f)=> {var top = f.GetModel<AppConfig>().topWindow;top.Value = !top.Value;}),
             new(SystemMenuItem.RemoveTitle, Resources.MainForm_SysMenu_RemoveSysMenu, (f)=> f.GetModel<AppConfig>().titleStyle.Value = TitleStyle.None),
             new(SystemMenuItem.Separator, string.Empty, null),
-            new(SystemMenuItem.Setting, Resources.MainForm_SysMenu_Setting, (f)=> f.OpenSettingWindow()),
+            new(SystemMenuItem.Setting, Resources.MainForm_SysMenu_Setting, (f)=> PreferencesFrom.ShowSetting()),
         };
         public static void OnHandleCreated(EventArgs e, MainForm arg)
         {

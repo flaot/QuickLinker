@@ -1,8 +1,8 @@
 ﻿using QFramework;
+using System;
 using System.IO;
 using System.Text;
 using System.Xml.Serialization;
-using System;
 
 namespace QuickLinker.Utils
 {

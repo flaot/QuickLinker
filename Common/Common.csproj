@@ -9,4 +9,8 @@
     <Copyright>flaot</Copyright>
   </PropertyGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\Plugin\Plugin.csproj" />
+  </ItemGroup>
+
 </Project>

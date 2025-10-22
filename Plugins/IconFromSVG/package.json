@@ -1,0 +1,9 @@
+{
+  "author": {
+    "name": "flaot"
+  },
+  "description": "支持SVG的icon",
+  "icon": "",
+  "name": "IconFromSVG",
+  "version": "1.0"
+}

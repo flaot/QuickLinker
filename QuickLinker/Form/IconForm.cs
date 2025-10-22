@@ -1,19 +1,21 @@
-﻿using QuickLinker.Properties;
+﻿using QFramework;
+using QuickLinker.Model;
+using QuickLinker.Properties;
 using QuickLinker.QuickLaunch.Models;
 using QuickLinker.QuickLaunch.Utils;
+using QuickLinker.Systems;
 using QuickLinker.Utils;
 using System;
 using System.Drawing;
-using System.IO;
 using System.Windows.Forms;
-using QuickLinker.Model;
 using Constants = QuickLinker.QuickLaunch.Constant.Constants;
 
 namespace QuickLinker
 {
-    public partial class IconForm : Form
+    public partial class IconForm : Form, IController
     {
         private Entity _entity;
+        public IArchitecture GetArchitecture() => AppArchitecture.Interface;
         public IconForm(Entity entity)
         {
             _entity = entity;
@@ -28,7 +30,7 @@ namespace QuickLinker
             MumericUpDown_CurIndex.ValueChanged -= MumericUpDown_CurIndex_ValueChanged;
             Txt_IconPath.Text = _entity.ImagePath;
             pictureBox1.Image = _entity.bitmapImage;
-            var iconTotalCount = FileIcon.PrivateExtractIcons(_entity.ImagePath, 0, 0, 0, null, null, 0, 0);
+            var iconTotalCount = Win32API.PrivateExtractIcons(_entity.ImagePath, 0, 0, 0, null, null, 0, 0);
             if (iconTotalCount > 0)
             {
                 MumericUpDown_CurIndex.Value = _entity.imageIndex + 1;
@@ -47,7 +49,8 @@ namespace QuickLinker
 
         private void MumericUpDown_CurIndex_ValueChanged(object sender, EventArgs e)
         {
-            pictureBox1.Image = FileIcon.GetBitmapImage(Txt_IconPath.Text, ((int)MumericUpDown_CurIndex.Value) - 1);
+            var fileIconSystem = this.GetSystem<IFileIconSystem>();
+            pictureBox1.Image = fileIconSystem.GetImage(Txt_IconPath.Text, ((int)MumericUpDown_CurIndex.Value) - 1) as Bitmap;
         }
         private void Txt_FolderOrFile_DragEnter(object sender, DragEventArgs e) => FromUtil.TextBoxFileFolderOrFile_DragEnter(sender, e);
         private void Txt_FolderOrFile_DragDrop(object sender, DragEventArgs e) => FromUtil.TextBoxFileFolderOrFile_DragDrop(sender, e);
@@ -65,7 +68,7 @@ namespace QuickLinker
         private void Txt_IconPath_TextChanged(object sender, EventArgs e)
         {
             MumericUpDown_CurIndex.ValueChanged -= MumericUpDown_CurIndex_ValueChanged;
-            var iconTotalCount = FileIcon.PrivateExtractIcons(Txt_IconPath.Text, 0, 0, 0, null, null, 0, 0);
+            var iconTotalCount = Win32API.PrivateExtractIcons(Txt_IconPath.Text, 0, 0, 0, null, null, 0, 0);
             if (iconTotalCount > 0)
             {
                 MumericUpDown_CurIndex.Value = 1;
@@ -95,12 +98,20 @@ namespace QuickLinker
         public static bool Show(Entity entity)
         {
             var config = AppArchitecture.Interface.GetModel<AppConfig>();
-            using (IconForm iconForm = new IconForm(entity))
+            try
             {
-                iconForm.TopMost = config.topWindow.Value;
-                if (iconForm.ShowDialog() != DialogResult.OK)
-                    return false;
-                return true;
+                MainForm.ignoreDeactivate++;
+                using (IconForm iconForm = new IconForm(entity))
+                {
+                    iconForm.TopMost = config.topWindow.Value;
+                    if (iconForm.ShowDialog() != DialogResult.OK)
+                        return false;
+                    return true;
+                }
+            }
+            finally
+            {
+                MainForm.ignoreDeactivate--;
             }
         }
     }

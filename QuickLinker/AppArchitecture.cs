@@ -1,5 +1,4 @@
-﻿using QFramework;
-using QuickLinker.Model;
+﻿using QuickLinker.Model;
 using QuickLinker.QuickLaunch.Systems;
 using QuickLinker.Systems;
 using QuickLinker.Utils;
@@ -19,6 +18,8 @@ namespace QuickLinker
 
             this.RegisterSystem(new QuickEntitySystem());
             this.RegisterSystem(new HotKeyManager());
+            this.RegisterSystem<IFileIconSystem>(new FileIconSystem());
+            this.RegisterSystem<IAudioSystem>(new AudioSystem());
 
             this.RegisterUtility(new LaunchUtil());
             this.RegisterUtility(new SingleAppUtil());

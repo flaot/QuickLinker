@@ -30,9 +30,10 @@ namespace QuickLinker.Utils
 
         public JsonSerializerOptions JsonSerializerOpt
         {
-            get {
+            get
+            {
                 if (_options == null)
-                { 
+                {
                     _options = new JsonSerializerOptions();
                     _options.IncludeFields = true;
                     _options.WriteIndented = true;

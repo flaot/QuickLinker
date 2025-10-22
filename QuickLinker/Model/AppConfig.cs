@@ -1,4 +1,5 @@
 ﻿using QFramework;
+using QuickLinker.Systems;
 using System.Reflection;
 using System.Text.Json.Serialization;
 using System.Windows.Forms;
@@ -77,6 +78,11 @@ namespace QuickLinker.Model
         public BindableProperty<string[]> groupArray = new BindableProperty<string[]>(new string[] { "flaot", "flaot1" });
         /// <summary> 自动最小化或上卷 </summary>
         public BindableProperty<AppHideType> appHideType = new BindableProperty<AppHideType>();
+
+        public BindableProperty<AudioInfo> audioClick = new BindableProperty<AudioInfo>(new AudioInfo());
+        public BindableProperty<AudioInfo> audioButton = new BindableProperty<AudioInfo>(new AudioInfo());
+        public BindableProperty<AudioInfo> audioDrop = new BindableProperty<AudioInfo>(new AudioInfo());
+        public BindableProperty<AudioInfo> audioGroup = new BindableProperty<AudioInfo>(new AudioInfo());
 
         [JsonIgnore, XmlIgnore]
         public EasyEvent TirggerSaveEvent = new EasyEvent();

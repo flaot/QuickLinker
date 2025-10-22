@@ -1,10 +1,13 @@
 ﻿using QFramework;
 using QuickLinker.Model;
 using QuickLinker.Properties;
+using QuickLinker.QuickLaunch.Models;
+using QuickLinker.Systems;
 using QuickLinker.Utils;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Media;
 using System.Windows.Forms;
 
 namespace QuickLinker
@@ -64,6 +67,12 @@ namespace QuickLinker
             RegisterNumericUpDown(appConfig.gridSize, numericUpDown4);
             RegisterNumericUpDown(appConfig.grid, numericUpDown5);
             _unRegisters.Add(appConfig.gridGroup.RegisterWithInitValue(Event_GroupNumberChange));
+
+            //声音
+            TreeView_Audio.ExpandAll();
+            var rootNode = TreeView_Audio.Nodes[0];
+            TreeView_Audio.Tag = rootNode;
+            TreeView_Audio.SelectedNode = rootNode;
         }
         private void SettingForm_FormClosing(object sender, FormClosingEventArgs e)
         {
@@ -217,6 +226,116 @@ namespace QuickLinker
             this.SwitchPage(curIndex, swapIndex);
             Event_GroupNumberChange(_oldGroupNumber);
             dataGridView1.Rows[swapIndex].Cells[1].Selected = true;
+        }
+        public static bool ShowSetting()
+        {
+            try
+            {
+                MainForm.ignoreDeactivate++;
+                using (var settingForm = new PreferencesFrom())
+                {
+                    settingForm.ShowDialog();
+                }
+                return true;
+            }
+            finally
+            {
+
+                MainForm.ignoreDeactivate--;
+            }
+        }
+
+        private void Btn_TestAudio_Click(object sender, EventArgs e)
+        {
+            var node = TreeView_Audio.SelectedNode;
+            var audioType = (AudioType)Enum.Parse(typeof(AudioType), (string)node.Tag);
+            this.GetSystem<IAudioSystem>().PlayAudio(audioType);
+        }
+        private void Btn_AudioBrowse_Click(object sender, EventArgs e)
+        {
+            OpenFileDialog openFileDialog = new OpenFileDialog();
+            openFileDialog.Title = "选择文件";
+            openFileDialog.Filter = "声音文件(*.wav)|*.wav|所有文件(*.*)|*.*";
+            openFileDialog.RestoreDirectory = true;
+            openFileDialog.Multiselect = false;
+            if (openFileDialog.ShowDialog() == DialogResult.Cancel)
+                return;
+            TextBox_AudioFilePath.Text = openFileDialog.FileName;
+        }
+        private void TreeView_Audio_AfterSelect(object sender, TreeViewEventArgs e)
+        {
+            RadioBtn_Null.CheckedChanged -= RadioBtn_AudioModoCheckedChanged;
+            RadioBtn_Default.CheckedChanged -= RadioBtn_AudioModoCheckedChanged;
+            RadioBtn_Custom.CheckedChanged -= RadioBtn_AudioModoCheckedChanged;
+            TextBox_AudioFilePath.TextChanged -= TextBox_AudioFilePath_TextChanged;
+            var node = TreeView_Audio.SelectedNode;
+            if (node.Tag == null)
+            {
+                Txt_AudioChangeTip.Visible = true;
+                RadioBtn_Null.Visible = false;
+                RadioBtn_Default.Visible = false;
+                RadioBtn_Custom.Visible = false;
+                Btn_TestAudio.Visible = false;
+                TextBox_AudioFilePath.Visible = false;
+                Btn_AudioBrowse.Visible = false;
+            }
+            else
+            {
+                var audioType = (AudioType)Enum.Parse(typeof(AudioType), (string)node.Tag);
+                var audioInfo = AudioConfig(audioType);
+                Txt_AudioChangeTip.Visible = false;
+                RadioBtn_Null.Visible = true;
+                RadioBtn_Default.Visible = true;
+                RadioBtn_Custom.Visible = true;
+                Btn_TestAudio.Visible = true;
+                TextBox_AudioFilePath.Visible = true;
+                Btn_AudioBrowse.Visible = true;
+                RadioBtn_Null.Checked = audioInfo.Value.mode == 1;
+                RadioBtn_Default.Checked = audioInfo.Value.mode == 2;
+                RadioBtn_Custom.Checked = audioInfo.Value.mode == 3;
+                RadioBtn_Null.CheckedChanged += RadioBtn_AudioModoCheckedChanged;
+                RadioBtn_Default.CheckedChanged += RadioBtn_AudioModoCheckedChanged;
+                RadioBtn_Custom.CheckedChanged += RadioBtn_AudioModoCheckedChanged;
+                TextBox_AudioFilePath.TextChanged += TextBox_AudioFilePath_TextChanged;
+            }
+        }
+        private BindableProperty<AudioInfo> AudioConfig(AudioType audioType)
+        {
+            var appConfig = this.GetModel<AppConfig>();
+            switch (audioType)
+            {
+                case AudioType.Click: return appConfig.audioClick;
+                case AudioType.Group: return appConfig.audioGroup;
+                case AudioType.Drop: return appConfig.audioDrop;
+                case AudioType.Button: return appConfig.audioButton;
+                case AudioType.None:
+                default: return null;
+            }
+        }
+        private void RadioBtn_Custom_CheckedChanged(object sender, EventArgs e)
+        {
+            var senderObj = (RadioButton)sender;
+            TextBox_AudioFilePath.Enabled = senderObj.Checked;
+            Btn_AudioBrowse.Enabled = senderObj.Checked;
+        }
+        private void RadioBtn_AudioModoCheckedChanged(object sender, EventArgs e)
+        {
+            var node = TreeView_Audio.SelectedNode;
+            var audioType = (AudioType)Enum.Parse(typeof(AudioType), (string)node.Tag);
+            var audioInfo = AudioConfig(audioType);
+
+            var senderObj = (RadioButton)sender;
+            int mode = int.Parse((string)senderObj.Tag);
+            audioInfo.Value.mode = mode;
+        }
+        private void TextBox_AudioFilePath_TextChanged(object sender, EventArgs e)
+        {
+            var node = TreeView_Audio.SelectedNode;
+            var audioType = (AudioType)Enum.Parse(typeof(AudioType), (string)node.Tag);
+            var audioInfo = AudioConfig(audioType);
+
+            var senderObj = (TextBox)sender;
+            audioInfo.Value.file = senderObj.Text;
         }
     }
 }
