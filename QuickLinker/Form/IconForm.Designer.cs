@@ -78,11 +78,13 @@ namespace QuickLinker
             // 
             // Btn_Browse
             // 
+            Btn_Browse.BackColor = Color.FromArgb(240, 240, 240);
+            Btn_Browse.BackgroundImageLayout = ImageLayout.Stretch;
+            Btn_Browse.Image = null;
             Btn_Browse.Location = new Point(284, 11);
             Btn_Browse.Name = "Btn_Browse";
             Btn_Browse.Size = new Size(30, 25);
             Btn_Browse.TabIndex = 3;
-            Btn_Browse.Text = "button1";
             Btn_Browse.Click += Btn_Browse_Click;
             // 
             // MumericUpDown_CurIndex

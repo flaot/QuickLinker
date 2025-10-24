@@ -82,7 +82,7 @@ namespace QuickLinker
             tabControl1.Location = new Point(0, 0);
             tabControl1.Name = "tabControl1";
             tabControl1.SelectedIndex = 0;
-            tabControl1.Size = new Size(518, 232);
+            tabControl1.Size = new Size(518, 241);
             tabControl1.TabIndex = 0;
             // 
             // tabPage1
@@ -119,7 +119,7 @@ namespace QuickLinker
             tabPage1.Location = new Point(4, 26);
             tabPage1.Name = "tabPage1";
             tabPage1.Padding = new Padding(3);
-            tabPage1.Size = new Size(510, 202);
+            tabPage1.Size = new Size(510, 211);
             tabPage1.TabIndex = 0;
             tabPage1.Text = "运行一个程序";
             // 
@@ -295,12 +295,14 @@ namespace QuickLinker
             // 
             // Btn_BrowseFolder
             // 
+            Btn_BrowseFolder.BackColor = Color.FromArgb(240, 240, 240);
+            Btn_BrowseFolder.BackgroundImageLayout = ImageLayout.Stretch;
+            Btn_BrowseFolder.Image = null;
             Btn_BrowseFolder.Location = new Point(321, 68);
             Btn_BrowseFolder.Margin = new Padding(0);
             Btn_BrowseFolder.Name = "Btn_BrowseFolder";
             Btn_BrowseFolder.Size = new Size(24, 24);
             Btn_BrowseFolder.TabIndex = 9;
-            Btn_BrowseFolder.Text = "button4";
             Btn_BrowseFolder.Click += Btn_BrowseFolder_Click;
             // 
             // Txt_WorkFolder
@@ -325,22 +327,26 @@ namespace QuickLinker
             // 
             // Btn_BrowseArgFile
             // 
+            Btn_BrowseArgFile.BackColor = Color.FromArgb(240, 240, 240);
+            Btn_BrowseArgFile.BackgroundImageLayout = ImageLayout.Stretch;
+            Btn_BrowseArgFile.Image = null;
             Btn_BrowseArgFile.Location = new Point(322, 40);
             Btn_BrowseArgFile.Margin = new Padding(0);
             Btn_BrowseArgFile.Name = "Btn_BrowseArgFile";
             Btn_BrowseArgFile.Size = new Size(24, 24);
             Btn_BrowseArgFile.TabIndex = 6;
-            Btn_BrowseArgFile.Text = "button3";
             Btn_BrowseArgFile.Click += Btn_BrowseArgFile_Click;
             // 
             // Btn_BrowsePath
             // 
+            Btn_BrowsePath.BackColor = Color.FromArgb(240, 240, 240);
+            Btn_BrowsePath.BackgroundImageLayout = ImageLayout.Stretch;
+            Btn_BrowsePath.Image = null;
             Btn_BrowsePath.Location = new Point(322, 12);
             Btn_BrowsePath.Margin = new Padding(0);
             Btn_BrowsePath.Name = "Btn_BrowsePath";
             Btn_BrowsePath.Size = new Size(24, 24);
             Btn_BrowsePath.TabIndex = 5;
-            Btn_BrowsePath.Text = "button2";
             Btn_BrowsePath.Click += Btn_BrowsePath_Click;
             // 
             // Txt_Args
@@ -365,12 +371,14 @@ namespace QuickLinker
             // 
             // Btn_Parse
             // 
+            Btn_Parse.BackColor = Color.FromArgb(240, 240, 240);
+            Btn_Parse.BackgroundImageLayout = ImageLayout.Stretch;
+            Btn_Parse.Image = null;
             Btn_Parse.Location = new Point(293, 12);
             Btn_Parse.Margin = new Padding(0);
             Btn_Parse.Name = "Btn_Parse";
             Btn_Parse.Size = new Size(24, 24);
             Btn_Parse.TabIndex = 2;
-            Btn_Parse.Text = "button1";
             Btn_Parse.Click += Btn_Parse_Click;
             // 
             // Txt_TargetPostion
@@ -413,7 +421,7 @@ namespace QuickLinker
             splitContainer1.Panel2.Controls.Add(Btn_Ok);
             splitContainer1.Panel2.Controls.Add(Btn_Clear);
             splitContainer1.Size = new Size(518, 272);
-            splitContainer1.SplitterDistance = 232;
+            splitContainer1.SplitterDistance = 241;
             splitContainer1.SplitterWidth = 1;
             splitContainer1.TabIndex = 1;
             // 

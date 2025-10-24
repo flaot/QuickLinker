@@ -135,7 +135,7 @@ namespace QuickLinker
             ToolStatus_Txt.DisplayStyle = ToolStripItemDisplayStyle.Text;
             ToolStatus_Txt.ImageAlign = ContentAlignment.MiddleLeft;
             ToolStatus_Txt.Name = "ToolStatus_Txt";
-            ToolStatus_Txt.Size = new Size(232, 21);
+            ToolStatus_Txt.Size = new Size(263, 21);
             ToolStatus_Txt.Spring = true;
             ToolStatus_Txt.Text = "toolStripStatusLabel1";
             ToolStatus_Txt.TextAlign = ContentAlignment.MiddleLeft;
@@ -181,7 +181,7 @@ namespace QuickLinker
             // NotifyIcon
             // 
             NotifyIcon.Icon = (Icon)resources.GetObject("NotifyIcon.Icon");
-            NotifyIcon.Text = "WinAssistPro";
+            NotifyIcon.Text = "QuickLinker";
             NotifyIcon.Visible = true;
             NotifyIcon.MouseClick += NotifyIcon_MouseClick;
             // 
