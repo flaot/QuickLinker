@@ -1,6 +1,5 @@
 ﻿using QFramework;
 using QuickLinker;
-using QuickLinker.Plugin;
 using QuickLinker.Plugin.Events;
 using QuickLinker.Plugin.Menu.Attribute;
 using System.Windows.Forms;

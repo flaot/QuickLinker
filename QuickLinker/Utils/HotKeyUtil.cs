@@ -1,8 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 using WK.Libraries.HotkeyListenerNS;
 
@@ -13,12 +10,18 @@ namespace QuickLinker.Utils
         public static void Control_KeyDown(object sender, KeyEventArgs e)
         {
             var textBox = sender as Control;
+            if (e.KeyCode == Keys.Tab)
+                return;
             if (e.KeyCode == Keys.Escape)
             {
                 textBox.Text = string.Empty;
+                e.Handled = true;
+                e.SuppressKeyPress = true;
                 return;
             }
             textBox.Text = Convert(e);
+            e.Handled = true;
+            e.SuppressKeyPress = true;
         }
 
         public static void Control_KeyUp(object sender, KeyEventArgs e)
