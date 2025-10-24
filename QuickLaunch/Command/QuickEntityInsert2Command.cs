@@ -12,6 +12,7 @@ namespace QuickLinker.QuickLaunch.Command
         {
             var entitySystem = this.GetSystem<QuickEntitySystem>();
             entitySystem.Insert(entity, index);
+            entity.needSave.Value = true;
         }
     }
 }

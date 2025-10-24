@@ -1,4 +1,5 @@
 ﻿using QFramework;
+using QuickLinker.Plugin;
 using QuickLinker.QuickLaunch.Constant;
 using System;
 using System.Drawing;
@@ -6,7 +7,7 @@ using System.Text.Json.Serialization;
 
 namespace QuickLinker.QuickLaunch.Models
 {
-    public class Entity : ICloneable
+    public class Entity : ICloneable, IItem
     {
         /// <summary> 下标(位置) </summary>
         public int index;

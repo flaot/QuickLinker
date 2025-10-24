@@ -247,10 +247,7 @@ namespace QuickLinker
             if (e.Button == MouseButtons.Right)
             {
                 Selection.activeContext = this;
-                TypeEventSystem.Global.Send(new ShowItemMenuPreEvent());
-                if (Selection.activeContext != null)
-                    TypeEventSystem.Global.Send(new ClickMenuTPanelEvent());
-                TypeEventSystem.Global.Send(new ShowItemMenuPostEvent());
+                TypeEventSystem.Global.Send(new ClickMenuTPanelEvent());
             }
         }
         private void TPanel_MouseMove(object sender, MouseEventArgs e)
@@ -271,10 +268,7 @@ namespace QuickLinker
             if (click)
             {
                 Selection.activeContext = this;
-                TypeEventSystem.Global.Send(new ClickItemPreEvent());
-                if (Selection.activeContext != null)
-                    TypeEventSystem.Global.Send(new ClickTPanelEvent());
-                TypeEventSystem.Global.Send(new ClickItemPostEvent());
+                TypeEventSystem.Global.Send(new ClickTPanelEvent());
             }
         }
         private void TPanel_MouseEnter(object sender, EventArgs e)

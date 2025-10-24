@@ -40,7 +40,7 @@ namespace QuickLinker
             DialogResult dialogResult;
             var config = AppArchitecture.Interface.GetModel<AppConfig>();
             var hotKeySys = AppArchitecture.Interface.GetSystem<HotKeyManager>();
-            hotKeySys.HotKeyListener?.RemoveAll();
+            hotKeySys.RemoveAllQuickActions();
             try
             {
                 MainForm.ignoreDeactivate++;

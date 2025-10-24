@@ -1,9 +1,13 @@
 ﻿using QFramework;
 using QuickLinker.Model;
+using QuickLinker.Plugin;
+using QuickLinker.Plugin.Events;
+using QuickLinker.QuickLaunch.Command;
+using QuickLinker.QuickLaunch.Models;
+using QuickLinker.QuickLaunch.Systems;
 using QuickLinker.Utils;
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using WK.Libraries.HotkeyListenerNS;
 
 namespace QuickLinker
@@ -20,11 +24,12 @@ namespace QuickLinker
                 return _hotKeyListener;
             }
         }
-        public List<QuickAction> QuickActions;
+
+        private List<QuickAction> hotKeyEntities;
 
         protected override void OnInit()
         {
-            QuickActions = new List<QuickAction>();
+            hotKeyEntities = new List<QuickAction>();
         }
         /// <summary>
         /// Initializes the quickaction hotkeys
@@ -36,6 +41,10 @@ namespace QuickLinker
 
             // then the individual hotkeys
             InitializeIndividualQuickActionsHotKeys();
+        }
+        internal void RemoveAllQuickActions()
+        {
+            _hotKeyListener?.RemoveAll();
         }
 
         /// <summary>
@@ -54,42 +63,26 @@ namespace QuickLinker
         /// Looks up the specific quick action bound to the specified hotkey, and executes it
         /// </summary>
         /// <param name="hotkey"></param>
-        internal void ProcessQuickActionHotKey(string hotkey)
+        internal void ProcessQuickActionHotKey(Hotkey hotkey)
         {
-            if (string.IsNullOrEmpty(hotkey)) return;
+            if (hotkey == null) return;
 
-            // check if we stil have the hotkey bound to a quickaction
-            if (QuickActions.All(x => x.HotKey != hotkey))
+            var findIndex = hotKeyEntities.FindIndex(x => x.hotKey == hotkey);
+            if (findIndex < 0)
             {
-                LogKit.W("[HOTKEY] Registered hotkey no longer bound to a QuickAction: {hotkey}", hotkey);
+                LogKit.W($"[HOTKEY] Registered hotkey no longer bound to a QuickAction: {hotkey}");
                 return;
             }
+            var quickAction = hotKeyEntities[findIndex];
 
-            // fetch the associated quickaction
-            var quickAction = QuickActions.Find(x => x.HotKey == hotkey);
-            if (quickAction == null)
+            Selection.activeContext = null;
+            Selection.activeEntity = quickAction.entity;
+            TypeEventSystem.Global.Send(new ShowItemMenuPreEvent());
+            if (Selection.activeEntity != null)
             {
-                LogKit.E("[HOTKEY] Registered hotkey not found: {hotkey}", hotkey);
-                return;
+                ((ISystem)this).GetArchitecture().SendCommand(new QuickEntityOpenCommand() { index = quickAction.entity.index });
+                TypeEventSystem.Global.Send(new ShowItemMenuPostEvent());
             }
-
-            if (!quickAction.HotKeyEnabled)
-            {
-                LogKit.W("[HOTKEY] QuickAction bound to hotkey has 'hotkey enabled' set to false: {hotkey}", hotkey);
-                return;
-            }
-
-            //// is it an internal command?
-            //if (quickAction.Domain == HassDomain.HASSAgentCommands)
-            //{
-            //    // execute local command
-            //    Task.Run(() => CommandsManager.ExecuteCommandByName(quickAction.Entity));
-            //}
-            //else
-            //{
-            //    // execute the command through HA
-            //    Task.Run(() => HassApiManager.ProcessQuickActionAsync(quickAction));
-            //}
         }
 
         private void InitializeGlobalQuickActionsHotKey()
@@ -109,31 +102,33 @@ namespace QuickLinker
         private void InitializeIndividualQuickActionsHotKeys()
         {
             var count = 0;
-            foreach (var quickAcion in QuickActions.Where(x => x.HotKeyEnabled && !string.IsNullOrWhiteSpace(x.HotKey)))
+            var quickEntitySystem = this.GetSystem<QuickEntitySystem>();
+            hotKeyEntities.Clear();
+            foreach (var entity in quickEntitySystem.QueryDataWithAnyFlag(Array.Empty<string>()))
             {
+                if (string.IsNullOrWhiteSpace(entity.actionHotKey))
+                    continue;
                 try
                 {
-                    HotKeyListener?.Add(HotKeyUtil.Convert(quickAcion.HotKey));
+                    var hotKey = HotKeyUtil.Convert(entity.actionHotKey);
+                    HotKeyListener?.Add(hotKey);
+                    hotKeyEntities.Add(new QuickAction() { entity = entity, hotKey = hotKey});
                     count++;
                 }
                 catch (Exception ex)
                 {
-                    LogKit.E(ex.ToString() + "[HOTKEYS] Unable to bind individual quickaction hotkey '{hotkey}': {msg}", quickAcion.HotKey, ex.Message);
+                    LogKit.E(ex.ToString() + $"[HOTKEYS] Unable to bind individual quickaction hotkey '{entity.actionHotKey}': {ex.Message}");
                 }
-            }
-
+            } 
             if (count == 0) return;
-            LogKit.I("[HOTKEY] Completed bind for {count} individual quickaction hotkeys", count);
+            LogKit.I($"[HOTKEY] Completed bind for {count} individual quickaction hotkeys");
         }
 
     }
 
-    public class QuickAction
+    public struct QuickAction
     {
-        public Guid Id { get; set; } = Guid.Empty;
-        public string Entity { get; set; }
-        public bool HotKeyEnabled { get; set; }
-        public string HotKey { get; set; }
-        public string Description { get; set; }
+        public Entity entity;
+        public Hotkey hotKey;
     }
 }

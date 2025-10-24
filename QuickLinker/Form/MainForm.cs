@@ -3,6 +3,7 @@ using QFramework;
 using QuickLinker.Menus;
 using QuickLinker.Model;
 using QuickLinker.Plugin;
+using QuickLinker.Plugin.Events;
 using QuickLinker.Plugin.Menu;
 using QuickLinker.Properties;
 using QuickLinker.QuickLaunch.Command;
@@ -14,7 +15,6 @@ using System;
 using System.Collections.Generic;
 using System.Drawing;
 using System.IO;
-using System.Media;
 using System.Runtime.InteropServices;
 using System.Text;
 using System.Windows.Forms;
@@ -198,7 +198,7 @@ namespace QuickLinker
                 }
             }
             else
-                hotKeyMgr.ProcessQuickActionHotKey(e.Hotkey.ToString());
+                hotKeyMgr.ProcessQuickActionHotKey(e.Hotkey);
         }
 
         private void TabControl1_MouseDown(object sender, MouseEventArgs e)
@@ -288,8 +288,14 @@ namespace QuickLinker
                     }
                     return;
                 }
-                this.SendCommand(new QuickEntityOpenCommand() { index = panel.Index });
-                this.GetSystem<IAudioSystem>().PlayAudio(AudioType.Click);
+                Selection.activeEntity = panel.Entity;
+                TypeEventSystem.Global.Send(new ClickItemPreEvent());
+                if (Selection.activeEntity != null)
+                {
+                    this.SendCommand(new QuickEntityOpenCommand() { index = panel.Index });
+                    this.GetSystem<IAudioSystem>().PlayAudio(AudioType.Click);
+                    TypeEventSystem.Global.Send(new ClickItemPostEvent());
+                }
             }
         }
         public void TPanel_OnClickMenu(ClickMenuTPanelEvent info)
@@ -297,7 +303,10 @@ namespace QuickLinker
             var panel = Selection.activeContext as TPanel;
             if (_optType.Value != OptType.None)
                 return;
-            Selection.activeContext = panel;
+            Selection.activeEntity = panel.Entity;
+            TypeEventSystem.Global.Send(new ShowItemMenuPreEvent());
+            if (Selection.activeEntity == null)
+                return;
             var menuSystem = this.GetSystem<IMenuSystem>();
             var menuType = (int)MenuType.Page;
             menuSystem.SetEnable(menuType, "(未配置)", panel.Entity != null);
@@ -308,6 +317,7 @@ namespace QuickLinker
             var menuAttr = menuProxy.FindStripMenuItem("属性(&P)");
             menuAttr.Font = new Font(menuAttr.Font, panel.Entity == null ? FontStyle.Bold : FontStyle.Regular);
             menuSystem.Show(menuType, MousePosition.X, MousePosition.Y);
+            TypeEventSystem.Global.Send(new ShowItemMenuPostEvent());
         }
         private void Event_ChengOptType(OptType type)
         {

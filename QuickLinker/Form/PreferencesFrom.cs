@@ -44,7 +44,7 @@ namespace QuickLinker
             RegisterCombox(appConfig.tabAppearance, comboBox4);
             RegisterBool(appConfig.disableAffinity, checkBox18);
             var hotKeySys = this.GetSystem<HotKeyManager>();
-            hotKeySys.HotKeyListener?.RemoveAll();
+            hotKeySys.RemoveAllQuickActions();
             textBox1.Text = appConfig.actionHotKey.Value;
             textBox1.KeyUp += HotKeyUtil.Control_KeyUp;
             textBox1.KeyDown += HotKeyUtil.Control_KeyDown;
