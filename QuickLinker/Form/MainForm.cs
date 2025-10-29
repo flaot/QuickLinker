@@ -725,7 +725,7 @@ namespace QuickLinker
 
         private void NoSettingStartEvent(NoSettingStratEvent _)
         {
-            var appConfig = this.GetSystem<IStroeSystem>().Load<AppConfig>();
+            var appConfig = this.GetModel<AppConfig>();
             if (!appConfig.firstCreate.Value)
                 return;
             appConfig.firstCreate.Value = false;
@@ -796,7 +796,5 @@ namespace QuickLinker
                     this.SendCommand(new QuickEntitySetCommand() { index = inIndex - 1, startArg = parameters });
             }
         }
-
-      
     }
 }

@@ -10,6 +10,7 @@ namespace QuickLinker.Model
 {
     public class AppConfig : AbstractModel
     {
+        /// <summary> 首次创建配置标识 </summary>
         public BindableProperty<bool> firstCreate = new BindableProperty<bool>(true);
         /// <summary> 置顶 </summary>
         public BindableProperty<bool> topWindow = new BindableProperty<bool>(false);
