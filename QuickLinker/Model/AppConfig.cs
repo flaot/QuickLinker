@@ -10,6 +10,7 @@ namespace QuickLinker.Model
 {
     public class AppConfig : AbstractModel
     {
+        public BindableProperty<bool> firstCreate = new BindableProperty<bool>(true);
         /// <summary> 置顶 </summary>
         public BindableProperty<bool> topWindow = new BindableProperty<bool>(false);
         /// <summary> 解析拖放的快捷方式 </summary>

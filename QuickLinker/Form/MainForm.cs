@@ -83,10 +83,9 @@ namespace QuickLinker
             _lastColumn = config.gridColumn.Value;
             _oldGroupCount = config.gridGroup.Value;
 
-            tabControl1.SelectedIndexChanged += tabControl1_SelectedIndexChanged;
-            this.MouseDown += TabControl1_MouseDown;
-            this.MouseMove += TabControl1_MouseMove;
-            this.MouseUp += TabControl1_MouseUp;
+            this.MouseDown += TabControl1_MouseDragDown;
+            this.MouseMove += TabControl1_MouseDragMove;
+            this.MouseUp += TabControl1_MouseDragUp;
 
             config.groupArray.RegisterWithInitValue(Event_GroupChange);
             AutoWindowSize();
@@ -201,7 +200,7 @@ namespace QuickLinker
                 hotKeyMgr.ProcessQuickActionHotKey(e.Hotkey);
         }
 
-        private void TabControl1_MouseDown(object sender, MouseEventArgs e)
+        private void TabControl1_MouseDragDown(object sender, MouseEventArgs e)
         {
             if (this.GetModel<AppConfig>().disableMove.Value)
                 return;
@@ -212,7 +211,7 @@ namespace QuickLinker
                 formMove = true;//开始移动
             }
         }
-        private void TabControl1_MouseMove(object sender, MouseEventArgs e)
+        private void TabControl1_MouseDragMove(object sender, MouseEventArgs e)
         {
             if (formMove == true)
             {
@@ -222,14 +221,14 @@ namespace QuickLinker
                 this.Location = point;
             }
         }
-        private void TabControl1_MouseUp(object sender, MouseEventArgs e)
+        private void TabControl1_MouseDragUp(object sender, MouseEventArgs e)
         {
             if (e.Button == MouseButtons.Left)//按下的是鼠标左键
             {
                 formMove = false;//停止移动
             }
         }
-        private void tabControl1_MouseUp_1(object sender, MouseEventArgs e)
+        private void TabControl1_MouseUp(object sender, MouseEventArgs e)
         {
             if (e.Button != MouseButtons.Right)
                 return;
@@ -239,16 +238,23 @@ namespace QuickLinker
             menuSystem.SetEnable(menuType, "左移标签(&L)", tabControl1.SelectedIndex != 0);
             menuSystem.SetEnable(menuType, "右移标签(&R)", tabControl1.SelectedIndex != tabControl1.TabPages.Count - 1);
             menuSystem.SetEnable(menuType, "删除(&D)", tabControl1.TabPages.Count > 1);
-            menuSystem.SetChecked(menuType,"外观/标准(&N)", config.tabAppearance.Value == TabAppearance.Normal);
-            menuSystem.SetChecked(menuType,"外观/按钮(&B)", config.tabAppearance.Value == TabAppearance.Buttons);
+            menuSystem.SetChecked(menuType, "外观/标准(&N)", config.tabAppearance.Value == TabAppearance.Normal);
+            menuSystem.SetChecked(menuType, "外观/按钮(&B)", config.tabAppearance.Value == TabAppearance.Buttons);
             menuSystem.SetChecked(menuType, "外观/平面按钮(&F)", config.tabAppearance.Value == TabAppearance.FlatButtons);
             this.GetSystem<IMenuSystem>().Show(menuType, MousePosition.X, MousePosition.Y);
         }
-        private void tabControl1_SelectedIndexChanged(object sender, EventArgs e)
+        private void TabControl1_SelectedIndexChanged(object sender, EventArgs e)
         {
             this.GetSystem<IAudioSystem>().PlayAudio(AudioType.Group);
         }
-
+        private void TabControl1_Enter(object sender, EventArgs e)
+        {
+            (sender as TabControl).SelectedTab?.Focus();
+        }
+        private void TabControl1_Click(object sender, EventArgs e)
+        {
+            (sender as TabControl).SelectedTab?.Focus();
+        }
 
         public void TPanel_OnClick(ClickTPanelEvent info)
         {
@@ -720,9 +726,9 @@ namespace QuickLinker
         private void NoSettingStartEvent(NoSettingStratEvent _)
         {
             var appConfig = this.GetSystem<IStroeSystem>().Load<AppConfig>();
-            if (appConfig != null)
+            if (!appConfig.firstCreate.Value)
                 return;
-
+            appConfig.firstCreate.Value = false;
             var config = this.GetModel<AppConfig>();
             var system = this.GetSystem<QuickEntitySystem>();
 
@@ -790,5 +796,7 @@ namespace QuickLinker
                     this.SendCommand(new QuickEntitySetCommand() { index = inIndex - 1, startArg = parameters });
             }
         }
+
+      
     }
 }

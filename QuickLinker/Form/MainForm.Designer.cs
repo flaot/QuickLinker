@@ -98,7 +98,10 @@ namespace QuickLinker
             tabControl1.SelectedIndex = 0;
             tabControl1.Size = new Size(349, 266);
             tabControl1.TabIndex = 0;
-            tabControl1.MouseUp += tabControl1_MouseUp_1;
+            tabControl1.SelectedIndexChanged += TabControl1_SelectedIndexChanged;
+            tabControl1.Click += TabControl1_Click;
+            tabControl1.Enter += TabControl1_Enter;
+            tabControl1.MouseUp += TabControl1_MouseUp;
             // 
             // tabPage2
             // 
