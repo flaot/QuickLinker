@@ -77,11 +77,11 @@ namespace QuickLinker
 
             Selection.activeContext = null;
             Selection.activeEntity = quickAction.entity;
-            TypeEventSystem.Global.Send(new ShowItemMenuPreEvent());
+            TypeEventSystem.Global.Send(new ClickItemPreEvent());
             if (Selection.activeEntity != null)
             {
                 ((ISystem)this).GetArchitecture().SendCommand(new QuickEntityOpenCommand() { index = quickAction.entity.index });
-                TypeEventSystem.Global.Send(new ShowItemMenuPostEvent());
+                TypeEventSystem.Global.Send(new ClickItemPostEvent());
             }
         }
 

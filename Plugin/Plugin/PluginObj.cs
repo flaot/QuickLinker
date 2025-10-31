@@ -22,6 +22,8 @@ namespace QuickLinker.Plugin
         public string error;
         /// <summary> 插件支持的菜单 </summary>
         public List<MenuItem.Info> menuItems;
+        /// <summary> 插件支持的命令 </summary>
+        public List<IPluginCommand> commands;
 
         public void Attach()
         {
@@ -62,7 +64,7 @@ namespace QuickLinker.Plugin
             pluginObj = (IPlugin)Activator.CreateInstance(type);
             pluginObj.Attach();
             //加载菜单
-            foreach (var methodInfo in pluginType.GetMethods(BindingFlags.Static | BindingFlags.Instance | BindingFlags.DeclaredOnly | BindingFlags.Public | BindingFlags.NonPublic))
+            foreach (var methodInfo in pluginType.GetMethods(BindingFlags.Instance | BindingFlags.DeclaredOnly | BindingFlags.Public))
             {
                 var attr = methodInfo.GetCustomAttribute<CustomMenuItemAttribute>();
                 if (attr == null)
@@ -76,6 +78,17 @@ namespace QuickLinker.Plugin
                 menuItems.Add(menuInfo);
             }
             menuItems.Sort();
+            //加载命令
+            foreach (Type assType in assembly.GetTypes())
+            {
+                if (assType.IsInterface || assType.IsAbstract)
+                    continue;
+                if (!typeof(IPluginCommand).IsAssignableFrom(assType))
+                    continue;
+                var pluginCommand = (IPluginCommand)Activator.CreateInstance(assType);
+                commands.Add(pluginCommand);
+            }
+            commands.Sort((l, r) => l.GetType().FullName.CompareTo(r.GetType().FullName));
         }
 
         public void Detach()
@@ -85,6 +98,7 @@ namespace QuickLinker.Plugin
             isAttach = false;
             pluginObj.Detach();
             menuItems.Clear();
+            commands.Clear();
             pluginObj = null;
             pluginType = null;
             assembly = null;

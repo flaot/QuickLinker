@@ -40,6 +40,7 @@ namespace QuickLinker
             RegisterBool(appConfig.blockRepeatRun, checkBox7);
             RegisterBool(appConfig.showMouse, checkBox8);
             RegisterBool(appConfig.launch, checkBox9);
+            RegisterBool(appConfig.registerURI, checkBox19);
             RegisterBool(appConfig.startbutton, checkBox10);
             RegisterCombox(appConfig.tabAppearance, comboBox4);
             RegisterBool(appConfig.disableAffinity, checkBox18);

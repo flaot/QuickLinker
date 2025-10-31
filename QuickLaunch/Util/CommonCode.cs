@@ -63,7 +63,7 @@ namespace QuickLinker.QuickLaunch.Utils
         /// <returns></returns>
         public static Entity GetIconInfoByPath(string path, bool canParse)
         {
-            Entity iconInfo = new Entity();
+            Entity iconInfo = Entity.Create();
             iconInfo.index = -1;
             string ext = File.Exists(path) ? Path.GetExtension(path) : string.Empty;
             if (ext == ".lnk" && canParse)

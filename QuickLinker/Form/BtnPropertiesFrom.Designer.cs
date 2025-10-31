@@ -62,6 +62,11 @@ namespace QuickLinker
             Btn_Parse = new TButton();
             Txt_TargetPostion = new TextBox();
             label1 = new Label();
+            tabPage2 = new TabPage();
+            DataGridView_Opt = new DataGridView();
+            icon = new DataGridViewImageColumn();
+            name = new DataGridViewTextBoxColumn();
+            desc = new DataGridViewTextBoxColumn();
             splitContainer1 = new SplitContainer();
             Btn_Cancel = new Button();
             Btn_Ok = new Button();
@@ -69,6 +74,8 @@ namespace QuickLinker
             tabControl1.SuspendLayout();
             tabPage1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)PictureBox_Icon).BeginInit();
+            tabPage2.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)DataGridView_Opt).BeginInit();
             ((System.ComponentModel.ISupportInitialize)splitContainer1).BeginInit();
             splitContainer1.Panel1.SuspendLayout();
             splitContainer1.Panel2.SuspendLayout();
@@ -78,11 +85,12 @@ namespace QuickLinker
             // tabControl1
             // 
             tabControl1.Controls.Add(tabPage1);
+            tabControl1.Controls.Add(tabPage2);
             tabControl1.Dock = DockStyle.Fill;
             tabControl1.Location = new Point(0, 0);
             tabControl1.Name = "tabControl1";
             tabControl1.SelectedIndex = 0;
-            tabControl1.Size = new Size(518, 241);
+            tabControl1.Size = new Size(518, 239);
             tabControl1.TabIndex = 0;
             // 
             // tabPage1
@@ -119,7 +127,7 @@ namespace QuickLinker
             tabPage1.Location = new Point(4, 26);
             tabPage1.Name = "tabPage1";
             tabPage1.Padding = new Padding(3);
-            tabPage1.Size = new Size(510, 211);
+            tabPage1.Size = new Size(510, 209);
             tabPage1.TabIndex = 0;
             tabPage1.Text = "运行一个程序";
             // 
@@ -145,7 +153,7 @@ namespace QuickLinker
             // label11
             // 
             label11.BorderStyle = BorderStyle.Fixed3D;
-            label11.Location = new Point(404, 135);
+            label11.Location = new Point(399, 135);
             label11.Name = "label11";
             label11.Size = new Size(100, 2);
             label11.TabIndex = 25;
@@ -154,7 +162,7 @@ namespace QuickLinker
             // label12
             // 
             label12.AutoSize = true;
-            label12.Location = new Point(366, 126);
+            label12.Location = new Point(361, 126);
             label12.Name = "label12";
             label12.Size = new Size(32, 17);
             label12.TabIndex = 24;
@@ -165,7 +173,7 @@ namespace QuickLinker
             // 
             checkBox3.AutoSize = true;
             checkBox3.Enabled = false;
-            checkBox3.Location = new Point(365, 91);
+            checkBox3.Location = new Point(366, 91);
             checkBox3.Name = "checkBox3";
             checkBox3.Size = new Size(134, 21);
             checkBox3.TabIndex = 23;
@@ -217,7 +225,7 @@ namespace QuickLinker
             label10.BorderStyle = BorderStyle.Fixed3D;
             label10.Location = new Point(353, 14);
             label10.Name = "label10";
-            label10.Size = new Size(2, 200);
+            label10.Size = new Size(2, 175);
             label10.TabIndex = 18;
             label10.Text = "label10";
             // 
@@ -402,6 +410,55 @@ namespace QuickLinker
             label1.Text = "目标位置(&C)：";
             label1.TextAlign = ContentAlignment.MiddleRight;
             // 
+            // tabPage2
+            // 
+            tabPage2.BackColor = SystemColors.ButtonFace;
+            tabPage2.Controls.Add(DataGridView_Opt);
+            tabPage2.Location = new Point(4, 26);
+            tabPage2.Name = "tabPage2";
+            tabPage2.Size = new Size(510, 209);
+            tabPage2.TabIndex = 1;
+            tabPage2.Text = "执行一个命令";
+            // 
+            // DataGridView_Opt
+            // 
+            DataGridView_Opt.AllowUserToAddRows = false;
+            DataGridView_Opt.AllowUserToDeleteRows = false;
+            DataGridView_Opt.AllowUserToResizeRows = false;
+            DataGridView_Opt.BackgroundColor = Color.White;
+            DataGridView_Opt.BorderStyle = BorderStyle.Fixed3D;
+            DataGridView_Opt.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            DataGridView_Opt.Columns.AddRange(new DataGridViewColumn[] { icon, name, desc });
+            DataGridView_Opt.Dock = DockStyle.Fill;
+            DataGridView_Opt.Location = new Point(0, 0);
+            DataGridView_Opt.MultiSelect = false;
+            DataGridView_Opt.Name = "DataGridView_Opt";
+            DataGridView_Opt.ReadOnly = true;
+            DataGridView_Opt.RowHeadersVisible = false;
+            DataGridView_Opt.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
+            DataGridView_Opt.Size = new Size(510, 209);
+            DataGridView_Opt.TabIndex = 38;
+            DataGridView_Opt.CellContentDoubleClick += DataGridView_Opt_CellContentDoubleClick;
+            // 
+            // icon
+            // 
+            icon.HeaderText = "图标";
+            icon.Name = "icon";
+            icon.ReadOnly = true;
+            // 
+            // name
+            // 
+            name.HeaderText = "名称";
+            name.Name = "name";
+            name.ReadOnly = true;
+            // 
+            // desc
+            // 
+            desc.AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill;
+            desc.HeaderText = "描述";
+            desc.Name = "desc";
+            desc.ReadOnly = true;
+            // 
             // splitContainer1
             // 
             splitContainer1.Dock = DockStyle.Fill;
@@ -421,7 +478,7 @@ namespace QuickLinker
             splitContainer1.Panel2.Controls.Add(Btn_Ok);
             splitContainer1.Panel2.Controls.Add(Btn_Clear);
             splitContainer1.Size = new Size(518, 272);
-            splitContainer1.SplitterDistance = 241;
+            splitContainer1.SplitterDistance = 239;
             splitContainer1.SplitterWidth = 1;
             splitContainer1.TabIndex = 1;
             // 
@@ -474,6 +531,8 @@ namespace QuickLinker
             tabPage1.ResumeLayout(false);
             tabPage1.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)PictureBox_Icon).EndInit();
+            tabPage2.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)DataGridView_Opt).EndInit();
             splitContainer1.Panel1.ResumeLayout(false);
             splitContainer1.Panel2.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)splitContainer1).EndInit();
@@ -517,5 +576,10 @@ namespace QuickLinker
         private Button Btn_Cancel;
         private Button Btn_Ok;
         private Button Btn_Clear;
+        private TabPage tabPage2;
+        private DataGridView DataGridView_Opt;
+        private DataGridViewImageColumn icon;
+        private DataGridViewTextBoxColumn name;
+        private DataGridViewTextBoxColumn desc;
     }
 }

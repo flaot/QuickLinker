@@ -9,8 +9,8 @@ namespace QuickLinker.Systems
 {
     public interface IPluginSystem : ISystem
     {
-        public void LoadAll();
-        public void UnLoadAll();
+        void LoadAll();
+        void UnLoadAll();
         /// <summary> 获取插件附带的菜单 </summary>
         List<MenuItem.Info> GetMenuInfos(int menuType);
         List<PluginObj> Plugins { get; }
@@ -48,6 +48,7 @@ namespace QuickLinker.Systems
                     continue;
                 PluginObj pluginObj = new PluginObj();
                 pluginObj.menuItems = new List<MenuItem.Info>();
+                pluginObj.commands = new List<IPluginCommand>();
                 pluginObj.model = model;
                 pluginObj.dllPath = Path.Combine(pluginDir, Path.GetFileName(pluginDir) + ".dll");
                 if (pluginObj != null)

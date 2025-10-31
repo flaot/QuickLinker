@@ -9,6 +9,8 @@ namespace QuickLinker.QuickLaunch.Models
 {
     public class Entity : ICloneable, IItem
     {
+        /// <summary> 唯一标识 </summary>
+        public Guid guid;
         /// <summary> 下标(位置) </summary>
         public int index;
         /// <summary> 标识 </summary>
@@ -74,6 +76,13 @@ namespace QuickLinker.QuickLaunch.Models
         public override string ToString()
         {
             return string.Format("{0}-{1}", desc, index);
+        }
+
+        public static Entity Create()
+        {
+            Entity entity = new Entity();
+            entity.guid = Guid.NewGuid();
+            return entity;
         }
     }
 

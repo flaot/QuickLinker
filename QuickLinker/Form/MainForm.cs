@@ -106,6 +106,7 @@ namespace QuickLinker
             config.disableAffinity.RegisterWithInitValue(b => SetWindowDisplayAffinity(Handle, (uint)(b ? 0x11 : 0)));
             config.showInTray.RegisterWithInitValue(b => { ShowInTaskbar = b; NotifyIcon.Visible = !b; });
             config.launch.RegisterWithInitValue(this.GetUtility<LaunchUtil>().Set);
+            config.registerURI.RegisterWithInitValue(this.GetUtility<IURIUtil>().Set);
             config.fontStates.RegisterWithInitValue(t => StatusStrip.Font = new Font(t.familyName, t.pointSize, GraphicsUnit.Point));
             config.fontGroupTitle.RegisterWithInitValue(t => tabControl1.Font = new Font(t.familyName, t.pointSize, GraphicsUnit.Point));
             TypeEventSystem.Global.Register<RefreshStateTextEvent>(Event_RefreshStateText);
@@ -118,13 +119,6 @@ namespace QuickLinker
             _dateTimer.Tick += Event_RefreshShowTime;
             _dateTimer.Interval = 120;
             _dateTimer.Start();
-
-            if (config.appHideType.Value == AppHideType.AutoMinimize)
-                Hide();
-
-
-            if (config.startbutton.Value)
-                this.SendCommand(new QuickEntityAutoStartCommand());
 
             var system = this.GetSystem<QuickEntitySystem>();
             var hotKeyMgr = this.GetSystem<HotKeyManager>();
@@ -146,6 +140,13 @@ namespace QuickLinker
             var pluginSystem = this.GetSystem<IPluginSystem>();
             pluginSystem.LoadAll();
             menuSystem.RequestResetAll();
+            this.GetSystem<ICommandSystem>().RequestResetAll();
+
+            if (config.appHideType.Value == AppHideType.AutoMinimize)
+                Hide();
+
+            if (config.startbutton.Value)
+                this.SendCommand(new QuickEntityAutoStartCommand());
         }
         private void MainForm_FormClosing(object sender, FormClosingEventArgs e)
         {
@@ -311,7 +312,7 @@ namespace QuickLinker
                 return;
             Selection.activeEntity = panel.Entity;
             TypeEventSystem.Global.Send(new ShowItemMenuPreEvent());
-            if (Selection.activeEntity == null)
+            if (Selection.activeContext == null)
                 return;
             var menuSystem = this.GetSystem<IMenuSystem>();
             var menuType = (int)MenuType.Page;

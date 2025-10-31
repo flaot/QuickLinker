@@ -1,15 +1,17 @@
-﻿using Microsoft.VisualBasic;
-using QFramework;
-using QuickLinker.Model;
+﻿using QFramework;
+using QuickLinker.Plugin;
 using QuickLinker.Properties;
 using QuickLinker.QuickLaunch.Command;
+using QuickLinker.QuickLaunch.Constant;
 using QuickLinker.QuickLaunch.Models;
 using QuickLinker.QuickLaunch.Utils;
+using QuickLinker.Systems;
 using QuickLinker.Utils;
 using System;
 using System.Drawing;
-using System.Drawing.Drawing2D;
 using System.IO;
+using System.Reflection;
+using System.Threading.Channels;
 using System.Windows.Forms;
 using AppConfig = QuickLinker.Model.AppConfig;
 using Constants = QuickLinker.QuickLaunch.Constant.Constants;
@@ -33,8 +35,26 @@ namespace QuickLinker
             Btn_BrowsePath.Image = ImageUtil.ScaleBitmap(ImageUtil.Base64ToBitmapImage(Constants.DEFAULT_DIR_IMAGE_BASE64), Btn_BrowsePath.Width, Btn_BrowsePath.Height);
             Btn_BrowseArgFile.Image = ImageUtil.ScaleBitmap(ImageUtil.Base64ToBitmapImage(Constants.DEFAULT_DIR_IMAGE_BASE64), Btn_BrowseArgFile.Width, Btn_BrowseArgFile.Height);
             Btn_BrowseFolder.Image = ImageUtil.ScaleBitmap(ImageUtil.Base64ToBitmapImage(Constants.DEFAULT_DIR_IMAGE_BASE64), Btn_BrowseFolder.Width, Btn_BrowseFolder.Height);
+            Txt_HotKey.KeyUp += HotKeyUtil.Control_KeyUp;
+            Txt_HotKey.KeyDown += HotKeyUtil.Control_KeyDown;
+            var commandSystem = this.GetSystem<ICommandSystem>();
+            var allCommand = commandSystem.AllCommand;
+            DataGridView_Opt.RowCount = allCommand.Length;
+            for (int row = 0; row < DataGridView_Opt.RowCount; row++)
+            {
+                var rowObj = DataGridView_Opt.Rows[row];
+                rowObj.Tag = commandSystem.CommandInfo(allCommand[row]);
+                RefreshDataGridViewByRow(rowObj);
+            }
         }
-  
+        private void RefreshDataGridViewByRow(DataGridViewRow rowObj)
+        {
+            var commandObj = (IPluginCommand)rowObj.Tag;
+            //rowObj.Cells[Head_Name.Icon].Value = commandObj.Icon;
+            rowObj.Cells[Head_Name.Name].Value = commandObj.Name;
+            rowObj.Cells[Head_Name.Desc].Value = commandObj.Description;
+        }
+
         public static DialogResult Show(TPanel tPanel)
         {
             DialogResult dialogResult;
@@ -61,9 +81,6 @@ namespace QuickLinker
         private void SetTPanel(TPanel tPanel)
         {
             var appConfig = this.GetModel<AppConfig>();
-            Txt_HotKey.KeyUp += HotKeyUtil.Control_KeyUp;
-            Txt_HotKey.KeyDown += HotKeyUtil.Control_KeyDown;
-            Txt_HotKey.KeyDown += Txt_HotKey_KeyDown;
             _OptIndex = tPanel.Index;
             int pageGridCount = appConfig.gridColumn.Value * appConfig.gridRow.Value;
             var groupNum = _OptIndex / pageGridCount;
@@ -87,7 +104,7 @@ namespace QuickLinker
             }
             else
             {
-                _tempEntity = new Entity();
+                _tempEntity = Entity.Create();
                 _tempEntity.index = -1;
                 Btn_Ok.Enabled = false;
                 Btn_Clear.Enabled = false;
@@ -176,6 +193,7 @@ namespace QuickLinker
             _tempEntity.windowStyle = (WindowStyle)ComboBox_WindowStyle.SelectedIndex;
             _tempEntity.priorityClass = (PriorityClass)ComboBox_PriorityClass.SelectedIndex;
             _tempEntity.launchOnStartup = CheckBox_AutoRun.Checked;
+            _tempEntity.actionHotKey = Txt_HotKey.Text;
 
             if (_inputEntity != null)
                 this.SendCommand(new QuickEntityRemoveCommand() { index = _inputEntity.index });
@@ -192,7 +210,6 @@ namespace QuickLinker
             _inputEntity = null;
             SetEntitiy(null, true);
         }
-
         private void Btn_Parse_Click(object sender, EventArgs e)
         {
             string filePath = Txt_TargetPostion.Text.Trim();
@@ -205,10 +222,29 @@ namespace QuickLinker
             if (IconForm.Show(_tempEntity))
                 SetEntitiy(_tempEntity, false);
         }
-        public void Txt_HotKey_KeyDown(object sender, KeyEventArgs e)
+
+        private class Head_Name
         {
-            var textBox = sender as Control;
-            _tempEntity.actionHotKey = Txt_HotKey.Text;
+            public const string Icon = "icon";
+            public const string Name = "name";
+            public const string Desc = "desc";
+        }
+
+        private void DataGridView_Opt_CellContentDoubleClick(object sender, DataGridViewCellEventArgs e)
+        {
+            if (DataGridView_Opt.SelectedRows.Count <= 0)
+                return;
+            var rowObj = DataGridView_Opt.SelectedRows[0];
+            var commandObj = (IPluginCommand)rowObj.Tag;
+            string protocol = this.GetUtility<IURIUtil>().Protocol;
+            Txt_TargetPostion.Text = protocol + ':' + commandObj.GetType().FullName;
+            Txt_Args.Text = string.Empty;
+            Txt_WorkFolder.Text = string.Empty;
+            Txt_Desc.Text = commandObj.Description;
+            _tempEntity.ImagePath = commandObj.Icon;
+            PictureBox_Icon.Image = ImageUtil.GetBitmapIconByPath(commandObj.Icon);
+            _tempEntity.iconType = OpenType.URL;
+            tabControl1.SelectedIndex = 0;
         }
     }
 }

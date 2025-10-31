@@ -41,7 +41,8 @@ namespace QuickLinker.QuickLaunch.Utils
                         p.StartInfo.FileName = icon.Path;
                         if (!string.IsNullOrWhiteSpace(startArg))
                             p.StartInfo.Arguments = startArg;
-
+                        if(icon.iconType == OpenType.URL)
+                            p.StartInfo.UseShellExecute = true;
                         if (icon.iconType == OpenType.OTHER)
                         {
                             string fileOrFolder = GetFullPath(icon);

@@ -1,5 +1,4 @@
 ﻿using QFramework;
-using QuickLinker.QuickLaunch.Constant;
 using QuickLinker.QuickLaunch.Models;
 using QuickLinker.QuickLaunch.Utils;
 using QuickLinker.Systems;
@@ -30,7 +29,9 @@ namespace QuickLinker.QuickLaunch.Systems
             if (entitieCache == null)
                 entitieCache = new EntityCache();
             foreach (var item in entitieCache.entities)
+            { 
                 item.bitmapImage = ImageUtil.ByteArrToImage(item.imageByteArr);
+            }
         }
 
         /// <summary>
@@ -55,7 +56,6 @@ namespace QuickLinker.QuickLaunch.Systems
             //从小到大 查找空位
             if (index < 0)
                 index = FindZeroIndex();
-
             entity.index = index;
             var insertIndex = FindInsertIndex(index);
             entitieCache.entities.Insert(insertIndex, entity);
@@ -263,6 +263,16 @@ namespace QuickLinker.QuickLaunch.Systems
                     reault.Add(entity);
             }
             return reault;
+        }
+
+        public Entity QueryWithGuid(Guid guid)
+        {
+            foreach (var entity in entitieCache.entities)
+            {
+                if (entity.guid == guid)
+                    return entity;
+            }
+            return null;
         }
 
         public int Compare(Entity x, Entity y)

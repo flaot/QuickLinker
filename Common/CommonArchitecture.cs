@@ -12,6 +12,7 @@ namespace QuickLinker
 
             this.RegisterSystem<IStroeSystem>(new StoreSystem());
             this.RegisterSystem<IMenuSystem>(new MenuSystem());
+            this.RegisterSystem<ICommandSystem>(new CommandSystem());
             this.RegisterSystem<IPluginSystem>(new PluginSystem());
 
             this.RegisterUtility<IBasePath>(new BasePathUtility());

@@ -35,6 +35,8 @@ namespace QuickLinker.Model
         public BindableProperty<bool> showMouse = new BindableProperty<bool>(true);
         /// <summary> 开机启动 </summary>
         public BindableProperty<bool> launch = new BindableProperty<bool>();
+        /// <summary> 注册URI </summary>
+        public BindableProperty<bool> registerURI = new BindableProperty<bool>();
         /// <summary> 处理启动按钮 </summary>
         public BindableProperty<bool> startbutton = new BindableProperty<bool>();
 

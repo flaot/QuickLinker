@@ -131,6 +131,7 @@ namespace QuickLinker
             linkLabel1 = new LinkLabel();
             label25 = new Label();
             label23 = new Label();
+            checkBox19 = new CheckBox();
             tabControl1.SuspendLayout();
             tabPage1.SuspendLayout();
             tabPage2.SuspendLayout();
@@ -167,6 +168,7 @@ namespace QuickLinker
             // tabPage1
             // 
             tabPage1.BackColor = Color.Transparent;
+            tabPage1.Controls.Add(checkBox19);
             tabPage1.Controls.Add(label28);
             tabPage1.Controls.Add(checkBox18);
             tabPage1.Controls.Add(checkBox10);
@@ -211,7 +213,7 @@ namespace QuickLinker
             // checkBox10
             // 
             checkBox10.AutoSize = true;
-            checkBox10.Location = new Point(236, 159);
+            checkBox10.Location = new Point(236, 155);
             checkBox10.Name = "checkBox10";
             checkBox10.Size = new Size(115, 21);
             checkBox10.TabIndex = 12;
@@ -1134,6 +1136,16 @@ namespace QuickLinker
             label23.TabIndex = 0;
             label23.Text = "QQ";
             // 
+            // checkBox19
+            // 
+            checkBox19.AutoSize = true;
+            checkBox19.Location = new Point(236, 179);
+            checkBox19.Name = "checkBox19";
+            checkBox19.Size = new Size(89, 21);
+            checkBox19.TabIndex = 18;
+            checkBox19.Text = "注册URI(&U)";
+            checkBox19.UseVisualStyleBackColor = true;
+            // 
             // PreferencesFrom
             // 
             AutoScaleDimensions = new SizeF(7F, 17F);
@@ -1264,5 +1276,6 @@ namespace QuickLinker
         private Label label32;
         private Button Btn_FontDefault;
         private Label Txt_FontChangeTip;
+        private CheckBox checkBox19;
     }
 }
