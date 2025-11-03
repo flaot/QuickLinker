@@ -169,7 +169,17 @@ namespace QuickLinker.QuickLaunch.Systems
             Entity entity = Find(index);
             if (entity == null)
                 return false;
-            ProcessUtil.StartIconEntity(entity);
+            if (entity.iconType == Constant.OpenType.OTHER)
+                this.GetUtility<IProcessUtil>().RunEntity(entity);
+            else
+            {
+                string protocol = this.GetUtility<IURIUtil>().Protocol;
+                if (entity.Path.StartsWith($"{protocol}:"))
+                {
+                    Uri uri = new Uri(entity.Path);
+                    this.GetSystem<ICommandSystem>().RunCommand(uri.LocalPath);
+                }
+            }
             OpenEntityEvent.Trigger(entity);
             return false;
         }
@@ -179,7 +189,7 @@ namespace QuickLinker.QuickLaunch.Systems
             Entity entity = Find(index);
             if (entity == null)
                 return false;
-            ProcessUtil.ShowInExplore(entity);
+            this.GetUtility<IProcessUtil>().ShowInExplore(entity);
             return false;
         }
         //执行跟随启动的应用
@@ -187,9 +197,20 @@ namespace QuickLinker.QuickLaunch.Systems
         {
             for (int i = 0; i < entitieCache.entities.Count; i++)
             {
-                var item = entitieCache.entities[i];
-                if (item.launchOnStartup)
-                    ProcessUtil.StartIconEntity(item);
+                var entity = entitieCache.entities[i];
+                if (!entity.launchOnStartup)
+                    continue;
+                if (entity.iconType == Constant.OpenType.OTHER)
+                    this.GetUtility<IProcessUtil>().RunEntity(entity);
+                else
+                {
+                    string protocol = this.GetUtility<IURIUtil>().Protocol;
+                    if (entity.Path.StartsWith($"{protocol}:"))
+                    {
+                        Uri uri = new Uri(entity.Path);
+                        this.GetSystem<ICommandSystem>().RunCommand(uri.LocalPath);
+                    }
+                }
             }
         }
         internal void Save()

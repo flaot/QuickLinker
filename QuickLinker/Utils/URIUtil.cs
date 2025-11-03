@@ -1,5 +1,6 @@
 ﻿using Microsoft.Win32;
 using QFramework;
+using QuickLinker.QuickLaunch.Utils;
 using System;
 using System.Reflection;
 using System.Text;
@@ -7,11 +8,6 @@ using System.Windows.Forms;
 
 namespace QuickLinker.Utils
 {
-    public interface IURIUtil : IUtility
-    {
-        string Protocol { get; }
-        void Set(bool enable);
-    }
     internal class URIUtil : IURIUtil
     {
         public string Protocol { get; } = Assembly.GetExecutingAssembly().GetName().Name.ToLower();

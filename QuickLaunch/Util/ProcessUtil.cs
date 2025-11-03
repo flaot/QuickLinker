@@ -1,4 +1,5 @@
-﻿using QuickLinker.QuickLaunch.Constant;
+﻿using QFramework;
+using QuickLinker.QuickLaunch.Constant;
 using QuickLinker.QuickLaunch.Models;
 using System;
 using System.Diagnostics;
@@ -6,86 +7,74 @@ using System.IO;
 
 namespace QuickLinker.QuickLaunch.Utils
 {
-    public class ProcessUtil
+    public interface IProcessUtil : IUtility
     {
-        public static void StartIconEntity(Entity iconInfo)
+        void RunEntity(Entity iconInfo);
+        void ShowInExplore(Entity iconInfo);
+    }
+    public class ProcessUtil : IProcessUtil
+    {
+        public void RunEntity(Entity iconInfo)
         {
-            if (iconInfo.adminStartUp)
-            {
-                ProcessUtil.StartIconApp(iconInfo, IconStartType.ADMIN_STARTUP);
-            }
-            else
-            {
-                StartIconApp(iconInfo, IconStartType.DEFAULT_STARTUP);
-            }
+            StartIconApp(iconInfo, iconInfo.adminStartUp ?
+                IconStartType.ADMIN_STARTUP : IconStartType.DEFAULT_STARTUP);
         }
-        public static void ShowInExplore(Entity iconInfo)
+        public void ShowInExplore(Entity iconInfo)
         {
             StartIconApp(iconInfo, IconStartType.SHOW_IN_EXPLORE);
         }
 
-        private static void StartIconApp(Entity icon, IconStartType type)
+        private void StartIconApp(Entity icon, IconStartType type)
         {
-
             try
             {
                 using (Process p = new Process())
                 {
-                    string startArg = icon.startArg;
-                    if (startArg != null && Constants.SYSTEM_ICONS.ContainsKey(startArg))
+                    if (type != IconStartType.SHOW_IN_EXPLORE)
+                        p.StartInfo.UseShellExecute = true;
+
+                    p.StartInfo.FileName = icon.Path;
+                    if (!string.IsNullOrWhiteSpace(icon.startArg))
+                        p.StartInfo.Arguments = icon.startArg;
+
+                    if (icon.iconType != OpenType.OTHER)
                     {
-                        StartSystemApp(startArg, type);
-                    }
-                    else
-                    {
-                        p.StartInfo.FileName = icon.Path;
-                        if (!string.IsNullOrWhiteSpace(startArg))
-                            p.StartInfo.Arguments = startArg;
-                        if(icon.iconType == OpenType.URL)
-                            p.StartInfo.UseShellExecute = true;
-                        if (icon.iconType == OpenType.OTHER)
-                        {
-                            string fileOrFolder = GetFullPath(icon);
-                            if (string.IsNullOrEmpty(fileOrFolder))
-                            {
-                                //HandyControl.Controls.Growl.WarningGlobal("程序启动失败(文件路径不存在或已删除)!");
-                                return;
-                            }
-                            p.StartInfo.FileName = fileOrFolder;
-                            p.StartInfo.WindowStyle = WindowsStyle2Process(icon.windowStyle);
-                            if (!string.IsNullOrEmpty(icon.workFolder) && Directory.Exists(icon.workFolder))
-                                p.StartInfo.WorkingDirectory = icon.workFolder;
-                            else
-                                p.StartInfo.WorkingDirectory = WorkFolder(p.StartInfo.FileName);
-                            switch (type)
-                            {
-                                case IconStartType.ADMIN_STARTUP:
-                                    p.StartInfo.Verb = "runas";
-                                    p.StartInfo.UseShellExecute = true;//不使用操作系统外壳程序启动进程
-                                    break;
-                                case IconStartType.DEFAULT_STARTUP:
-                                    p.StartInfo.UseShellExecute = true;
-                                    break;
-                                case IconStartType.SHOW_IN_EXPLORE:
-                                    p.StartInfo.Arguments = "/e,/select," + p.StartInfo.FileName;
-                                    p.StartInfo.FileName = "Explorer.exe";
-                                    break;
-                            }
-                        }
                         if (p.Start())
-                        {
-                            //以正确启动应用的路径为准
-                            if (icon.iconType == OpenType.OTHER)
-                            {
-                                if (type != IconStartType.SHOW_IN_EXPLORE 
-                                    && !string.Equals(p.StartInfo.FileName, icon.Path))
-                                { 
-                                    icon.Path = p.StartInfo.FileName;
-                                    icon.needSave.Value = true;
-                                }
-                            }
                             p.PriorityClass = PriorityClass2Process(icon.priorityClass);
+                        return;
+                    }
+                    string fileOrFolder = GetFullPath(icon);
+                    if (string.IsNullOrEmpty(fileOrFolder))
+                    {
+                        //HandyControl.Controls.Growl.WarningGlobal("程序启动失败(文件路径不存在或已删除)!");
+                        return;
+                    }
+                    p.StartInfo.FileName = fileOrFolder;
+                    p.StartInfo.WindowStyle = WindowsStyle2Process(icon.windowStyle);
+                    if (!string.IsNullOrEmpty(icon.workFolder) && Directory.Exists(icon.workFolder))
+                        p.StartInfo.WorkingDirectory = icon.workFolder;
+                    else
+                        p.StartInfo.WorkingDirectory = WorkFolder(p.StartInfo.FileName);
+                    switch (type)
+                    {
+                        case IconStartType.ADMIN_STARTUP:
+                            p.StartInfo.Verb = "runas";
+                            break;
+                        case IconStartType.SHOW_IN_EXPLORE:
+                            p.StartInfo.Arguments = "/e,/select," + p.StartInfo.FileName;
+                            p.StartInfo.FileName = "Explorer.exe";
+                            break;
+                    }
+                    if (p.Start())
+                    {
+                        //以正确启动应用的路径为准
+                        if (type != IconStartType.SHOW_IN_EXPLORE
+                            && !string.Equals(p.StartInfo.FileName, icon.Path))
+                        {
+                            icon.Path = p.StartInfo.FileName;
+                            icon.needSave.Value = true;
                         }
+                        p.PriorityClass = PriorityClass2Process(icon.priorityClass);
                     }
                 }
             }
@@ -98,7 +87,7 @@ namespace QuickLinker.QuickLaunch.Utils
         /// <summary>
         /// 获取文件或目录的绝对路径 优先级:绝对路径 > 相对路径
         /// </summary>
-        private static string GetFullPath(Entity icon)
+        private string GetFullPath(Entity icon)
         {
             if (File.Exists(icon.Path) || Directory.Exists(icon.Path))
                 return Path.GetFullPath(icon.Path);
@@ -111,7 +100,7 @@ namespace QuickLinker.QuickLaunch.Utils
         /// <summary>
         /// 获取文件或目录的工作目录
         /// </summary>
-        private static string WorkFolder(string fullPath)
+        private string WorkFolder(string fullPath)
         {
             if (File.Exists(fullPath))
                 return Path.GetDirectoryName(fullPath);
@@ -120,7 +109,7 @@ namespace QuickLinker.QuickLaunch.Utils
                 filePath = filePath.Substring(0, filePath.Length - 1);
             return filePath;
         }
-        private static bool StartSystemApp(string startArg, IconStartType type)
+        private bool StartSystemApp(string startArg, IconStartType type)
         {
             if (type == IconStartType.SHOW_IN_EXPLORE)
             {
@@ -184,7 +173,7 @@ namespace QuickLinker.QuickLaunch.Utils
             }
             return true;
         }
-        private static ProcessWindowStyle WindowsStyle2Process(WindowStyle windowStyle)
+        private ProcessWindowStyle WindowsStyle2Process(WindowStyle windowStyle)
         {
             switch (windowStyle)
             {
@@ -195,7 +184,7 @@ namespace QuickLinker.QuickLaunch.Utils
                 default: throw new NotImplementedException();
             }
         }
-        private static ProcessPriorityClass PriorityClass2Process(PriorityClass priorityClass)
+        private ProcessPriorityClass PriorityClass2Process(PriorityClass priorityClass)
         {
             switch (priorityClass)
             {

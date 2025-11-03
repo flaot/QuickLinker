@@ -1,5 +1,6 @@
 ﻿using QuickLinker.Model;
 using QuickLinker.QuickLaunch.Systems;
+using QuickLinker.QuickLaunch.Utils;
 using QuickLinker.Systems;
 using QuickLinker.Utils;
 

@@ -25,12 +25,19 @@ namespace QuickLinker
             string rootPath = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location.Replace(".dll", ".exe"));
             System.Environment.CurrentDirectory = rootPath;
 
-            var appArchitecture = AppArchitecture.Interface;
-            var appConfig = appArchitecture.GetModel<AppConfig>();
             if (args.Length > 0 && args[0] == "--")
             {
+                Selection.isBatchMode = true;
+                var appArchitecture = AppArchitecture.Interface;
+                var appConfig = appArchitecture.GetModel<AppConfig>();
                 Uri uri = new Uri(args[1]);
                 var system = appArchitecture.GetSystem<QuickEntitySystem>();
+                //初始化插件
+                appArchitecture.GetSystem<IPluginSystem>().LoadAll();
+                appArchitecture.GetSystem<IMenuSystem>().RequestResetAll();
+                var commandSystem = appArchitecture.GetSystem<ICommandSystem>();
+                commandSystem.RequestResetAll();
+                //执行命令
                 if (Guid.TryParse(uri.LocalPath, out var guid))
                 {
                     var entity = system.QueryWithGuid(guid);
@@ -51,30 +58,31 @@ namespace QuickLinker
                 else
                 {
                     //调用插件命令
-                    var pluginSystem = appArchitecture.GetSystem<IPluginSystem>();
-                    pluginSystem.LoadAll();
-                    var commandSystem = appArchitecture.GetSystem<ICommandSystem>();
-                    commandSystem.RequestResetAll();
                     commandSystem.RunCommand(uri.LocalPath);
                 }
                 return;
             }
-            if (appConfig.blockRepeatRun.Value)
+            else
             {
-                var singleApp = AppArchitecture.Interface.GetUtility<SingleAppUtil>();
-                Process process = singleApp.RunningInstance();
-                if (process != null)
+                var appArchitecture = AppArchitecture.Interface;
+                var appConfig = appArchitecture.GetModel<AppConfig>();
+                if (appConfig.blockRepeatRun.Value)
                 {
-                    singleApp.HandleRunningInstance(process);
-                    return;
+                    var singleApp = AppArchitecture.Interface.GetUtility<SingleAppUtil>();
+                    Process process = singleApp.RunningInstance();
+                    if (process != null)
+                    {
+                        singleApp.HandleRunningInstance(process);
+                        return;
+                    }
                 }
-            }
-            appConfig.TirggerSaveEvent.Register(Event_TirggerSave);
+                appConfig.TirggerSaveEvent.Register(Event_TirggerSave);
 
-            // To customize application configuration such as set high DPI settings or default font,
-            // see https://aka.ms/applicationconfiguration.
-            ApplicationConfiguration.Initialize();
-            Application.Run(new MainForm());
+                // To customize application configuration such as set high DPI settings or default font,
+                // see https://aka.ms/applicationconfiguration.
+                ApplicationConfiguration.Initialize();
+                Application.Run(new MainForm());
+            }
         }
 
         private static void Event_TirggerSave()
