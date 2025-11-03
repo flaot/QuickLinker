@@ -119,8 +119,7 @@ namespace QuickLinker.QuickLaunch.Utils
                 }
 
             }
-            string shellFile = Path.Combine(Environment.SystemDirectory, "SHELL32.dll");
-            return ScaleBitmap(GetBitmapIconByPath(shellFile, 224), 256, 256);
+            return ImageUtil.Base64ToBitmapImage(Constants.DEFAULT_ICON_NULL_BASE64);
         }
         
         /// <summary>

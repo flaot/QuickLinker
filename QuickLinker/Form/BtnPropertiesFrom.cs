@@ -50,7 +50,7 @@ namespace QuickLinker
         private void RefreshDataGridViewByRow(DataGridViewRow rowObj)
         {
             var commandObj = (IPluginCommand)rowObj.Tag;
-            //rowObj.Cells[Head_Name.Icon].Value = commandObj.Icon;
+            rowObj.Cells[Head_Name.Icon].Value = ImageUtil.GetBitmapIconByPath(commandObj.Icon);
             rowObj.Cells[Head_Name.Name].Value = commandObj.Name;
             rowObj.Cells[Head_Name.Desc].Value = commandObj.Description;
         }

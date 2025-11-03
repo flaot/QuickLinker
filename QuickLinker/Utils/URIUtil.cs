@@ -3,16 +3,17 @@ using QFramework;
 using QuickLinker.QuickLaunch.Utils;
 using System;
 using System.Reflection;
-using System.Text;
 using System.Windows.Forms;
 
 namespace QuickLinker.Utils
 {
     internal class URIUtil : IURIUtil
     {
-        public string Protocol { get; } = Assembly.GetExecutingAssembly().GetName().Name.ToLower();
-        public static string ApplicationExecutable { get; } = Assembly.GetExecutingAssembly().Location.Replace(".dll", ".exe");
-        private static readonly RegistryView RegView = Environment.Is64BitOperatingSystem ? RegistryView.Registry32 : RegistryView.Default;
+        private string _protocol = Assembly.GetExecutingAssembly().GetName().Name.ToLower();
+        public string Protocol => _protocol;
+        private string _applicationExecutable = Assembly.GetExecutingAssembly().Location.Replace(".dll", ".exe");
+        public string ApplicationExecutable => _applicationExecutable;
+        private readonly RegistryView RegView = Environment.Is64BitOperatingSystem ? RegistryView.Registry32 : RegistryView.Default;
         public void Set(bool enable)
         {
             if (CheckURI() == enable)
