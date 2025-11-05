@@ -206,7 +206,8 @@ namespace QuickLinker
             }
             if (keyData == Keys.Apps)
             {
-                var tPanel = this.ActiveControl as TPanel;
+                var tPanel = ActiveControl as TPanel;
+                Cursor.Position = ActiveControl.PointToScreen((Point)(ActiveControl.Size / 2));
                 if (tPanel == null)
                 {
                     ShowTabMenu();
