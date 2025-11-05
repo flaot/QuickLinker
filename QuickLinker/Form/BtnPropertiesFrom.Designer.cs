@@ -91,7 +91,7 @@ namespace QuickLinker
             tabControl1.Location = new Point(0, 0);
             tabControl1.Name = "tabControl1";
             tabControl1.SelectedIndex = 0;
-            tabControl1.Size = new Size(518, 245);
+            tabControl1.Size = new Size(518, 230);
             tabControl1.TabIndex = 0;
             // 
             // tabPage1
@@ -128,7 +128,7 @@ namespace QuickLinker
             tabPage1.Location = new Point(4, 26);
             tabPage1.Name = "tabPage1";
             tabPage1.Padding = new Padding(3);
-            tabPage1.Size = new Size(510, 215);
+            tabPage1.Size = new Size(510, 200);
             tabPage1.TabIndex = 0;
             tabPage1.Text = "运行一个程序";
             // 
@@ -424,7 +424,7 @@ namespace QuickLinker
             tabPage2.Controls.Add(DataGridView_Opt);
             tabPage2.Location = new Point(4, 26);
             tabPage2.Name = "tabPage2";
-            tabPage2.Size = new Size(510, 215);
+            tabPage2.Size = new Size(510, 200);
             tabPage2.TabIndex = 1;
             tabPage2.Text = "执行一个命令";
             // 
@@ -452,7 +452,7 @@ namespace QuickLinker
             DataGridView_Opt.ReadOnly = true;
             DataGridView_Opt.RowHeadersVisible = false;
             DataGridView_Opt.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
-            DataGridView_Opt.Size = new Size(510, 215);
+            DataGridView_Opt.Size = new Size(510, 200);
             DataGridView_Opt.TabIndex = 0;
             DataGridView_Opt.CellContentDoubleClick += DataGridView_Opt_CellContentDoubleClick;
             // 
@@ -486,7 +486,6 @@ namespace QuickLinker
             // splitContainer1
             // 
             splitContainer1.Dock = DockStyle.Fill;
-            splitContainer1.FixedPanel = FixedPanel.Panel2;
             splitContainer1.IsSplitterFixed = true;
             splitContainer1.Location = new Point(0, 0);
             splitContainer1.Name = "splitContainer1";
@@ -502,7 +501,7 @@ namespace QuickLinker
             splitContainer1.Panel2.Controls.Add(Btn_Ok);
             splitContainer1.Panel2.Controls.Add(Btn_Clear);
             splitContainer1.Size = new Size(518, 272);
-            splitContainer1.SplitterDistance = 245;
+            splitContainer1.SplitterDistance = 230;
             splitContainer1.SplitterWidth = 1;
             splitContainer1.TabIndex = 1;
             // 
