@@ -44,29 +44,6 @@ namespace QuickLinker
         {
             InitializeComponent();
         }
-        public static string MakeRelativePath(string fromPath, string toPath)
-        {
-            string relativePath = null;
-            try
-            {
-                if (string.IsNullOrEmpty(toPath) || string.IsNullOrEmpty(fromPath)) return null;
-                Uri file = new Uri(@toPath);
-                // Must end in a slash to indicate folder
-                Uri folder = new Uri(@fromPath);
-                relativePath =
-                Uri.UnescapeDataString(
-                    folder.MakeRelativeUri(file)
-                        .ToString()
-                        .Replace('/', Path.DirectorySeparatorChar)
-                    );
-            }
-            catch (Exception ex)
-            {
-                LogKit.E(ex, "建立相对路径出错:fromPath:" + fromPath + ",toPath:" + toPath);
-            }
-            return relativePath;
-        }
-
         public IArchitecture GetArchitecture() => AppArchitecture.Interface;
         private void MainForm_Load(object sender, EventArgs e)
         {
@@ -227,6 +204,20 @@ namespace QuickLinker
                 nextSelect.Focus();
                 return true;
             }
+            if (keyData == Keys.Apps)
+            {
+                var tPanel = this.ActiveControl as TPanel;
+                if (tPanel == null)
+                {
+                    ShowTabMenu();
+                }
+                else
+                { 
+                    Selection.activeContext = tPanel;
+                    TypeEventSystem.Global.Send(new ClickMenuTPanelEvent());
+                }
+                return true;
+            }
             return base.ProcessCmdKey(ref msg, keyData);
         }
 
@@ -258,20 +249,11 @@ namespace QuickLinker
                 formMove = false;//停止移动
             }
         }
-        private void TabControl1_MouseUp(object sender, MouseEventArgs e)
+        private void TabControl1_MouseUp(object _, MouseEventArgs e)
         {
             if (e.Button != MouseButtons.Right)
                 return;
-            var config = this.GetModel<AppConfig>();
-            var menuSystem = this.GetSystem<IMenuSystem>();
-            var menuType = (int)MenuType.Tab;
-            menuSystem.SetEnable(menuType, "左移标签(&L)", tabControl1.SelectedIndex != 0);
-            menuSystem.SetEnable(menuType, "右移标签(&R)", tabControl1.SelectedIndex != tabControl1.TabPages.Count - 1);
-            menuSystem.SetEnable(menuType, "删除(&D)", tabControl1.TabPages.Count > 1);
-            menuSystem.SetChecked(menuType, "外观/标准(&N)", config.tabAppearance.Value == TabAppearance.Normal);
-            menuSystem.SetChecked(menuType, "外观/按钮(&B)", config.tabAppearance.Value == TabAppearance.Buttons);
-            menuSystem.SetChecked(menuType, "外观/平面按钮(&F)", config.tabAppearance.Value == TabAppearance.FlatButtons);
-            this.GetSystem<IMenuSystem>().Show(menuType, MousePosition.X, MousePosition.Y);
+            ShowTabMenu();
         }
         private void TabControl1_SelectedIndexChanged(object sender, EventArgs e)
         {
@@ -285,8 +267,21 @@ namespace QuickLinker
         {
             (sender as TabControl).SelectedTab?.Focus();
         }
+        public void ShowTabMenu()
+        {
+            var config = this.GetModel<AppConfig>();
+            var menuSystem = this.GetSystem<IMenuSystem>();
+            var menuType = (int)MenuType.Tab;
+            menuSystem.SetEnable(menuType, "左移标签(&L)", tabControl1.SelectedIndex != 0);
+            menuSystem.SetEnable(menuType, "右移标签(&R)", tabControl1.SelectedIndex != tabControl1.TabPages.Count - 1);
+            menuSystem.SetEnable(menuType, "删除(&D)", tabControl1.TabPages.Count > 1);
+            menuSystem.SetChecked(menuType, "外观/标准(&N)", config.tabAppearance.Value == TabAppearance.Normal);
+            menuSystem.SetChecked(menuType, "外观/按钮(&B)", config.tabAppearance.Value == TabAppearance.Buttons);
+            menuSystem.SetChecked(menuType, "外观/平面按钮(&F)", config.tabAppearance.Value == TabAppearance.FlatButtons);
+            this.GetSystem<IMenuSystem>().Show(menuType, MousePosition.X, MousePosition.Y);
+        }
 
-        public void TPanel_OnClick(ClickTPanelEvent info)
+        private void TPanel_OnClick(ClickTPanelEvent info)
         {
             var panel = Selection.activeContext as TPanel;
             if (_optType.Value != OptType.None)
@@ -334,7 +329,7 @@ namespace QuickLinker
                 }
             }
         }
-        public void TPanel_OnClickMenu(ClickMenuTPanelEvent info)
+        private void TPanel_OnClickMenu(ClickMenuTPanelEvent info)
         {
             var panel = Selection.activeContext as TPanel;
             if (_optType.Value != OptType.None)
@@ -742,15 +737,19 @@ namespace QuickLinker
         private static extern uint SetWindowDisplayAffinity(IntPtr hWnd, uint dwAffinity);
 
         //NotifyIcon
+        public void ShowMainWindow()
+        {
+            NotifyIcon.Visible = true;
+            Show();
+            WindowState = FormWindowState.Normal;
+            Activate();
+            if(SystemInformation.TerminalServerSession)
+                this.Location = new Point(0, 0);
+        }
         private void NotifyIcon_MouseClick(object sender, MouseEventArgs e)
         {
             if (e.Button == MouseButtons.Left)
-            {
-                NotifyIcon.Visible = true;
-                Show();
-                WindowState = FormWindowState.Normal;
-                this.Activate();
-            }
+                ShowMainWindow();
         }
 
         private void NoSettingStartEvent(NoSettingStratEvent _)

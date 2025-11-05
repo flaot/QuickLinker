@@ -15,10 +15,7 @@ namespace QuickLinker.Menus
         [AppMenuItem("显示(&S)", 108)]
         private void AppMenu_Show_Click()
         {
-            mainForm.NotifyIcon.Visible = true;
-            mainForm.Show();
-            mainForm.WindowState = FormWindowState.Normal;
-            mainForm.Focus();
+            mainForm.ShowMainWindow();
         }
         [AppMenuItem("首选项(&P)...", 109)]
         private void AppMenu_Setting_Click()
