@@ -54,7 +54,7 @@ namespace QuickLinker.QuickLaunch.Command
             {
                 change |= true;
                 entity.bitmapImage = bitmapImage;
-                entity.imageByteArr = ImageUtil.BitmapImageToByte(bitmapImage);
+                entity.imageByteArr = this.GetUtility<IImageUtil>().BitmapImageToByte(bitmapImage);
             }
             if (actionHotKey != null && !string.Equals(entity.actionHotKey, actionHotKey))
             {

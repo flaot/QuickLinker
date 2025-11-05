@@ -30,7 +30,7 @@ namespace QuickLinker.QuickLaunch.Systems
                 entitieCache = new EntityCache();
             foreach (var item in entitieCache.entities)
             { 
-                item.bitmapImage = ImageUtil.ByteArrToImage(item.imageByteArr);
+                item.bitmapImage = this.GetUtility<IImageUtil>().ByteArrToImage(item.imageByteArr);
             }
         }
 

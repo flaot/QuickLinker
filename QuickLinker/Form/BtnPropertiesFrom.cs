@@ -31,10 +31,11 @@ namespace QuickLinker
         private void BtnPropertiesFrom_Load(object sender, EventArgs e)
         {
             string shellFile = Path.Combine(Environment.SystemDirectory, "SHELL32.dll");
-            Btn_Parse.Image = ImageUtil.ScaleBitmap(ImageUtil.GetBitmapIconByPath(shellFile, 263), Btn_Parse.Width, Btn_Parse.Height);
-            Btn_BrowsePath.Image = ImageUtil.ScaleBitmap(ImageUtil.Base64ToBitmapImage(Constants.DEFAULT_DIR_IMAGE_BASE64), Btn_BrowsePath.Width, Btn_BrowsePath.Height);
-            Btn_BrowseArgFile.Image = ImageUtil.ScaleBitmap(ImageUtil.Base64ToBitmapImage(Constants.DEFAULT_DIR_IMAGE_BASE64), Btn_BrowseArgFile.Width, Btn_BrowseArgFile.Height);
-            Btn_BrowseFolder.Image = ImageUtil.ScaleBitmap(ImageUtil.Base64ToBitmapImage(Constants.DEFAULT_DIR_IMAGE_BASE64), Btn_BrowseFolder.Width, Btn_BrowseFolder.Height);
+            var imageUtil = this.GetUtility<IImageUtil>();
+            Btn_Parse.Image = imageUtil.ScaleBitmap(ImageUtil.GetBitmapIconByPath(shellFile, 263), Btn_Parse.Width, Btn_Parse.Height);
+            Btn_BrowsePath.Image = imageUtil.ScaleBitmap(imageUtil.Base64ToBitmapImage(Constants.DEFAULT_DIR_IMAGE_BASE64), Btn_BrowsePath.Width, Btn_BrowsePath.Height);
+            Btn_BrowseArgFile.Image = imageUtil.ScaleBitmap(imageUtil.Base64ToBitmapImage(Constants.DEFAULT_DIR_IMAGE_BASE64), Btn_BrowseArgFile.Width, Btn_BrowseArgFile.Height);
+            Btn_BrowseFolder.Image = imageUtil.ScaleBitmap(imageUtil.Base64ToBitmapImage(Constants.DEFAULT_DIR_IMAGE_BASE64), Btn_BrowseFolder.Width, Btn_BrowseFolder.Height);
             Txt_HotKey.KeyUp += HotKeyUtil.Control_KeyUp;
             Txt_HotKey.KeyDown += HotKeyUtil.Control_KeyDown;
             var commandSystem = this.GetSystem<ICommandSystem>();

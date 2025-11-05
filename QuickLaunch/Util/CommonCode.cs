@@ -93,7 +93,7 @@ namespace QuickLinker.QuickLaunch.Utils
                 iconInfo.canParse = parseIcon;
             }
 
-            iconInfo.imageByteArr = ImageUtil.BitmapImageToByte(iconInfo.bitmapImage);
+            iconInfo.imageByteArr = AbstractPlugin.Architecture.GetUtility<IImageUtil>().BitmapImageToByte(iconInfo.bitmapImage);
             var mainModule = Path.GetFileName(System.Diagnostics.Process.GetCurrentProcess().MainModule.FileName);
             string relativePath = FileUtil.MakeRelativePath(CommonCode.GetFullPath(mainModule), iconInfo.Path);
             if (!string.IsNullOrEmpty(relativePath) && !string.Equals(iconInfo.Path, relativePath))

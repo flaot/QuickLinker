@@ -64,13 +64,13 @@ namespace QuickLinker
             label1 = new Label();
             tabPage2 = new TabPage();
             DataGridView_Opt = new DataGridView();
+            icon = new DataGridViewImageColumn();
+            name = new DataGridViewTextBoxColumn();
+            desc = new DataGridViewTextBoxColumn();
             splitContainer1 = new SplitContainer();
             Btn_Cancel = new Button();
             Btn_Ok = new Button();
             Btn_Clear = new Button();
-            icon = new DataGridViewImageColumn();
-            name = new DataGridViewTextBoxColumn();
-            desc = new DataGridViewTextBoxColumn();
             tabControl1.SuspendLayout();
             tabPage1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)PictureBox_Icon).BeginInit();
@@ -90,7 +90,7 @@ namespace QuickLinker
             tabControl1.Location = new Point(0, 0);
             tabControl1.Name = "tabControl1";
             tabControl1.SelectedIndex = 0;
-            tabControl1.Size = new Size(518, 242);
+            tabControl1.Size = new Size(518, 230);
             tabControl1.TabIndex = 0;
             // 
             // tabPage1
@@ -127,7 +127,7 @@ namespace QuickLinker
             tabPage1.Location = new Point(4, 26);
             tabPage1.Name = "tabPage1";
             tabPage1.Padding = new Padding(3);
-            tabPage1.Size = new Size(510, 212);
+            tabPage1.Size = new Size(510, 200);
             tabPage1.TabIndex = 0;
             tabPage1.Text = "运行一个程序";
             // 
@@ -416,7 +416,7 @@ namespace QuickLinker
             tabPage2.Controls.Add(DataGridView_Opt);
             tabPage2.Location = new Point(4, 26);
             tabPage2.Name = "tabPage2";
-            tabPage2.Size = new Size(510, 212);
+            tabPage2.Size = new Size(510, 215);
             tabPage2.TabIndex = 1;
             tabPage2.Text = "执行一个命令";
             // 
@@ -436,9 +436,32 @@ namespace QuickLinker
             DataGridView_Opt.ReadOnly = true;
             DataGridView_Opt.RowHeadersVisible = false;
             DataGridView_Opt.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
-            DataGridView_Opt.Size = new Size(510, 212);
+            DataGridView_Opt.Size = new Size(510, 215);
             DataGridView_Opt.TabIndex = 38;
             DataGridView_Opt.CellContentDoubleClick += DataGridView_Opt_CellContentDoubleClick;
+            // 
+            // icon
+            // 
+            icon.AutoSizeMode = DataGridViewAutoSizeColumnMode.None;
+            icon.HeaderText = "图标";
+            icon.ImageLayout = DataGridViewImageCellLayout.Stretch;
+            icon.MinimumWidth = 25;
+            icon.Name = "icon";
+            icon.ReadOnly = true;
+            icon.Width = 25;
+            // 
+            // name
+            // 
+            name.HeaderText = "名称";
+            name.Name = "name";
+            name.ReadOnly = true;
+            // 
+            // desc
+            // 
+            desc.AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill;
+            desc.HeaderText = "描述";
+            desc.Name = "desc";
+            desc.ReadOnly = true;
             // 
             // splitContainer1
             // 
@@ -459,7 +482,7 @@ namespace QuickLinker
             splitContainer1.Panel2.Controls.Add(Btn_Ok);
             splitContainer1.Panel2.Controls.Add(Btn_Clear);
             splitContainer1.Size = new Size(518, 272);
-            splitContainer1.SplitterDistance = 242;
+            splitContainer1.SplitterDistance = 230;
             splitContainer1.SplitterWidth = 1;
             splitContainer1.TabIndex = 1;
             // 
@@ -492,29 +515,6 @@ namespace QuickLinker
             Btn_Clear.Text = "清除";
             Btn_Clear.UseVisualStyleBackColor = true;
             Btn_Clear.Click += Btn_Clear_Click;
-            // 
-            // icon
-            // 
-            icon.AutoSizeMode = DataGridViewAutoSizeColumnMode.None;
-            icon.HeaderText = "图标";
-            icon.ImageLayout = DataGridViewImageCellLayout.Stretch;
-            icon.MinimumWidth = 25;
-            icon.Name = "icon";
-            icon.ReadOnly = true;
-            icon.Width = 25;
-            // 
-            // name
-            // 
-            name.HeaderText = "名称";
-            name.Name = "name";
-            name.ReadOnly = true;
-            // 
-            // desc
-            // 
-            desc.AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill;
-            desc.HeaderText = "描述";
-            desc.Name = "desc";
-            desc.ReadOnly = true;
             // 
             // BtnPropertiesFrom
             // 

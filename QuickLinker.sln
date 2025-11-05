@@ -17,6 +17,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CommandPlugin", "Plugins\Co
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "IconFromSVG", "Plugins\IconFromSVG\IconFromSVG.csproj", "{FF6DC230-0963-4090-8D96-B8497A8521B9}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "IconFromImage", "Plugins\IconFromImage\IconFromImage.csproj", "{451BD6D9-734B-499E-9935-9E1A7C1CB9D6}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -47,6 +49,10 @@ Global
 		{FF6DC230-0963-4090-8D96-B8497A8521B9}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{FF6DC230-0963-4090-8D96-B8497A8521B9}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{FF6DC230-0963-4090-8D96-B8497A8521B9}.Release|Any CPU.Build.0 = Release|Any CPU
+		{451BD6D9-734B-499E-9935-9E1A7C1CB9D6}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{451BD6D9-734B-499E-9935-9E1A7C1CB9D6}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{451BD6D9-734B-499E-9935-9E1A7C1CB9D6}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{451BD6D9-734B-499E-9935-9E1A7C1CB9D6}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -54,6 +60,7 @@ Global
 	GlobalSection(NestedProjects) = preSolution
 		{A294F80D-6D8F-4E5B-BA85-EB3E942A0C7C} = {CA8D309B-8E2E-43E7-8A16-08C2DBE0BE58}
 		{FF6DC230-0963-4090-8D96-B8497A8521B9} = {CA8D309B-8E2E-43E7-8A16-08C2DBE0BE58}
+		{451BD6D9-734B-499E-9935-9E1A7C1CB9D6} = {CA8D309B-8E2E-43E7-8A16-08C2DBE0BE58}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {3C8FDB18-9853-4F68-B958-E7F8492BED37}

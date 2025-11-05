@@ -75,7 +75,8 @@ namespace QuickLinker
             //声音
             TreeView_Audio.ExpandAll();
             TreeView_Audio.SelectedNode = TreeView_Audio.Nodes[0];
-            Btn_AudioBrowse.Image = ImageUtil.ScaleBitmap(ImageUtil.Base64ToBitmapImage(Constants.DEFAULT_DIR_IMAGE_BASE64), Btn_AudioBrowse.Width, Btn_AudioBrowse.Height);
+            var imageUtil = this.GetUtility<IImageUtil>();
+            Btn_AudioBrowse.Image = imageUtil.ScaleBitmap(imageUtil.Base64ToBitmapImage(Constants.DEFAULT_DIR_IMAGE_BASE64), Btn_AudioBrowse.Width, Btn_AudioBrowse.Height);
 
             //字体
             TreeView_Font.ExpandAll();

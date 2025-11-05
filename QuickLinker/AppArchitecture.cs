@@ -23,6 +23,7 @@ namespace QuickLinker
             this.RegisterSystem<IAudioSystem>(new AudioSystem());
 
             this.RegisterUtility(new LaunchUtil());
+            this.RegisterUtility<IImageUtil>(new ImageUtil());
             this.RegisterUtility<IURIUtil>(new URIUtil());
             this.RegisterUtility(new SingleAppUtil());
         }

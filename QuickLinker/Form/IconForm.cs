@@ -24,7 +24,8 @@ namespace QuickLinker
 
         private void IconForm_Load(object sender, EventArgs e)
         {
-            Btn_Browse.Image = ImageUtil.ScaleBitmap(ImageUtil.Base64ToBitmapImage(Constants.DEFAULT_DIR_IMAGE_BASE64), Btn_Browse.Width, Btn_Browse.Height);
+            var imageUtil = this.GetUtility<IImageUtil>();
+            Btn_Browse.Image = imageUtil.ScaleBitmap(imageUtil.Base64ToBitmapImage(Constants.DEFAULT_DIR_IMAGE_BASE64), Btn_Browse.Width, Btn_Browse.Height);
 
             Txt_IconPath.TextChanged -= Txt_IconPath_TextChanged;
             MumericUpDown_CurIndex.ValueChanged -= MumericUpDown_CurIndex_ValueChanged;
