@@ -48,8 +48,9 @@ namespace QuickLinker
         {
             _defaultIndex = defaultIndex;
         }
-        private void TPanel_Load(object sender, EventArgs e)
+        protected override void OnLoad(EventArgs e)
         {
+            base.OnLoad(e);
             BackColor = Color.FromArgb(255, 240, 240, 240);
             var entitySystem = this.GetSystem<QuickEntitySystem>();
             SetEntity(entitySystem.Find(_defaultIndex), false);
@@ -64,7 +65,6 @@ namespace QuickLinker
             _unRegisters.Add(config.analyzeDrapLink.RegisterWithInitValue(Event_AllowDrop));
             _unRegisters.Add(config.flatButton.Register(Event_FlatButton));
             _unRegisters.Add(config.fontBtnTitile.Register(Event_FontChange));
-
         }
         public void UnLoad()
         {
@@ -176,24 +176,27 @@ namespace QuickLinker
             if (refresh)
                 Refresh();
         }
-        private void TPanel_DragEnter(object sender, DragEventArgs e)
+        protected override void OnDragEnter(DragEventArgs drgevent)
         {
-            if (e.Data.GetDataPresent(DataFormats.FileDrop))
-                e.Effect = DragDropEffects.Copy;
+            if (drgevent.Data.GetDataPresent(DataFormats.FileDrop))
+                drgevent.Effect = DragDropEffects.Copy;
             else
-                e.Effect = DragDropEffects.None;
+                drgevent.Effect = DragDropEffects.None;
+            base.OnDragEnter(drgevent);
         }
-        private void TPanel_DragDrop(object sender, DragEventArgs e)
+        protected override void OnDragDrop(DragEventArgs drgevent)
         {
-            string[] files = (string[])e.Data.GetData(DataFormats.FileDrop);
+            string[] files = (string[])drgevent.Data.GetData(DataFormats.FileDrop);
             foreach (string file in files)
             {
                 this.SendCommand(new QuickEntityInsertCommand() { filePath = file, index = _defaultIndex, canParse = true });
                 break;
             }
+            base.OnDragDrop(drgevent);
         }
-        private void TPanel_Paint(object sender, PaintEventArgs e)
+        protected override void OnPaint(PaintEventArgs e)
         {
+            base.OnPaint(e);
             if (showImage != null)
             {
                 Rectangle destRect = new Rectangle(0, 0, Width, Height);
@@ -226,6 +229,10 @@ namespace QuickLinker
                     Color.DimGray, 1, ButtonBorderStyle.Inset, //右边
                     Color.DimGray, 1, ButtonBorderStyle.Inset);//底边
             }
+            if (Focused && !_leftClick)
+            {
+                ControlPaint.DrawBorder(e.Graphics, this.ClientRectangle, Color.Gray, ButtonBorderStyle.Dashed);
+            }
         }
 
         public override string ToString()
@@ -237,7 +244,7 @@ namespace QuickLinker
 
         }
 
-        private void TPanel_MouseDown(object sender, MouseEventArgs e)
+        protected override void OnMouseDown(MouseEventArgs e)
         {
             if (e.Button == MouseButtons.Left)
             {
@@ -249,16 +256,18 @@ namespace QuickLinker
                 Selection.activeContext = this;
                 TypeEventSystem.Global.Send(new ClickMenuTPanelEvent());
             }
+            base.OnMouseDown(e);
         }
-        private void TPanel_MouseMove(object sender, MouseEventArgs e)
+        protected override void OnMouseMove(MouseEventArgs e)
         {
             if (!_leftClick) return;
             if (e.X < 0 || e.Y < 0 || e.X > Width || e.Y > Height)
                 BorderStyle = BorderStyle.None;
             else
                 BorderStyle = BorderStyle.Fixed3D;
+            base.OnMouseMove(e);
         }
-        private void TPanel_MouseUp(object sender, MouseEventArgs e)
+        protected override void OnMouseUp(MouseEventArgs e)
         {
             if (!_leftClick)
                 return;
@@ -270,8 +279,9 @@ namespace QuickLinker
                 Selection.activeContext = this;
                 TypeEventSystem.Global.Send(new ClickTPanelEvent());
             }
+            base.OnMouseUp(e);
         }
-        private void TPanel_MouseEnter(object sender, EventArgs e)
+        protected override void OnMouseEnter(EventArgs e)
         {
             var config = this.GetModel<AppConfig>();
             if (config.showStateTip.Value)
@@ -284,14 +294,50 @@ namespace QuickLinker
                 _showTip = 2;
                 TypeEventSystem.Global.Send(new ShowToolTipEvent(this, _text));
             }
+            base.OnMouseEnter(e);
         }
-        private void TPanel_MouseLeave(object sender, EventArgs e)
+        protected override void OnMouseLeave(EventArgs e)
         {
             if (_showTip == 1)
                 TypeEventSystem.Global.Send(new RefreshStateTextEvent(string.Empty));
             if (_showTip == 2)
                 TypeEventSystem.Global.Send(new ShowToolTipEvent(this, null));
             _showTip = 0;
+            base.OnMouseLeave(e);
+        }
+
+        protected override void OnKeyDown(KeyEventArgs e)
+        {
+            base.OnKeyDown(e);
+            if (e.KeyCode == Keys.Enter)
+            {
+                _leftClick = true;
+                BorderStyle = BorderStyle.Fixed3D;
+            }
+        }
+        protected override void OnKeyUp(KeyEventArgs e)
+        {
+            base.OnKeyUp(e);
+            if (!_leftClick)
+                return;
+            _leftClick = false;
+            bool click = BorderStyle == BorderStyle.Fixed3D;
+            BorderStyle = BorderStyle.None;
+            if (click)
+            {
+                Selection.activeContext = this;
+                TypeEventSystem.Global.Send(new ClickTPanelEvent());
+            }
+        }
+        protected override void OnLostFocus(EventArgs e)
+        {
+            base.OnLostFocus(e);
+            Refresh();
+        }
+        protected override void OnGotFocus(EventArgs e)
+        {
+            base.OnGotFocus(e);
+            Refresh();
         }
     }
 }

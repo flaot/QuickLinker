@@ -40,10 +40,9 @@ namespace QuickLinker
             Txt_MaxIndex = new Label();
             Btn_OK = new Button();
             Btn_Cancel = new Button();
-            pictureBox1 = new PictureBox();
             panel1 = new Panel();
+            pictureBox1 = new TButton();
             ((System.ComponentModel.ISupportInitialize)MumericUpDown_CurIndex).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)pictureBox1).BeginInit();
             panel1.SuspendLayout();
             SuspendLayout();
             // 
@@ -61,7 +60,7 @@ namespace QuickLinker
             label2.Location = new Point(10, 40);
             label2.Name = "label2";
             label2.Size = new Size(68, 17);
-            label2.TabIndex = 1;
+            label2.TabIndex = 3;
             label2.Text = "索引(&I)：";
             label2.TextAlign = ContentAlignment.TopRight;
             // 
@@ -71,20 +70,21 @@ namespace QuickLinker
             Txt_IconPath.Location = new Point(84, 11);
             Txt_IconPath.Name = "Txt_IconPath";
             Txt_IconPath.Size = new Size(194, 23);
-            Txt_IconPath.TabIndex = 2;
+            Txt_IconPath.TabIndex = 1;
             Txt_IconPath.TextChanged += Txt_IconPath_TextChanged;
             Txt_IconPath.DragDrop += Txt_FolderOrFile_DragDrop;
             Txt_IconPath.DragEnter += Txt_FolderOrFile_DragEnter;
             // 
             // Btn_Browse
             // 
+            Btn_Browse.allowStyle = false;
             Btn_Browse.BackColor = Color.FromArgb(240, 240, 240);
             Btn_Browse.BackgroundImageLayout = ImageLayout.Stretch;
             Btn_Browse.Image = null;
             Btn_Browse.Location = new Point(284, 11);
             Btn_Browse.Name = "Btn_Browse";
             Btn_Browse.Size = new Size(30, 25);
-            Btn_Browse.TabIndex = 3;
+            Btn_Browse.TabIndex = 2;
             Btn_Browse.Click += Btn_Browse_Click;
             // 
             // MumericUpDown_CurIndex
@@ -111,7 +111,7 @@ namespace QuickLinker
             Btn_OK.Location = new Point(183, 117);
             Btn_OK.Name = "Btn_OK";
             Btn_OK.Size = new Size(75, 25);
-            Btn_OK.TabIndex = 8;
+            Btn_OK.TabIndex = 1;
             Btn_OK.Text = "确定";
             Btn_OK.UseVisualStyleBackColor = true;
             Btn_OK.Click += Btn_OK_Click;
@@ -122,24 +122,15 @@ namespace QuickLinker
             Btn_Cancel.Location = new Point(264, 117);
             Btn_Cancel.Name = "Btn_Cancel";
             Btn_Cancel.Size = new Size(75, 25);
-            Btn_Cancel.TabIndex = 9;
+            Btn_Cancel.TabIndex = 2;
             Btn_Cancel.Text = "取消";
             Btn_Cancel.UseVisualStyleBackColor = true;
-            // 
-            // pictureBox1
-            // 
-            pictureBox1.Location = new Point(269, 42);
-            pictureBox1.Name = "pictureBox1";
-            pictureBox1.Size = new Size(32, 32);
-            pictureBox1.SizeMode = PictureBoxSizeMode.StretchImage;
-            pictureBox1.TabIndex = 10;
-            pictureBox1.TabStop = false;
             // 
             // panel1
             // 
             panel1.BorderStyle = BorderStyle.FixedSingle;
-            panel1.Controls.Add(Txt_IconPath);
             panel1.Controls.Add(pictureBox1);
+            panel1.Controls.Add(Txt_IconPath);
             panel1.Controls.Add(MumericUpDown_CurIndex);
             panel1.Controls.Add(label1);
             panel1.Controls.Add(Txt_MaxIndex);
@@ -148,7 +139,18 @@ namespace QuickLinker
             panel1.Location = new Point(10, 10);
             panel1.Name = "panel1";
             panel1.Size = new Size(329, 91);
-            panel1.TabIndex = 12;
+            panel1.TabIndex = 0;
+            // 
+            // pictureBox1
+            // 
+            pictureBox1.allowStyle = false;
+            pictureBox1.BackColor = Color.FromArgb(240, 240, 240);
+            pictureBox1.BackgroundImageLayout = ImageLayout.Stretch;
+            pictureBox1.Image = null;
+            pictureBox1.Location = new Point(269, 42);
+            pictureBox1.Name = "pictureBox1";
+            pictureBox1.Size = new Size(32, 32);
+            pictureBox1.TabIndex = 6;
             // 
             // IconForm
             // 
@@ -167,7 +169,6 @@ namespace QuickLinker
             Text = "按钮图标";
             Load += IconForm_Load;
             ((System.ComponentModel.ISupportInitialize)MumericUpDown_CurIndex).EndInit();
-            ((System.ComponentModel.ISupportInitialize)pictureBox1).EndInit();
             panel1.ResumeLayout(false);
             panel1.PerformLayout();
             ResumeLayout(false);
@@ -183,7 +184,7 @@ namespace QuickLinker
         private Label Txt_MaxIndex;
         private Button Btn_OK;
         private Button Btn_Cancel;
-        private PictureBox pictureBox1;
         private Panel panel1;
+        private TButton pictureBox1;
     }
 }

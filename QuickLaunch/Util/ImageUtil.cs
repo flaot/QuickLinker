@@ -14,23 +14,17 @@ namespace QuickLinker.QuickLaunch.Utils
         Bitmap Base64ToBitmapImage(string base64);
         /// <summary> 图片文件转base64 </summary>
         string FileImageToBase64(string Imagefilename, ImageFormat format);
+
         /// <summary> 图片数组转 BitmapImage </summary>
         Bitmap ByteArrToImage(byte[] array);
         /// <summary> BitmapImage 转数组 </summary>
         byte[] BitmapImageToByte(Bitmap bi);
+
         /// <summary> 缩放图片 </summary>
         Bitmap ScaleBitmap(Bitmap originalImage, int newWidth, int newHeight);
     }
-    /// <summary>
-    /// 文件的icon获取
-    /// </summary>
     public class ImageUtil : IImageUtil
     {
-        /// <summary>
-        /// 图片数组转 BitmapImage
-        /// </summary>
-        /// <param name="array"></param>
-        /// <returns></returns>
         public Bitmap ByteArrToImage(byte[] array)
         {
             if (array == null) return null;
@@ -39,12 +33,6 @@ namespace QuickLinker.QuickLaunch.Utils
                 return new Bitmap(ms);
             }
         }
-
-        /// <summary>
-        /// BitmapImage 转数组
-        /// </summary>
-        /// <param name="bi"></param>
-        /// <returns></returns>
         public byte[] BitmapImageToByte(Bitmap bi)
         {
             if (bi == null) return null;
@@ -57,16 +45,40 @@ namespace QuickLinker.QuickLaunch.Utils
                 }
             }
         }
-
-        /// <summary>
-        /// 图片base64 转 BitmapImage
-        /// </summary>
-        /// <param name="base64"></param>
-        /// <returns></returns>
         public Bitmap Base64ToBitmapImage(string base64)
         {
             byte[] byteBuffer = Convert.FromBase64String(base64);
             return ByteArrToImage(byteBuffer);
+        }
+        public Bitmap ScaleBitmap(Bitmap originalImage, int newWidth, int newHeight)
+        {
+            Bitmap bmpOut = new Bitmap(newWidth, newHeight);
+            using (Graphics g = Graphics.FromImage(bmpOut))
+            {
+                g.InterpolationMode = InterpolationMode.HighQualityBicubic;
+                g.DrawImage(originalImage, 0, 0, newWidth, newHeight);
+            }
+            return bmpOut;
+        }
+        public string FileImageToBase64(string Imagefilename, ImageFormat format)
+        {
+            try
+            {
+                Bitmap bmp = new Bitmap(Imagefilename);
+
+                MemoryStream ms = new MemoryStream();
+                bmp.Save(ms, format);
+                byte[] arr = new byte[ms.Length];
+                ms.Position = 0;
+                ms.Read(arr, 0, (int)ms.Length);
+                ms.Close();
+                return Convert.ToBase64String(arr);
+            }
+            catch (Exception e)
+            {
+                LogKit.E(e);
+                return null;
+            }
         }
 
         /// <summary>
@@ -84,47 +96,6 @@ namespace QuickLinker.QuickLaunch.Utils
             }
             var fileIconSystem = AbstractPlugin.Architecture.GetSystem<IFileIconSystem>();
             return fileIconSystem.GetImage(filePath, index) as Bitmap;
-        }
-
-        
-        /// <summary>
-        /// 缩放图片
-        /// </summary>
-        public Bitmap ScaleBitmap(Bitmap originalImage, int newWidth, int newHeight)
-        {
-            Bitmap bmpOut = new Bitmap(newWidth, newHeight);
-            using (Graphics g = Graphics.FromImage(bmpOut))
-            {
-                g.InterpolationMode = InterpolationMode.HighQualityBicubic;
-                g.DrawImage(originalImage, 0, 0, newWidth, newHeight);
-            }
-            return bmpOut;
-        }
-
-        /// <summary>
-        /// 图片文件转base64
-        /// </summary>
-        /// <param name="Imagefilename"></param>
-        /// <returns></returns>
-        public string FileImageToBase64(string Imagefilename, ImageFormat format)
-        {
-            try
-            {
-                Bitmap bmp = new Bitmap(Imagefilename);
-
-                MemoryStream ms = new MemoryStream();
-                bmp.Save(ms, format);
-                byte[] arr = new byte[ms.Length];
-                ms.Position = 0;
-                ms.Read(arr, 0, (int)ms.Length);
-                ms.Close();
-                return Convert.ToBase64String(arr);
-            }
-            catch (Exception e)
-            {
-                LogUtil.WriteErrorLog(e, "图片文件转base64失败!Imagefilename=" + Imagefilename + ",ImageFormat=" + format);
-                return null;
-            }
         }
     }
 }

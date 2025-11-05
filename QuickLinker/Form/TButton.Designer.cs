@@ -40,12 +40,6 @@ namespace QuickLinker
             BackColor = Color.FromArgb(240, 240, 240);
             BackgroundImageLayout = ImageLayout.Stretch;
             Name = "TButton";
-            Paint += TButton_Paint;
-            MouseDown += TButton_MouseDown;
-            MouseMove += TButton_MouseMove;
-            MouseUp += TButton_MouseUp;
-            MouseEnter += TButton_MouseEnter;
-            MouseLeave += TButton_MouseLeave;
             ResumeLayout(false);
         }
         #endregion

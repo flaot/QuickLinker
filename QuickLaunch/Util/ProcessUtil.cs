@@ -80,7 +80,7 @@ namespace QuickLinker.QuickLaunch.Utils
             }
             catch (Exception e)
             {
-                LogUtil.WriteErrorLog(e, "程序启动失败:path=" + icon.Path + ",type=" + type);
+                LogKit.E(e);
             }
         }
 

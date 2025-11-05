@@ -46,6 +46,7 @@ namespace QuickLinker
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(PreferencesFrom));
             tabControl1 = new TabControl();
             tabPage1 = new TabPage();
+            checkBox19 = new CheckBox();
             label28 = new Label();
             checkBox18 = new CheckBox();
             checkBox10 = new CheckBox();
@@ -131,7 +132,6 @@ namespace QuickLinker
             linkLabel1 = new LinkLabel();
             label25 = new Label();
             label23 = new Label();
-            checkBox19 = new CheckBox();
             tabControl1.SuspendLayout();
             tabPage1.SuspendLayout();
             tabPage2.SuspendLayout();
@@ -191,13 +191,23 @@ namespace QuickLinker
             tabPage1.TabIndex = 0;
             tabPage1.Text = "常规";
             // 
+            // checkBox19
+            // 
+            checkBox19.AutoSize = true;
+            checkBox19.Location = new Point(8, 203);
+            checkBox19.Name = "checkBox19";
+            checkBox19.Size = new Size(89, 21);
+            checkBox19.TabIndex = 8;
+            checkBox19.Text = "注册URI(&U)";
+            checkBox19.UseVisualStyleBackColor = true;
+            // 
             // label28
             // 
             label28.BorderStyle = BorderStyle.Fixed3D;
             label28.Location = new Point(284, 118);
             label28.Name = "label28";
             label28.Size = new Size(100, 2);
-            label28.TabIndex = 17;
+            label28.TabIndex = 13;
             label28.Text = "label28";
             // 
             // checkBox18
@@ -206,7 +216,7 @@ namespace QuickLinker
             checkBox18.Location = new Point(8, 179);
             checkBox18.Name = "checkBox18";
             checkBox18.Size = new Size(162, 21);
-            checkBox18.TabIndex = 13;
+            checkBox18.TabIndex = 7;
             checkBox18.Text = "在截屏或录屏中不可见(&S)";
             checkBox18.UseVisualStyleBackColor = true;
             // 
@@ -216,7 +226,7 @@ namespace QuickLinker
             checkBox10.Location = new Point(236, 155);
             checkBox10.Name = "checkBox10";
             checkBox10.Size = new Size(115, 21);
-            checkBox10.TabIndex = 12;
+            checkBox10.TabIndex = 15;
             checkBox10.Text = "处理启动按钮(&C)";
             checkBox10.UseVisualStyleBackColor = true;
             // 
@@ -226,7 +236,7 @@ namespace QuickLinker
             checkBox9.Location = new Point(236, 132);
             checkBox9.Name = "checkBox9";
             checkBox9.Size = new Size(175, 21);
-            checkBox9.TabIndex = 11;
+            checkBox9.TabIndex = 14;
             checkBox9.Text = "启动时运行 QuickLinker(&R)";
             checkBox9.UseVisualStyleBackColor = true;
             // 
@@ -236,7 +246,7 @@ namespace QuickLinker
             label2.Location = new Point(222, 109);
             label2.Name = "label2";
             label2.Size = new Size(56, 17);
-            label2.TabIndex = 10;
+            label2.TabIndex = 12;
             label2.Text = "启动选项";
             // 
             // checkBox8
@@ -245,7 +255,7 @@ namespace QuickLinker
             checkBox8.Location = new Point(236, 70);
             checkBox8.Name = "checkBox8";
             checkBox8.Size = new Size(126, 21);
-            checkBox8.TabIndex = 9;
+            checkBox8.TabIndex = 11;
             checkBox8.Text = "显示在鼠标位置(&P)";
             checkBox8.UseVisualStyleBackColor = true;
             // 
@@ -254,7 +264,7 @@ namespace QuickLinker
             textBox1.Location = new Point(236, 41);
             textBox1.Name = "textBox1";
             textBox1.Size = new Size(155, 23);
-            textBox1.TabIndex = 8;
+            textBox1.TabIndex = 10;
             // 
             // label1
             // 
@@ -262,7 +272,7 @@ namespace QuickLinker
             label1.Location = new Point(222, 21);
             label1.Name = "label1";
             label1.Size = new Size(132, 17);
-            label1.TabIndex = 7;
+            label1.TabIndex = 9;
             label1.Text = "QuickLinker 快捷键(&K)";
             // 
             // checkBox7
@@ -372,7 +382,7 @@ namespace QuickLinker
             label27.Location = new Point(272, 141);
             label27.Name = "label27";
             label27.Size = new Size(120, 2);
-            label27.TabIndex = 20;
+            label27.TabIndex = 16;
             label27.Text = "label27";
             // 
             // label26
@@ -381,7 +391,7 @@ namespace QuickLinker
             label26.Location = new Point(319, 22);
             label26.Name = "label26";
             label26.Size = new Size(100, 2);
-            label26.TabIndex = 19;
+            label26.TabIndex = 11;
             label26.Text = "label26";
             // 
             // trackBar1
@@ -391,7 +401,7 @@ namespace QuickLinker
             trackBar1.Minimum = 12;
             trackBar1.Name = "trackBar1";
             trackBar1.Size = new Size(184, 45);
-            trackBar1.TabIndex = 18;
+            trackBar1.TabIndex = 20;
             trackBar1.TickFrequency = 7;
             trackBar1.Value = 12;
             // 
@@ -401,7 +411,7 @@ namespace QuickLinker
             label11.Location = new Point(70, 77);
             label11.Name = "label11";
             label11.Size = new Size(100, 2);
-            label11.TabIndex = 17;
+            label11.TabIndex = 4;
             label11.Text = "label11";
             // 
             // label10
@@ -410,7 +420,7 @@ namespace QuickLinker
             label10.Location = new Point(70, 22);
             label10.Name = "label10";
             label10.Size = new Size(100, 2);
-            label10.TabIndex = 16;
+            label10.TabIndex = 1;
             label10.Text = "label10";
             // 
             // label9
@@ -419,7 +429,7 @@ namespace QuickLinker
             label9.Location = new Point(330, 178);
             label9.Name = "label9";
             label9.Size = new Size(89, 17);
-            label9.TabIndex = 15;
+            label9.TabIndex = 19;
             label9.Tag = "";
             label9.Text = "100%";
             label9.TextAlign = ContentAlignment.MiddleRight;
@@ -430,7 +440,7 @@ namespace QuickLinker
             label8.Location = new Point(235, 177);
             label8.Name = "label8";
             label8.Size = new Size(89, 17);
-            label8.TabIndex = 14;
+            label8.TabIndex = 18;
             label8.Text = "不透明级别(&N):";
             // 
             // checkBox16
@@ -439,7 +449,7 @@ namespace QuickLinker
             checkBox16.Location = new Point(252, 153);
             checkBox16.Name = "checkBox16";
             checkBox16.Size = new Size(179, 21);
-            checkBox16.TabIndex = 13;
+            checkBox16.TabIndex = 17;
             checkBox16.Text = "显示在任务栏而不是托盘(&W)";
             checkBox16.UseVisualStyleBackColor = true;
             // 
@@ -449,7 +459,7 @@ namespace QuickLinker
             label7.Location = new Point(235, 133);
             label7.Name = "label7";
             label7.Size = new Size(32, 17);
-            label7.TabIndex = 12;
+            label7.TabIndex = 15;
             label7.Text = "其他";
             // 
             // checkBox15
@@ -458,7 +468,7 @@ namespace QuickLinker
             checkBox15.Location = new Point(256, 96);
             checkBox15.Name = "checkBox15";
             checkBox15.Size = new Size(129, 21);
-            checkBox15.TabIndex = 11;
+            checkBox15.TabIndex = 14;
             checkBox15.Text = "显示长格式日期(&N)";
             checkBox15.UseVisualStyleBackColor = true;
             // 
@@ -468,7 +478,7 @@ namespace QuickLinker
             checkBox14.Location = new Point(256, 69);
             checkBox14.Name = "checkBox14";
             checkBox14.Size = new Size(125, 21);
-            checkBox14.TabIndex = 10;
+            checkBox14.TabIndex = 13;
             checkBox14.Text = "显示长格式时间(&L)";
             checkBox14.UseVisualStyleBackColor = true;
             // 
@@ -480,7 +490,7 @@ namespace QuickLinker
             comboBox3.Location = new Point(256, 33);
             comboBox3.Name = "comboBox3";
             comboBox3.Size = new Size(100, 25);
-            comboBox3.TabIndex = 9;
+            comboBox3.TabIndex = 12;
             // 
             // label6
             // 
@@ -488,7 +498,7 @@ namespace QuickLinker
             label6.Location = new Point(235, 13);
             label6.Name = "label6";
             label6.Size = new Size(83, 17);
-            label6.TabIndex = 8;
+            label6.TabIndex = 10;
             label6.Text = "状态栏时钟(&S)";
             // 
             // comboBox2
@@ -499,7 +509,7 @@ namespace QuickLinker
             comboBox2.Location = new Point(20, 198);
             comboBox2.Name = "comboBox2";
             comboBox2.Size = new Size(116, 25);
-            comboBox2.TabIndex = 7;
+            comboBox2.TabIndex = 9;
             // 
             // label5
             // 
@@ -507,7 +517,7 @@ namespace QuickLinker
             label5.Location = new Point(8, 178);
             label5.Name = "label5";
             label5.Size = new Size(120, 17);
-            label5.TabIndex = 6;
+            label5.TabIndex = 8;
             label5.Text = "自动最小化或上卷(&A)";
             // 
             // checkBox13
@@ -516,7 +526,7 @@ namespace QuickLinker
             checkBox13.Location = new Point(20, 144);
             checkBox13.Name = "checkBox13";
             checkBox13.Size = new Size(116, 21);
-            checkBox13.TabIndex = 5;
+            checkBox13.TabIndex = 7;
             checkBox13.Text = "按钮表面显示(&U)";
             checkBox13.UseVisualStyleBackColor = true;
             // 
@@ -526,7 +536,7 @@ namespace QuickLinker
             checkBox12.Location = new Point(20, 117);
             checkBox12.Name = "checkBox12";
             checkBox12.Size = new Size(115, 21);
-            checkBox12.TabIndex = 4;
+            checkBox12.TabIndex = 6;
             checkBox12.Text = "在状态栏显示(&B)";
             checkBox12.UseVisualStyleBackColor = true;
             // 
@@ -536,7 +546,7 @@ namespace QuickLinker
             checkBox11.Location = new Point(20, 90);
             checkBox11.Name = "checkBox11";
             checkBox11.Size = new Size(114, 21);
-            checkBox11.TabIndex = 3;
+            checkBox11.TabIndex = 5;
             checkBox11.Text = "作为工具提示(&P)";
             checkBox11.UseVisualStyleBackColor = true;
             // 
@@ -546,7 +556,7 @@ namespace QuickLinker
             label4.Location = new Point(8, 70);
             label4.Name = "label4";
             label4.Size = new Size(56, 17);
-            label4.TabIndex = 2;
+            label4.TabIndex = 3;
             label4.Text = "按钮描述";
             // 
             // comboBox1
@@ -557,7 +567,7 @@ namespace QuickLinker
             comboBox1.Location = new Point(20, 33);
             comboBox1.Name = "comboBox1";
             comboBox1.Size = new Size(100, 25);
-            comboBox1.TabIndex = 1;
+            comboBox1.TabIndex = 2;
             // 
             // label3
             // 
@@ -606,7 +616,7 @@ namespace QuickLinker
             label24.Location = new Point(307, 18);
             label24.Name = "label24";
             label24.Size = new Size(100, 2);
-            label24.TabIndex = 43;
+            label24.TabIndex = 16;
             label24.Text = "label24";
             // 
             // dataGridView1
@@ -649,7 +659,7 @@ namespace QuickLinker
             dataGridView1.RowTemplate.Height = 18;
             dataGridView1.SelectionMode = DataGridViewSelectionMode.CellSelect;
             dataGridView1.Size = new Size(155, 103);
-            dataGridView1.TabIndex = 42;
+            dataGridView1.TabIndex = 17;
             dataGridView1.CellValueChanged += dataGridView1_CellValueChanged;
             // 
             // Number
@@ -678,7 +688,7 @@ namespace QuickLinker
             comboBox4.Location = new Point(359, 162);
             comboBox4.Name = "comboBox4";
             comboBox4.Size = new Size(72, 25);
-            comboBox4.TabIndex = 39;
+            comboBox4.TabIndex = 22;
             // 
             // radioButton1
             // 
@@ -687,7 +697,7 @@ namespace QuickLinker
             radioButton1.Location = new Point(261, 163);
             radioButton1.Name = "radioButton1";
             radioButton1.Size = new Size(92, 21);
-            radioButton1.TabIndex = 38;
+            radioButton1.TabIndex = 21;
             radioButton1.TabStop = true;
             radioButton1.Text = "索引标签(&N)";
             radioButton1.UseVisualStyleBackColor = true;
@@ -698,7 +708,7 @@ namespace QuickLinker
             label22.Location = new Point(241, 143);
             label22.Name = "label22";
             label22.Size = new Size(44, 17);
-            label22.TabIndex = 36;
+            label22.TabIndex = 20;
             label22.Text = "组导航";
             // 
             // Btn_GroupDown
@@ -706,7 +716,7 @@ namespace QuickLinker
             Btn_GroupDown.Location = new Point(413, 68);
             Btn_GroupDown.Name = "Btn_GroupDown";
             Btn_GroupDown.Size = new Size(23, 23);
-            Btn_GroupDown.TabIndex = 35;
+            Btn_GroupDown.TabIndex = 19;
             Btn_GroupDown.Text = "v";
             Btn_GroupDown.UseVisualStyleBackColor = true;
             Btn_GroupDown.Click += Btn_GroupDown_Click;
@@ -716,7 +726,7 @@ namespace QuickLinker
             Btn_GroupUp.Location = new Point(413, 39);
             Btn_GroupUp.Name = "Btn_GroupUp";
             Btn_GroupUp.Size = new Size(23, 23);
-            Btn_GroupUp.TabIndex = 34;
+            Btn_GroupUp.TabIndex = 18;
             Btn_GroupUp.Text = "^";
             Btn_GroupUp.UseVisualStyleBackColor = true;
             Btn_GroupUp.Click += Btn_GroupUp_Click;
@@ -727,7 +737,7 @@ namespace QuickLinker
             label21.Location = new Point(241, 9);
             label21.Name = "label21";
             label21.Size = new Size(61, 17);
-            label21.TabIndex = 32;
+            label21.TabIndex = 15;
             label21.Text = "组描述(&D)";
             // 
             // numericUpDown5
@@ -736,7 +746,7 @@ namespace QuickLinker
             numericUpDown5.Maximum = new decimal(new int[] { 8, 0, 0, 0 });
             numericUpDown5.Name = "numericUpDown5";
             numericUpDown5.Size = new Size(55, 23);
-            numericUpDown5.TabIndex = 31;
+            numericUpDown5.TabIndex = 14;
             // 
             // label20
             // 
@@ -744,7 +754,7 @@ namespace QuickLinker
             label20.Location = new Point(13, 194);
             label20.Name = "label20";
             label20.Size = new Size(71, 17);
-            label20.TabIndex = 30;
+            label20.TabIndex = 13;
             label20.Text = "间距(&A):";
             label20.TextAlign = ContentAlignment.MiddleRight;
             // 
@@ -756,7 +766,7 @@ namespace QuickLinker
             numericUpDown4.Minimum = new decimal(new int[] { 8, 0, 0, 0 });
             numericUpDown4.Name = "numericUpDown4";
             numericUpDown4.Size = new Size(55, 23);
-            numericUpDown4.TabIndex = 29;
+            numericUpDown4.TabIndex = 12;
             numericUpDown4.Value = new decimal(new int[] { 8, 0, 0, 0 });
             // 
             // label19
@@ -765,7 +775,7 @@ namespace QuickLinker
             label19.Location = new Point(13, 165);
             label19.Name = "label19";
             label19.Size = new Size(71, 17);
-            label19.TabIndex = 28;
+            label19.TabIndex = 11;
             label19.Text = "图标大小(&I):";
             // 
             // label17
@@ -774,7 +784,7 @@ namespace QuickLinker
             label17.Location = new Point(78, 152);
             label17.Name = "label17";
             label17.Size = new Size(100, 2);
-            label17.TabIndex = 27;
+            label17.TabIndex = 10;
             label17.Text = "label17";
             // 
             // label18
@@ -783,7 +793,7 @@ namespace QuickLinker
             label18.Location = new Point(8, 143);
             label18.Name = "label18";
             label18.Size = new Size(68, 17);
-            label18.TabIndex = 26;
+            label18.TabIndex = 9;
             label18.Text = "大小与间距";
             // 
             // numericUpDown3
@@ -793,7 +803,7 @@ namespace QuickLinker
             numericUpDown3.Minimum = new decimal(new int[] { 1, 0, 0, 0 });
             numericUpDown3.Name = "numericUpDown3";
             numericUpDown3.Size = new Size(55, 23);
-            numericUpDown3.TabIndex = 25;
+            numericUpDown3.TabIndex = 8;
             numericUpDown3.Value = new decimal(new int[] { 1, 0, 0, 0 });
             // 
             // label16
@@ -802,7 +812,7 @@ namespace QuickLinker
             label16.Location = new Point(45, 111);
             label16.Name = "label16";
             label16.Size = new Size(40, 17);
-            label16.TabIndex = 24;
+            label16.TabIndex = 7;
             label16.Text = "组(&G):";
             // 
             // numericUpDown2
@@ -812,7 +822,7 @@ namespace QuickLinker
             numericUpDown2.Minimum = new decimal(new int[] { 1, 0, 0, 0 });
             numericUpDown2.Name = "numericUpDown2";
             numericUpDown2.Size = new Size(55, 23);
-            numericUpDown2.TabIndex = 23;
+            numericUpDown2.TabIndex = 6;
             numericUpDown2.Value = new decimal(new int[] { 1, 0, 0, 0 });
             // 
             // label15
@@ -821,7 +831,7 @@ namespace QuickLinker
             label15.Location = new Point(45, 82);
             label15.Name = "label15";
             label15.Size = new Size(39, 17);
-            label15.TabIndex = 22;
+            label15.TabIndex = 5;
             label15.Text = "列(&C):";
             // 
             // numericUpDown1
@@ -831,7 +841,7 @@ namespace QuickLinker
             numericUpDown1.Minimum = new decimal(new int[] { 1, 0, 0, 0 });
             numericUpDown1.Name = "numericUpDown1";
             numericUpDown1.Size = new Size(55, 23);
-            numericUpDown1.TabIndex = 21;
+            numericUpDown1.TabIndex = 4;
             numericUpDown1.Value = new decimal(new int[] { 1, 0, 0, 0 });
             // 
             // label14
@@ -840,7 +850,7 @@ namespace QuickLinker
             label14.Location = new Point(45, 53);
             label14.Name = "label14";
             label14.Size = new Size(39, 17);
-            label14.TabIndex = 20;
+            label14.TabIndex = 3;
             label14.Text = "行(&R):";
             // 
             // checkBox17
@@ -849,7 +859,7 @@ namespace QuickLinker
             checkBox17.Location = new Point(20, 29);
             checkBox17.Name = "checkBox17";
             checkBox17.Size = new Size(89, 21);
-            checkBox17.TabIndex = 19;
+            checkBox17.TabIndex = 2;
             checkBox17.Text = "平面按钮(&F)";
             checkBox17.UseVisualStyleBackColor = true;
             // 
@@ -859,7 +869,7 @@ namespace QuickLinker
             label12.Location = new Point(45, 18);
             label12.Name = "label12";
             label12.Size = new Size(100, 2);
-            label12.TabIndex = 18;
+            label12.TabIndex = 1;
             label12.Text = "label12";
             // 
             // label13
@@ -868,7 +878,7 @@ namespace QuickLinker
             label13.Location = new Point(8, 9);
             label13.Name = "label13";
             label13.Size = new Size(32, 17);
-            label13.TabIndex = 17;
+            label13.TabIndex = 0;
             label13.Text = "布局";
             // 
             // tabPage6
@@ -892,7 +902,7 @@ namespace QuickLinker
             Txt_FontChangeTip.Location = new Point(147, 179);
             Txt_FontChangeTip.Name = "Txt_FontChangeTip";
             Txt_FontChangeTip.Size = new Size(128, 17);
-            Txt_FontChangeTip.TabIndex = 34;
+            Txt_FontChangeTip.TabIndex = 3;
             Txt_FontChangeTip.Text = "请选择要修改的字体。";
             // 
             // Btn_FontDefault
@@ -900,7 +910,7 @@ namespace QuickLinker
             Btn_FontDefault.Location = new Point(357, 175);
             Btn_FontDefault.Name = "Btn_FontDefault";
             Btn_FontDefault.Size = new Size(76, 26);
-            Btn_FontDefault.TabIndex = 33;
+            Btn_FontDefault.TabIndex = 5;
             Btn_FontDefault.Text = "默认(&D)";
             Btn_FontDefault.UseVisualStyleBackColor = true;
             Btn_FontDefault.Click += Btn_FontDefault_Click;
@@ -910,7 +920,7 @@ namespace QuickLinker
             Btn_FontChange.Location = new Point(357, 143);
             Btn_FontChange.Name = "Btn_FontChange";
             Btn_FontChange.Size = new Size(76, 26);
-            Btn_FontChange.TabIndex = 32;
+            Btn_FontChange.TabIndex = 4;
             Btn_FontChange.Text = "更改(&C)...";
             Btn_FontChange.UseVisualStyleBackColor = true;
             Btn_FontChange.Click += Btn_FontChange_Click;
@@ -934,7 +944,7 @@ namespace QuickLinker
             treeNode4.Text = "QuickLinker 字体设置";
             TreeView_Font.Nodes.AddRange(new TreeNode[] { treeNode4 });
             TreeView_Font.Size = new Size(424, 118);
-            TreeView_Font.TabIndex = 31;
+            TreeView_Font.TabIndex = 0;
             TreeView_Font.AfterSelect += TreeView_Font_AfterSelect;
             // 
             // label31
@@ -943,7 +953,7 @@ namespace QuickLinker
             label31.Location = new Point(72, 132);
             label31.Name = "label31";
             label31.Size = new Size(362, 2);
-            label31.TabIndex = 30;
+            label31.TabIndex = 2;
             label31.Text = "label31";
             // 
             // label32
@@ -952,7 +962,7 @@ namespace QuickLinker
             label32.Location = new Point(7, 124);
             label32.Name = "label32";
             label32.Size = new Size(56, 17);
-            label32.TabIndex = 29;
+            label32.TabIndex = 1;
             label32.Text = "字体样式";
             // 
             // tabPage5
@@ -975,6 +985,7 @@ namespace QuickLinker
             // 
             // Btn_AudioBrowse
             // 
+            Btn_AudioBrowse.allowStyle = false;
             Btn_AudioBrowse.BackColor = Color.FromArgb(240, 240, 240);
             Btn_AudioBrowse.BackgroundImageLayout = ImageLayout.Stretch;
             Btn_AudioBrowse.Enabled = false;
@@ -983,14 +994,14 @@ namespace QuickLinker
             Btn_AudioBrowse.Margin = new Padding(0);
             Btn_AudioBrowse.Name = "Btn_AudioBrowse";
             Btn_AudioBrowse.Size = new Size(24, 24);
-            Btn_AudioBrowse.TabIndex = 30;
+            Btn_AudioBrowse.TabIndex = 8;
             // 
             // Btn_TestAudio
             // 
             Btn_TestAudio.Location = new Point(357, 143);
             Btn_TestAudio.Name = "Btn_TestAudio";
             Btn_TestAudio.Size = new Size(76, 26);
-            Btn_TestAudio.TabIndex = 28;
+            Btn_TestAudio.TabIndex = 9;
             Btn_TestAudio.Text = "测试(&T)";
             Btn_TestAudio.UseVisualStyleBackColor = true;
             Btn_TestAudio.Click += Btn_TestAudio_Click;
@@ -1003,7 +1014,7 @@ namespace QuickLinker
             TextBox_AudioFilePath.Location = new Point(103, 206);
             TextBox_AudioFilePath.Name = "TextBox_AudioFilePath";
             TextBox_AudioFilePath.Size = new Size(226, 21);
-            TextBox_AudioFilePath.TabIndex = 27;
+            TextBox_AudioFilePath.TabIndex = 7;
             TextBox_AudioFilePath.DragDrop += Txt_Path_DragDrop;
             TextBox_AudioFilePath.DragEnter += Txt_Path_DragEnter;
             // 
@@ -1013,7 +1024,7 @@ namespace QuickLinker
             RadioBtn_Custom.Location = new Point(19, 206);
             RadioBtn_Custom.Name = "RadioBtn_Custom";
             RadioBtn_Custom.Size = new Size(90, 21);
-            RadioBtn_Custom.TabIndex = 26;
+            RadioBtn_Custom.TabIndex = 6;
             RadioBtn_Custom.Tag = "3";
             RadioBtn_Custom.Text = "自定义(&C)：";
             RadioBtn_Custom.UseVisualStyleBackColor = true;
@@ -1026,7 +1037,7 @@ namespace QuickLinker
             RadioBtn_Default.Location = new Point(19, 179);
             RadioBtn_Default.Name = "RadioBtn_Default";
             RadioBtn_Default.Size = new Size(67, 21);
-            RadioBtn_Default.TabIndex = 25;
+            RadioBtn_Default.TabIndex = 4;
             RadioBtn_Default.TabStop = true;
             RadioBtn_Default.Tag = "2";
             RadioBtn_Default.Text = "默认(&D)";
@@ -1038,7 +1049,7 @@ namespace QuickLinker
             RadioBtn_Null.Location = new Point(19, 152);
             RadioBtn_Null.Name = "RadioBtn_Null";
             RadioBtn_Null.Size = new Size(56, 21);
-            RadioBtn_Null.TabIndex = 24;
+            RadioBtn_Null.TabIndex = 3;
             RadioBtn_Null.Tag = "1";
             RadioBtn_Null.Text = "无(&N)";
             RadioBtn_Null.UseVisualStyleBackColor = true;
@@ -1065,7 +1076,7 @@ namespace QuickLinker
             treeNode9.Text = "QuickLinker 声音事件";
             TreeView_Audio.Nodes.AddRange(new TreeNode[] { treeNode9 });
             TreeView_Audio.Size = new Size(424, 118);
-            TreeView_Audio.TabIndex = 23;
+            TreeView_Audio.TabIndex = 0;
             TreeView_Audio.AfterSelect += TreeView_Audio_AfterSelect;
             // 
             // Txt_AudioChangeTip
@@ -1075,7 +1086,7 @@ namespace QuickLinker
             Txt_AudioChangeTip.Location = new Point(147, 179);
             Txt_AudioChangeTip.Name = "Txt_AudioChangeTip";
             Txt_AudioChangeTip.Size = new Size(152, 17);
-            Txt_AudioChangeTip.TabIndex = 22;
+            Txt_AudioChangeTip.TabIndex = 5;
             Txt_AudioChangeTip.Text = "请选择要修改的声音事件。";
             // 
             // label29
@@ -1084,7 +1095,7 @@ namespace QuickLinker
             label29.Location = new Point(72, 132);
             label29.Name = "label29";
             label29.Size = new Size(362, 2);
-            label29.TabIndex = 21;
+            label29.TabIndex = 2;
             label29.Text = "label29";
             // 
             // label30
@@ -1093,7 +1104,7 @@ namespace QuickLinker
             label30.Location = new Point(7, 124);
             label30.Name = "label30";
             label30.Size = new Size(56, 17);
-            label30.TabIndex = 20;
+            label30.TabIndex = 1;
             label30.Text = "声音类型";
             // 
             // tabPage4
@@ -1114,7 +1125,7 @@ namespace QuickLinker
             linkLabel1.Location = new Point(20, 32);
             linkLabel1.Name = "linkLabel1";
             linkLabel1.Size = new Size(134, 17);
-            linkLabel1.TabIndex = 20;
+            linkLabel1.TabIndex = 2;
             linkLabel1.TabStop = true;
             linkLabel1.Text = "1436485479@qq.com";
             // 
@@ -1124,7 +1135,7 @@ namespace QuickLinker
             label25.Location = new Point(43, 21);
             label25.Name = "label25";
             label25.Size = new Size(106, 2);
-            label25.TabIndex = 19;
+            label25.TabIndex = 1;
             label25.Text = "label25";
             // 
             // label23
@@ -1135,16 +1146,6 @@ namespace QuickLinker
             label23.Size = new Size(28, 17);
             label23.TabIndex = 0;
             label23.Text = "QQ";
-            // 
-            // checkBox19
-            // 
-            checkBox19.AutoSize = true;
-            checkBox19.Location = new Point(236, 179);
-            checkBox19.Name = "checkBox19";
-            checkBox19.Size = new Size(89, 21);
-            checkBox19.TabIndex = 18;
-            checkBox19.Text = "注册URI(&U)";
-            checkBox19.UseVisualStyleBackColor = true;
             // 
             // PreferencesFrom
             // 

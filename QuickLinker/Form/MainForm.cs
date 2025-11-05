@@ -200,6 +200,35 @@ namespace QuickLinker
             else
                 hotKeyMgr.ProcessQuickActionHotKey(e.Hotkey);
         }
+        protected override bool ProcessCmdKey(ref Message msg, Keys keyData)
+        {
+            //上下键切换焦点逻辑,与原生左右键一致
+            if (keyData == Keys.Up || keyData == Keys.Down)
+            {
+                var tPanel = this.ActiveControl as TPanel;
+                if (tPanel == null)
+                    return base.ProcessCmdKey(ref msg, keyData);
+                var appConfig = this.GetModel<AppConfig>();
+                int pageGridCount = appConfig.gridColumn.Value * appConfig.gridRow.Value;
+                var num = tPanel.Index % pageGridCount;
+                var row = num / appConfig.gridColumn.Value;
+                var column = num % appConfig.gridColumn.Value;
+                var newRow = Math.Clamp(keyData == Keys.Up ? row - 1 : row + 1, 0, appConfig.gridRow.Value - 1);
+                if (newRow == row)
+                {
+                    newRow = keyData == Keys.Up ? appConfig.gridRow.Value - 1 : 0;
+                    var newColumn = Math.Clamp(keyData == Keys.Up ? column - 1 : column + 1, 0, appConfig.gridColumn.Value - 1);
+                    if (newColumn == column)
+                        newColumn = keyData == Keys.Up ? appConfig.gridColumn.Value - 1 : 0;
+                    column = newColumn;
+                }
+                var controlIndex = newRow * appConfig.gridColumn.Value + column;
+                var nextSelect = tabControl1.SelectedTab.Controls[controlIndex] as TPanel;
+                nextSelect.Focus();
+                return true;
+            }
+            return base.ProcessCmdKey(ref msg, keyData);
+        }
 
         private void TabControl1_MouseDragDown(object sender, MouseEventArgs e)
         {

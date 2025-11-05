@@ -15,6 +15,11 @@ namespace QuickLinker
         [DesignerSerializationVisibility(DesignerSerializationVisibility.Visible)]
         public Image Image { get => _image; set { _image = value; Refresh(); } }
 
+        [Category(nameof(CategoryAttribute.Appearance))]
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Visible)]
+        [DefaultValue(true)]
+        public bool allowStyle { get; set; }
+
         bool _leftClick;
         bool _mouseHover;
 
@@ -43,8 +48,9 @@ namespace QuickLinker
         {
             InitializeComponent();
         }
-        private void TButton_Paint(object sender, PaintEventArgs e)
+        protected override void OnPaint(PaintEventArgs e)
         {
+            base.OnPaint(e);
             if (_image != null)
             {
                 Rectangle destRect = new Rectangle(0, 0, Width, Height);
@@ -59,47 +65,77 @@ namespace QuickLinker
                         Color.DimGray, 1, ButtonBorderStyle.Inset, //右边
                         Color.DimGray, 1, ButtonBorderStyle.Inset);//底边
             }
+            if (DesignMode || (Focused && !_leftClick))
+            {
+                ControlPaint.DrawBorder(e.Graphics, this.ClientRectangle, Color.Gray, ButtonBorderStyle.Dashed);
+            }
         }
 
-        private void TButton_MouseDown(object sender, MouseEventArgs e)
+        protected override void OnMouseDown(MouseEventArgs e)
         {
-            if (e.Button == MouseButtons.Left)
+            if (allowStyle)
             {
-                _leftClick = true;
-                BorderStyle = BorderStyle.Fixed3D;
+                if (e.Button == MouseButtons.Left)
+                {
+                    _leftClick = true;
+                    BorderStyle = BorderStyle.Fixed3D;
+                }
             }
-            //if (e.Button == MouseButtons.Right)
-            //    TypeEventSystem.Global.Send(new ClickMenuTPanelEvent(this));
+            base.OnMouseDown(e);
         }
-        private void TButton_MouseMove(object sender, MouseEventArgs e)
+        protected override void OnMouseMove(MouseEventArgs e)
         {
-            if (!_leftClick) return;
-            if (e.X < 0 || e.Y < 0 || e.X > Width || e.Y > Height)
+            if (allowStyle)
+            {
+                if (!_leftClick) return;
+                if (e.X < 0 || e.Y < 0 || e.X > Width || e.Y > Height)
+                    BorderStyle = BorderStyle.None;
+                else
+                    BorderStyle = BorderStyle.Fixed3D;
+            }
+            base.OnMouseMove(e);
+        }
+        protected override void OnMouseUp(MouseEventArgs e)
+        {
+            if (allowStyle)
+            {
+                if (!_leftClick)
+                    return;
+                _leftClick = false;
+                bool click = BorderStyle == BorderStyle.Fixed3D;
                 BorderStyle = BorderStyle.None;
-            else
-                BorderStyle = BorderStyle.Fixed3D;
+            }
+            base.OnMouseUp(e);
         }
-        private void TButton_MouseUp(object sender, MouseEventArgs e)
+        protected override void OnMouseEnter(EventArgs e)
         {
-            if (!_leftClick)
-                return;
-            _leftClick = false;
-            bool click = BorderStyle == BorderStyle.Fixed3D;
-            BorderStyle = BorderStyle.None;
-            //if (click)
-            //    TypeEventSystem.Global.Send(new ClickTPanelEvent(this));
+            if (allowStyle)
+            {
+                _mouseHover = true;
+                if (!_leftClick)
+                    Refresh();
+            }
+            base.OnMouseEnter(e);
         }
-        private void TButton_MouseEnter(object sender, EventArgs e)
+        protected override void OnMouseLeave(EventArgs e)
         {
-            _mouseHover = true;
-            if (!_leftClick)
-                Refresh();
+            if (allowStyle)
+            {
+                _mouseHover = false;
+                if (!_leftClick)
+                    Refresh();
+            }
+            base.OnMouseLeave(e);
         }
-        private void TButton_MouseLeave(object sender, EventArgs e)
+        protected override void OnLostFocus(EventArgs e)
         {
-            _mouseHover = false;
-            if (!_leftClick)
-                Refresh();
+            base.OnLostFocus(e);
+            Refresh();
+        }
+        protected override void OnGotFocus(EventArgs e)
+        {
+            base.OnGotFocus(e);
+            Refresh();
         }
     }
 }

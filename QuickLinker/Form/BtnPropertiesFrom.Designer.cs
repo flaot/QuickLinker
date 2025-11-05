@@ -31,11 +31,13 @@ namespace QuickLinker
         /// </summary>
         private void InitializeComponent()
         {
+            DataGridViewCellStyle dataGridViewCellStyle1 = new DataGridViewCellStyle();
+            DataGridViewCellStyle dataGridViewCellStyle2 = new DataGridViewCellStyle();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(BtnPropertiesFrom));
             tabControl1 = new TabControl();
             tabPage1 = new TabPage();
+            PictureBox_Icon = new TButton();
             Btn_ChangeIcon = new Button();
-            PictureBox_Icon = new PictureBox();
             label11 = new Label();
             label12 = new Label();
             checkBox3 = new CheckBox();
@@ -73,7 +75,6 @@ namespace QuickLinker
             Btn_Clear = new Button();
             tabControl1.SuspendLayout();
             tabPage1.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)PictureBox_Icon).BeginInit();
             tabPage2.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)DataGridView_Opt).BeginInit();
             ((System.ComponentModel.ISupportInitialize)splitContainer1).BeginInit();
@@ -90,14 +91,14 @@ namespace QuickLinker
             tabControl1.Location = new Point(0, 0);
             tabControl1.Name = "tabControl1";
             tabControl1.SelectedIndex = 0;
-            tabControl1.Size = new Size(518, 230);
+            tabControl1.Size = new Size(518, 245);
             tabControl1.TabIndex = 0;
             // 
             // tabPage1
             // 
             tabPage1.BackColor = Color.FromArgb(240, 240, 240);
-            tabPage1.Controls.Add(Btn_ChangeIcon);
             tabPage1.Controls.Add(PictureBox_Icon);
+            tabPage1.Controls.Add(Btn_ChangeIcon);
             tabPage1.Controls.Add(label11);
             tabPage1.Controls.Add(label12);
             tabPage1.Controls.Add(checkBox3);
@@ -127,9 +128,21 @@ namespace QuickLinker
             tabPage1.Location = new Point(4, 26);
             tabPage1.Name = "tabPage1";
             tabPage1.Padding = new Padding(3);
-            tabPage1.Size = new Size(510, 200);
+            tabPage1.Size = new Size(510, 215);
             tabPage1.TabIndex = 0;
             tabPage1.Text = "运行一个程序";
+            // 
+            // PictureBox_Icon
+            // 
+            PictureBox_Icon.allowStyle = false;
+            PictureBox_Icon.BackColor = Color.FromArgb(240, 240, 240);
+            PictureBox_Icon.BackgroundImageLayout = ImageLayout.Stretch;
+            PictureBox_Icon.Image = null;
+            PictureBox_Icon.Location = new Point(380, 154);
+            PictureBox_Icon.Margin = new Padding(0);
+            PictureBox_Icon.Name = "PictureBox_Icon";
+            PictureBox_Icon.Size = new Size(32, 32);
+            PictureBox_Icon.TabIndex = 26;
             // 
             // Btn_ChangeIcon
             // 
@@ -140,15 +153,6 @@ namespace QuickLinker
             Btn_ChangeIcon.Text = "更改(&A)...";
             Btn_ChangeIcon.UseVisualStyleBackColor = true;
             Btn_ChangeIcon.Click += Btn_ChangeIcon_Click;
-            // 
-            // PictureBox_Icon
-            // 
-            PictureBox_Icon.Location = new Point(380, 154);
-            PictureBox_Icon.Name = "PictureBox_Icon";
-            PictureBox_Icon.Size = new Size(32, 32);
-            PictureBox_Icon.SizeMode = PictureBoxSizeMode.StretchImage;
-            PictureBox_Icon.TabIndex = 26;
-            PictureBox_Icon.TabStop = false;
             // 
             // label11
             // 
@@ -303,10 +307,11 @@ namespace QuickLinker
             // 
             // Btn_BrowseFolder
             // 
+            Btn_BrowseFolder.allowStyle = false;
             Btn_BrowseFolder.BackColor = Color.FromArgb(240, 240, 240);
             Btn_BrowseFolder.BackgroundImageLayout = ImageLayout.Stretch;
             Btn_BrowseFolder.Image = null;
-            Btn_BrowseFolder.Location = new Point(321, 68);
+            Btn_BrowseFolder.Location = new Point(322, 68);
             Btn_BrowseFolder.Margin = new Padding(0);
             Btn_BrowseFolder.Name = "Btn_BrowseFolder";
             Btn_BrowseFolder.Size = new Size(24, 24);
@@ -335,6 +340,7 @@ namespace QuickLinker
             // 
             // Btn_BrowseArgFile
             // 
+            Btn_BrowseArgFile.allowStyle = false;
             Btn_BrowseArgFile.BackColor = Color.FromArgb(240, 240, 240);
             Btn_BrowseArgFile.BackgroundImageLayout = ImageLayout.Stretch;
             Btn_BrowseArgFile.Image = null;
@@ -347,6 +353,7 @@ namespace QuickLinker
             // 
             // Btn_BrowsePath
             // 
+            Btn_BrowsePath.allowStyle = false;
             Btn_BrowsePath.BackColor = Color.FromArgb(240, 240, 240);
             Btn_BrowsePath.BackgroundImageLayout = ImageLayout.Stretch;
             Btn_BrowsePath.Image = null;
@@ -354,7 +361,7 @@ namespace QuickLinker
             Btn_BrowsePath.Margin = new Padding(0);
             Btn_BrowsePath.Name = "Btn_BrowsePath";
             Btn_BrowsePath.Size = new Size(24, 24);
-            Btn_BrowsePath.TabIndex = 5;
+            Btn_BrowsePath.TabIndex = 3;
             Btn_BrowsePath.Click += Btn_BrowsePath_Click;
             // 
             // Txt_Args
@@ -363,7 +370,7 @@ namespace QuickLinker
             Txt_Args.Location = new Point(101, 41);
             Txt_Args.Name = "Txt_Args";
             Txt_Args.Size = new Size(215, 23);
-            Txt_Args.TabIndex = 4;
+            Txt_Args.TabIndex = 5;
             Txt_Args.DragDrop += Txt_FolderOrFile_DragDrop;
             Txt_Args.DragEnter += Txt_FolderOrFile_DragEnter;
             Txt_Args.Leave += Txt_TextBox_Leave;
@@ -373,12 +380,13 @@ namespace QuickLinker
             label2.Location = new Point(11, 41);
             label2.Name = "label2";
             label2.Size = new Size(84, 17);
-            label2.TabIndex = 3;
+            label2.TabIndex = 4;
             label2.Text = "参数(&P)：";
             label2.TextAlign = ContentAlignment.MiddleRight;
             // 
             // Btn_Parse
             // 
+            Btn_Parse.allowStyle = false;
             Btn_Parse.BackColor = Color.FromArgb(240, 240, 240);
             Btn_Parse.BackgroundImageLayout = ImageLayout.Stretch;
             Btn_Parse.Image = null;
@@ -427,6 +435,14 @@ namespace QuickLinker
             DataGridView_Opt.AllowUserToResizeRows = false;
             DataGridView_Opt.BackgroundColor = Color.White;
             DataGridView_Opt.BorderStyle = BorderStyle.Fixed3D;
+            dataGridViewCellStyle1.Alignment = DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle1.BackColor = SystemColors.Control;
+            dataGridViewCellStyle1.Font = new Font("Microsoft YaHei UI", 9F);
+            dataGridViewCellStyle1.ForeColor = SystemColors.WindowText;
+            dataGridViewCellStyle1.SelectionBackColor = SystemColors.Highlight;
+            dataGridViewCellStyle1.SelectionForeColor = SystemColors.HighlightText;
+            dataGridViewCellStyle1.WrapMode = DataGridViewTriState.True;
+            DataGridView_Opt.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle1;
             DataGridView_Opt.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             DataGridView_Opt.Columns.AddRange(new DataGridViewColumn[] { icon, name, desc });
             DataGridView_Opt.Dock = DockStyle.Fill;
@@ -437,13 +453,17 @@ namespace QuickLinker
             DataGridView_Opt.RowHeadersVisible = false;
             DataGridView_Opt.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
             DataGridView_Opt.Size = new Size(510, 215);
-            DataGridView_Opt.TabIndex = 38;
+            DataGridView_Opt.TabIndex = 0;
             DataGridView_Opt.CellContentDoubleClick += DataGridView_Opt_CellContentDoubleClick;
             // 
             // icon
             // 
             icon.AutoSizeMode = DataGridViewAutoSizeColumnMode.None;
-            icon.HeaderText = "图标";
+            dataGridViewCellStyle2.Alignment = DataGridViewContentAlignment.MiddleCenter;
+            dataGridViewCellStyle2.NullValue = resources.GetObject("dataGridViewCellStyle2.NullValue");
+            dataGridViewCellStyle2.WrapMode = DataGridViewTriState.False;
+            icon.DefaultCellStyle = dataGridViewCellStyle2;
+            icon.HeaderText = "";
             icon.ImageLayout = DataGridViewImageCellLayout.Stretch;
             icon.MinimumWidth = 25;
             icon.Name = "icon";
@@ -482,7 +502,7 @@ namespace QuickLinker
             splitContainer1.Panel2.Controls.Add(Btn_Ok);
             splitContainer1.Panel2.Controls.Add(Btn_Clear);
             splitContainer1.Size = new Size(518, 272);
-            splitContainer1.SplitterDistance = 230;
+            splitContainer1.SplitterDistance = 245;
             splitContainer1.SplitterWidth = 1;
             splitContainer1.TabIndex = 1;
             // 
@@ -492,7 +512,7 @@ namespace QuickLinker
             Btn_Cancel.Location = new Point(438, 7);
             Btn_Cancel.Name = "Btn_Cancel";
             Btn_Cancel.Size = new Size(75, 25);
-            Btn_Cancel.TabIndex = 31;
+            Btn_Cancel.TabIndex = 2;
             Btn_Cancel.Text = "取消";
             Btn_Cancel.UseVisualStyleBackColor = true;
             // 
@@ -501,7 +521,7 @@ namespace QuickLinker
             Btn_Ok.Location = new Point(357, 7);
             Btn_Ok.Name = "Btn_Ok";
             Btn_Ok.Size = new Size(75, 25);
-            Btn_Ok.TabIndex = 30;
+            Btn_Ok.TabIndex = 1;
             Btn_Ok.Text = "确定";
             Btn_Ok.UseVisualStyleBackColor = true;
             Btn_Ok.Click += Btn_Ok_Click;
@@ -511,7 +531,7 @@ namespace QuickLinker
             Btn_Clear.Location = new Point(245, 7);
             Btn_Clear.Name = "Btn_Clear";
             Btn_Clear.Size = new Size(75, 25);
-            Btn_Clear.TabIndex = 29;
+            Btn_Clear.TabIndex = 0;
             Btn_Clear.Text = "清除";
             Btn_Clear.UseVisualStyleBackColor = true;
             Btn_Clear.Click += Btn_Clear_Click;
@@ -534,7 +554,6 @@ namespace QuickLinker
             tabControl1.ResumeLayout(false);
             tabPage1.ResumeLayout(false);
             tabPage1.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)PictureBox_Icon).EndInit();
             tabPage2.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)DataGridView_Opt).EndInit();
             splitContainer1.Panel1.ResumeLayout(false);
@@ -570,7 +589,6 @@ namespace QuickLinker
         private Label label8;
         private Label label10;
         private Button Btn_ChangeIcon;
-        private PictureBox PictureBox_Icon;
         private Label label11;
         private Label label12;
         private CheckBox checkBox3;
@@ -585,5 +603,6 @@ namespace QuickLinker
         private DataGridViewImageColumn icon;
         private DataGridViewTextBoxColumn name;
         private DataGridViewTextBoxColumn desc;
+        private TButton PictureBox_Icon;
     }
 }

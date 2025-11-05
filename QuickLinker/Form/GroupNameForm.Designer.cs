@@ -48,7 +48,7 @@ namespace QuickLinker
             panel1.Location = new Point(7, 9);
             panel1.Name = "panel1";
             panel1.Size = new Size(294, 46);
-            panel1.TabIndex = 13;
+            panel1.TabIndex = 0;
             // 
             // Txt_GroupName
             // 
@@ -56,7 +56,7 @@ namespace QuickLinker
             Txt_GroupName.Location = new Point(81, 11);
             Txt_GroupName.Name = "Txt_GroupName";
             Txt_GroupName.Size = new Size(194, 23);
-            Txt_GroupName.TabIndex = 2;
+            Txt_GroupName.TabIndex = 1;
             // 
             // label1
             // 
@@ -73,7 +73,7 @@ namespace QuickLinker
             Btn_Cancel.Location = new Point(226, 69);
             Btn_Cancel.Name = "Btn_Cancel";
             Btn_Cancel.Size = new Size(75, 25);
-            Btn_Cancel.TabIndex = 33;
+            Btn_Cancel.TabIndex = 2;
             Btn_Cancel.Text = "取消";
             Btn_Cancel.UseVisualStyleBackColor = true;
             // 
@@ -82,7 +82,7 @@ namespace QuickLinker
             Btn_Ok.Location = new Point(145, 69);
             Btn_Ok.Name = "Btn_Ok";
             Btn_Ok.Size = new Size(75, 25);
-            Btn_Ok.TabIndex = 32;
+            Btn_Ok.TabIndex = 1;
             Btn_Ok.Text = "确定";
             Btn_Ok.UseVisualStyleBackColor = true;
             Btn_Ok.Click += Btn_Ok_Click;

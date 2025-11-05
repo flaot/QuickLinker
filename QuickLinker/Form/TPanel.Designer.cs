@@ -40,15 +40,6 @@ namespace QuickLinker
             BackColor = Color.FromArgb(240, 240, 240);
             BackgroundImageLayout = ImageLayout.Stretch;
             Name = "TPanel";
-            Load += TPanel_Load;
-            DragDrop += TPanel_DragDrop;
-            DragEnter += TPanel_DragEnter;
-            Paint += TPanel_Paint;
-            MouseDown += TPanel_MouseDown;
-            MouseEnter += TPanel_MouseEnter;
-            MouseLeave += TPanel_MouseLeave;
-            MouseMove += TPanel_MouseMove;
-            MouseUp += TPanel_MouseUp;
             ResumeLayout(false);
         }
 

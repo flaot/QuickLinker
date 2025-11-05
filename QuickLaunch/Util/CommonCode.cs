@@ -1,4 +1,5 @@
 ﻿using IWshRuntimeLibrary;
+using QFramework;
 using QuickLinker.QuickLaunch.Constant;
 using QuickLinker.QuickLaunch.Models;
 using System;
@@ -10,52 +11,6 @@ namespace QuickLinker.QuickLaunch.Utils
 {
     public class CommonCode
     {
-        public static void SavePassword(string password)
-        {
-            using (StreamWriter sw = new StreamWriter(Constants.PW_FILE_BAK_PATH))
-            {
-                sw.Write(password);
-            }
-        }
-
-        private static string GeneraterUUID()
-        {
-            try
-            {
-                if (!File.Exists(Constants.UUID_FILE_BAK_PATH) || string.IsNullOrEmpty(GetUniqueUUID()))
-                {
-                    using (StreamWriter sw = new StreamWriter(Constants.UUID_FILE_BAK_PATH))
-                    {
-                        string uuid = Guid.NewGuid().ToString() + "-" + Constants.MY_UUID;
-                        sw.Write(uuid);
-                        return uuid;
-                    }
-                }
-            }
-            catch (Exception) { }
-            return "ERROR_UUID_GeneraterUUID_" + Constants.MY_UUID;
-        }
-
-        public static string GetUniqueUUID()
-        {
-            try
-            {
-                if (File.Exists(Constants.UUID_FILE_BAK_PATH))
-                {
-                    using (StreamReader reader = new StreamReader(Constants.UUID_FILE_BAK_PATH))
-                    {
-                        return reader.ReadToEnd().Trim();
-                    }
-                }
-                else
-                {
-                    return GeneraterUUID();
-                }
-            }
-            catch (Exception) { }
-            return "ERROR_UUID_GetUniqueUUID_" + Constants.MY_UUID;
-        }
-
         /// <summary>
         /// 根据路径获取文件图标等信息
         /// </summary>
@@ -95,7 +50,7 @@ namespace QuickLinker.QuickLaunch.Utils
 
             iconInfo.imageByteArr = AbstractPlugin.Architecture.GetUtility<IImageUtil>().BitmapImageToByte(iconInfo.bitmapImage);
             var mainModule = Path.GetFileName(System.Diagnostics.Process.GetCurrentProcess().MainModule.FileName);
-            string relativePath = FileUtil.MakeRelativePath(CommonCode.GetFullPath(mainModule), iconInfo.Path);
+            string relativePath = MakeRelativePath(CommonCode.GetFullPath(mainModule), iconInfo.Path);
             if (!string.IsNullOrEmpty(relativePath) && !string.Equals(iconInfo.Path, relativePath))
                 iconInfo.RelativePath = relativePath;
             return iconInfo;
@@ -178,6 +133,28 @@ namespace QuickLinker.QuickLaunch.Utils
         public static string GetFullPath(string path)
         {
             return Path.Combine(Constants.APP_DIR, path);
+        }
+        private static string MakeRelativePath(string fromPath, string toPath)
+        {
+            string relativePath = null;
+            try
+            {
+                if (string.IsNullOrEmpty(toPath) || string.IsNullOrEmpty(fromPath)) return null;
+                Uri file = new Uri(@toPath);
+                // Must end in a slash to indicate folder
+                Uri folder = new Uri(@fromPath);
+                relativePath =
+                Uri.UnescapeDataString(
+                    folder.MakeRelativeUri(file)
+                        .ToString()
+                        .Replace('/', Path.DirectorySeparatorChar)
+                    );
+            }
+            catch (Exception ex)
+            {
+                LogKit.E(ex);
+            }
+            return relativePath;
         }
     }
 }
