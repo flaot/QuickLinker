@@ -27,6 +27,9 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Compile Update="Form\PasswordForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
     <Compile Update="Form\TButton.cs">
       <SubType>UserControl</SubType>
     </Compile>

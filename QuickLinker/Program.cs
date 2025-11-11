@@ -2,6 +2,7 @@ using QFramework;
 using QuickLinker.Model;
 using QuickLinker.Plugin;
 using QuickLinker.Plugin.Events;
+using QuickLinker.Properties;
 using QuickLinker.QuickLaunch.Command;
 using QuickLinker.QuickLaunch.Systems;
 using QuickLinker.Systems;
@@ -43,7 +44,7 @@ namespace QuickLinker
                     var entity = system.QueryWithGuid(guid);
                     if (entity == null)
                     {
-                        MessageBox.Show("应用程序不存在");
+                        MessageBox.Show(Resources.RUN_URI_ERROR);
                         return;
                     }
                     Selection.activeContext = null;

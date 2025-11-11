@@ -110,7 +110,7 @@ namespace QuickLinker
             checkBox17 = new CheckBox();
             label12 = new Label();
             label13 = new Label();
-            tabPage6 = new TabPage();
+            tabPage4 = new TabPage();
             Txt_FontChangeTip = new Label();
             Btn_FontDefault = new Button();
             Btn_FontChange = new Button();
@@ -128,10 +128,25 @@ namespace QuickLinker
             Txt_AudioChangeTip = new Label();
             label29 = new Label();
             label30 = new Label();
-            tabPage4 = new TabPage();
+            tabPage6 = new TabPage();
             linkLabel1 = new LinkLabel();
             label25 = new Label();
             label23 = new Label();
+            tabPage7 = new TabPage();
+            checkBox23 = new CheckBox();
+            label39 = new Label();
+            label40 = new Label();
+            checkBox22 = new CheckBox();
+            checkBox21 = new CheckBox();
+            checkBox20 = new CheckBox();
+            label37 = new Label();
+            label38 = new Label();
+            Txt_RPassword = new TextBox();
+            label36 = new Label();
+            Txt_Password = new TextBox();
+            label35 = new Label();
+            label33 = new Label();
+            label34 = new Label();
             tabControl1.SuspendLayout();
             tabPage1.SuspendLayout();
             tabPage2.SuspendLayout();
@@ -143,9 +158,10 @@ namespace QuickLinker
             ((System.ComponentModel.ISupportInitialize)numericUpDown3).BeginInit();
             ((System.ComponentModel.ISupportInitialize)numericUpDown2).BeginInit();
             ((System.ComponentModel.ISupportInitialize)numericUpDown1).BeginInit();
-            tabPage6.SuspendLayout();
-            tabPage5.SuspendLayout();
             tabPage4.SuspendLayout();
+            tabPage5.SuspendLayout();
+            tabPage6.SuspendLayout();
+            tabPage7.SuspendLayout();
             SuspendLayout();
             // 
             // tabControl1
@@ -153,9 +169,10 @@ namespace QuickLinker
             tabControl1.Controls.Add(tabPage1);
             tabControl1.Controls.Add(tabPage2);
             tabControl1.Controls.Add(tabPage3);
-            tabControl1.Controls.Add(tabPage6);
-            tabControl1.Controls.Add(tabPage5);
             tabControl1.Controls.Add(tabPage4);
+            tabControl1.Controls.Add(tabPage5);
+            tabControl1.Controls.Add(tabPage6);
+            tabControl1.Controls.Add(tabPage7);
             tabControl1.Dock = DockStyle.Fill;
             tabControl1.Location = new Point(0, 0);
             tabControl1.Margin = new Padding(0);
@@ -881,19 +898,19 @@ namespace QuickLinker
             label13.TabIndex = 0;
             label13.Text = "布局";
             // 
-            // tabPage6
+            // tabPage4
             // 
-            tabPage6.Controls.Add(Txt_FontChangeTip);
-            tabPage6.Controls.Add(Btn_FontDefault);
-            tabPage6.Controls.Add(Btn_FontChange);
-            tabPage6.Controls.Add(TreeView_Font);
-            tabPage6.Controls.Add(label31);
-            tabPage6.Controls.Add(label32);
-            tabPage6.Location = new Point(4, 26);
-            tabPage6.Name = "tabPage6";
-            tabPage6.Size = new Size(440, 241);
-            tabPage6.TabIndex = 6;
-            tabPage6.Text = "字体";
+            tabPage4.Controls.Add(Txt_FontChangeTip);
+            tabPage4.Controls.Add(Btn_FontDefault);
+            tabPage4.Controls.Add(Btn_FontChange);
+            tabPage4.Controls.Add(TreeView_Font);
+            tabPage4.Controls.Add(label31);
+            tabPage4.Controls.Add(label32);
+            tabPage4.Location = new Point(4, 26);
+            tabPage4.Name = "tabPage4";
+            tabPage4.Size = new Size(440, 241);
+            tabPage4.TabIndex = 6;
+            tabPage4.Text = "字体";
             // 
             // Txt_FontChangeTip
             // 
@@ -1107,17 +1124,17 @@ namespace QuickLinker
             label30.TabIndex = 1;
             label30.Text = "声音类型";
             // 
-            // tabPage4
+            // tabPage6
             // 
-            tabPage4.BackColor = Color.FromArgb(240, 240, 240);
-            tabPage4.Controls.Add(linkLabel1);
-            tabPage4.Controls.Add(label25);
-            tabPage4.Controls.Add(label23);
-            tabPage4.Location = new Point(4, 26);
-            tabPage4.Name = "tabPage4";
-            tabPage4.Size = new Size(440, 241);
-            tabPage4.TabIndex = 4;
-            tabPage4.Text = "联系我";
+            tabPage6.BackColor = Color.FromArgb(240, 240, 240);
+            tabPage6.Controls.Add(linkLabel1);
+            tabPage6.Controls.Add(label25);
+            tabPage6.Controls.Add(label23);
+            tabPage6.Location = new Point(4, 26);
+            tabPage6.Name = "tabPage6";
+            tabPage6.Size = new Size(440, 241);
+            tabPage6.TabIndex = 4;
+            tabPage6.Text = "联系我";
             // 
             // linkLabel1
             // 
@@ -1146,6 +1163,164 @@ namespace QuickLinker
             label23.Size = new Size(28, 17);
             label23.TabIndex = 0;
             label23.Text = "QQ";
+            // 
+            // tabPage7
+            // 
+            tabPage7.Controls.Add(checkBox23);
+            tabPage7.Controls.Add(label39);
+            tabPage7.Controls.Add(label40);
+            tabPage7.Controls.Add(checkBox22);
+            tabPage7.Controls.Add(checkBox21);
+            tabPage7.Controls.Add(checkBox20);
+            tabPage7.Controls.Add(label37);
+            tabPage7.Controls.Add(label38);
+            tabPage7.Controls.Add(Txt_RPassword);
+            tabPage7.Controls.Add(label36);
+            tabPage7.Controls.Add(Txt_Password);
+            tabPage7.Controls.Add(label35);
+            tabPage7.Controls.Add(label33);
+            tabPage7.Controls.Add(label34);
+            tabPage7.Location = new Point(4, 26);
+            tabPage7.Name = "tabPage7";
+            tabPage7.Size = new Size(440, 241);
+            tabPage7.TabIndex = 7;
+            tabPage7.Text = "保护";
+            tabPage7.UseVisualStyleBackColor = true;
+            // 
+            // checkBox23
+            // 
+            checkBox23.AutoSize = true;
+            checkBox23.Location = new Point(31, 198);
+            checkBox23.Name = "checkBox23";
+            checkBox23.Size = new Size(163, 21);
+            checkBox23.TabIndex = 13;
+            checkBox23.Text = "防止关闭 QuickLinker(&R)";
+            checkBox23.UseVisualStyleBackColor = true;
+            // 
+            // label39
+            // 
+            label39.BorderStyle = BorderStyle.Fixed3D;
+            label39.Location = new Point(43, 185);
+            label39.Name = "label39";
+            label39.Size = new Size(380, 2);
+            label39.TabIndex = 12;
+            label39.Text = "label39";
+            // 
+            // label40
+            // 
+            label40.AutoSize = true;
+            label40.Location = new Point(8, 177);
+            label40.Name = "label40";
+            label40.Size = new Size(32, 17);
+            label40.TabIndex = 11;
+            label40.Text = "操作";
+            // 
+            // checkBox22
+            // 
+            checkBox22.AutoSize = true;
+            checkBox22.Location = new Point(31, 153);
+            checkBox22.Name = "checkBox22";
+            checkBox22.Size = new Size(116, 21);
+            checkBox22.TabIndex = 10;
+            checkBox22.Text = "保留拖放支持(&D)";
+            checkBox22.UseVisualStyleBackColor = true;
+            // 
+            // checkBox21
+            // 
+            checkBox21.AutoSize = true;
+            checkBox21.Location = new Point(31, 130);
+            checkBox21.Name = "checkBox21";
+            checkBox21.Size = new Size(139, 21);
+            checkBox21.TabIndex = 9;
+            checkBox21.Text = "保留配置菜单项目(&C)";
+            checkBox21.UseVisualStyleBackColor = true;
+            // 
+            // checkBox20
+            // 
+            checkBox20.AutoSize = true;
+            checkBox20.Location = new Point(31, 109);
+            checkBox20.Name = "checkBox20";
+            checkBox20.Size = new Size(114, 21);
+            checkBox20.TabIndex = 8;
+            checkBox20.Text = "防止更改配置(&P)";
+            checkBox20.UseVisualStyleBackColor = true;
+            // 
+            // label37
+            // 
+            label37.BorderStyle = BorderStyle.Fixed3D;
+            label37.Location = new Point(43, 98);
+            label37.Name = "label37";
+            label37.Size = new Size(380, 2);
+            label37.TabIndex = 7;
+            label37.Text = "label37";
+            // 
+            // label38
+            // 
+            label38.AutoSize = true;
+            label38.Location = new Point(8, 90);
+            label38.Name = "label38";
+            label38.Size = new Size(32, 17);
+            label38.TabIndex = 6;
+            label38.Text = "配置";
+            // 
+            // Txt_RPassword
+            // 
+            Txt_RPassword.AllowDrop = true;
+            Txt_RPassword.Font = new Font("Microsoft YaHei UI", 8.25F, FontStyle.Regular, GraphicsUnit.Point, 134);
+            Txt_RPassword.Location = new Point(120, 62);
+            Txt_RPassword.MaxLength = 16;
+            Txt_RPassword.Name = "Txt_RPassword";
+            Txt_RPassword.Size = new Size(170, 21);
+            Txt_RPassword.TabIndex = 5;
+            Txt_RPassword.UseSystemPasswordChar = true;
+            Txt_RPassword.WordWrap = false;
+            // 
+            // label36
+            // 
+            label36.AutoSize = true;
+            label36.Location = new Point(31, 64);
+            label36.Name = "label36";
+            label36.Size = new Size(84, 17);
+            label36.TabIndex = 4;
+            label36.Text = "重输确认(&V)：";
+            // 
+            // Txt_Password
+            // 
+            Txt_Password.AllowDrop = true;
+            Txt_Password.Font = new Font("Microsoft YaHei UI", 8.25F, FontStyle.Regular, GraphicsUnit.Point, 134);
+            Txt_Password.Location = new Point(120, 35);
+            Txt_Password.MaxLength = 16;
+            Txt_Password.Name = "Txt_Password";
+            Txt_Password.Size = new Size(170, 21);
+            Txt_Password.TabIndex = 3;
+            Txt_Password.UseSystemPasswordChar = true;
+            // 
+            // label35
+            // 
+            label35.AutoSize = true;
+            label35.Location = new Point(31, 37);
+            label35.Name = "label35";
+            label35.Size = new Size(83, 17);
+            label35.TabIndex = 2;
+            label35.Text = "输入密码(&T)：";
+            // 
+            // label33
+            // 
+            label33.BorderStyle = BorderStyle.Fixed3D;
+            label33.Location = new Point(43, 18);
+            label33.Name = "label33";
+            label33.Size = new Size(380, 2);
+            label33.TabIndex = 1;
+            label33.Text = "label33";
+            // 
+            // label34
+            // 
+            label34.AutoSize = true;
+            label34.Location = new Point(8, 10);
+            label34.Name = "label34";
+            label34.Size = new Size(32, 17);
+            label34.TabIndex = 0;
+            label34.Text = "密码";
             // 
             // PreferencesFrom
             // 
@@ -1178,12 +1353,14 @@ namespace QuickLinker
             ((System.ComponentModel.ISupportInitialize)numericUpDown3).EndInit();
             ((System.ComponentModel.ISupportInitialize)numericUpDown2).EndInit();
             ((System.ComponentModel.ISupportInitialize)numericUpDown1).EndInit();
-            tabPage6.ResumeLayout(false);
-            tabPage6.PerformLayout();
-            tabPage5.ResumeLayout(false);
-            tabPage5.PerformLayout();
             tabPage4.ResumeLayout(false);
             tabPage4.PerformLayout();
+            tabPage5.ResumeLayout(false);
+            tabPage5.PerformLayout();
+            tabPage6.ResumeLayout(false);
+            tabPage6.PerformLayout();
+            tabPage7.ResumeLayout(false);
+            tabPage7.PerformLayout();
             ResumeLayout(false);
         }
 
@@ -1193,7 +1370,7 @@ namespace QuickLinker
         private TabPage tabPage1;
         private TabPage tabPage2;
         private TabPage tabPage3;
-        private TabPage tabPage4;
+        private TabPage tabPage6;
         private CheckBox checkBox7;
         private CheckBox checkBox6;
         private CheckBox checkBox5;
@@ -1269,7 +1446,7 @@ namespace QuickLinker
         private RadioButton RadioBtn_Default;
         private Button Btn_TestAudio;
         private TextBox TextBox_AudioFilePath;
-        private TabPage tabPage6;
+        private TabPage tabPage4;
         private TButton Btn_AudioBrowse;
         private Button Btn_FontChange;
         private TreeView TreeView_Font;
@@ -1278,5 +1455,20 @@ namespace QuickLinker
         private Button Btn_FontDefault;
         private Label Txt_FontChangeTip;
         private CheckBox checkBox19;
+        private TabPage tabPage7;
+        private Label label35;
+        private Label label33;
+        private Label label34;
+        private CheckBox checkBox21;
+        private CheckBox checkBox20;
+        private Label label37;
+        private Label label38;
+        private TextBox Txt_RPassword;
+        private Label label36;
+        private TextBox Txt_Password;
+        private CheckBox checkBox23;
+        private Label label39;
+        private Label label40;
+        private CheckBox checkBox22;
     }
 }

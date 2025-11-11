@@ -81,7 +81,20 @@ namespace QuickLinker
             //字体
             TreeView_Font.ExpandAll();
             TreeView_Font.SelectedNode = TreeView_Font.Nodes[0];
+
+            //保护
+            Txt_Password.Text = appConfig.password.Value;
+            Txt_RPassword.Text = appConfig.password.Value;
+            RegisterBool(appConfig.disableChangeSetting, checkBox20);
+            RegisterBool(appConfig.persistConfigureMenu, checkBox21);
+            RegisterBool(appConfig.persistDragMenu, checkBox22);
+            RegisterBool(appConfig.disableCloseSoftware, checkBox23);
+            _unRegisters.Add(appConfig.disableChangeSetting.RegisterWithInitValue(Event_DispableChangeSetting));
+            _unRegisters.Add(appConfig.password.RegisterWithInitValue(Event_Password));
+            Txt_Password.TextChanged += Txt_Password_TextChanged;
+            Txt_RPassword.TextChanged += Txt_Password_TextChanged;
         }
+
         private void SettingForm_FormClosing(object sender, FormClosingEventArgs e)
         {
             var appConfig = this.GetModel<AppConfig>();
@@ -240,6 +253,8 @@ namespace QuickLinker
             try
             {
                 MainForm.ignoreDeactivate++;
+                if (!PasswordForm.ShowForm())
+                    return false;
                 using (var settingForm = new PreferencesFrom())
                 {
                     settingForm.ShowDialog();
@@ -404,6 +419,42 @@ namespace QuickLinker
                 return;
             bindFontInfo.Value = new FontInfo(Font);
             TreeView_Font_AfterSelect(sender, null);
+        }
+        #endregion
+
+        #region 保护
+        private void Event_DispableChangeSetting(bool dcSetting)
+        {
+            checkBox21.Enabled = dcSetting;
+            checkBox22.Enabled = dcSetting;
+            if (!dcSetting)
+            { 
+                checkBox21.Checked = false;
+                checkBox22.Checked = false;
+            }
+        }
+        private void Event_Password(string password)
+        {
+            bool enable = !string.IsNullOrEmpty(password);
+            checkBox20.Enabled = enable;
+            checkBox23.Enabled = enable;
+            if (enable)
+            {
+                checkBox20.Checked = true;
+            }
+            else
+            {
+                checkBox20.Checked = false;
+                checkBox23.Checked = false;
+            }
+        }
+        private void Txt_Password_TextChanged(object sender, EventArgs e)
+        {
+            var appConfig = this.GetModel<AppConfig>();
+            if (string.Equals(Txt_Password.Text, Txt_RPassword.Text))
+                appConfig.password.Value = Txt_Password.Text;
+            else
+                appConfig.password.Value = string.Empty;
         }
         #endregion
     }

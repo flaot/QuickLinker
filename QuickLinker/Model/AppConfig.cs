@@ -93,6 +93,17 @@ namespace QuickLinker.Model
         public BindableProperty<FontInfo> fontBtnTitile = new BindableProperty<FontInfo>(new FontInfo());
         public BindableProperty<FontInfo> fontGroupTitle = new BindableProperty<FontInfo>(new FontInfo());
 
+        /// <summary> 密码 </summary>
+        public BindableProperty<string> password = new BindableProperty<string>(string.Empty);
+        /// <summary> 防止更改配置 </summary>
+        public BindableProperty<bool> disableChangeSetting = new BindableProperty<bool>();
+        /// <summary> 保留配置菜单项目 </summary>
+        public BindableProperty<bool> persistConfigureMenu = new BindableProperty<bool>();
+        /// <summary> 保留拖放支持 </summary>
+        public BindableProperty<bool> persistDragMenu = new BindableProperty<bool>();
+        /// <summary> 防止关闭本软件 </summary>
+        public BindableProperty<bool> disableCloseSoftware = new BindableProperty<bool>();
+
         [JsonIgnore, XmlIgnore]
         public EasyEvent TirggerSaveEvent = new EasyEvent();
         protected override void OnInit()

@@ -457,12 +457,16 @@ namespace QuickLinker
             base.WndProc(ref m);
         }
 
-        private void ApplicationExit()
+        public bool ApplicationExit()
         {
+            var config = AppArchitecture.Interface.GetModel<AppConfig>();
+            if (config.disableCloseSoftware.Value && !PasswordForm.ShowForm())
+                return false;
             _dateTimer?.Stop();
             var hotKeyMgr = this.GetSystem<HotKeyManager>();
             hotKeyMgr.HotKeyListener?.RemoveAll();
             hotKeyMgr.HotKeyListener?.Dispose();
+            return true;
         }
         private void Event_TitleStyleChange(TitleStyle b)
         {

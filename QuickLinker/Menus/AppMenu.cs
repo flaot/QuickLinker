@@ -26,6 +26,8 @@ namespace QuickLinker.Menus
         [AppMenuItem("关闭 QuickLinker", 200)]
         private void AppMenu_Quit_Click()
         {
+            if (!mainForm.ApplicationExit())
+                return;
             mainForm.NotifyIcon.Visible = false;
             mainForm.Close();
             mainForm.Dispose();

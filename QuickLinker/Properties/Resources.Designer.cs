@@ -225,6 +225,26 @@ namespace QuickLinker.Properties {
         }
         
         /// <summary>
+        ///   查找类似 访问拒绝。
+        ///
+        ///直到你输入正确密码以前不能继续进行所需操作。 的本地化字符串。
+        /// </summary>
+        internal static string PasswordForm_Tip {
+            get {
+                return ResourceManager.GetString("PasswordForm_Tip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 应用程序不存在 的本地化字符串。
+        /// </summary>
+        internal static string RUN_URI_ERROR {
+            get {
+                return ResourceManager.GetString("RUN_URI_ERROR", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   查找类似 &lt;未配置&gt; 的本地化字符串。
         /// </summary>
         internal static string TPanel_None {

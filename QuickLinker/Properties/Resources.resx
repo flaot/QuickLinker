@@ -179,6 +179,14 @@
   <data name="MSGBox_Tip" xml:space="preserve">
     <value>提示</value>
   </data>
+  <data name="PasswordForm_Tip" xml:space="preserve">
+    <value>访问拒绝。
+
+直到你输入正确密码以前不能继续进行所需操作。</value>
+  </data>
+  <data name="RUN_URI_ERROR" xml:space="preserve">
+    <value>应用程序不存在</value>
+  </data>
   <data name="TPanel_None" xml:space="preserve">
     <value>&lt;未配置&gt;</value>
   </data>

@@ -58,8 +58,11 @@ namespace QuickLinker
 
         public static DialogResult Show(TPanel tPanel)
         {
-            DialogResult dialogResult;
             var config = AppArchitecture.Interface.GetModel<AppConfig>();
+            if (!config.persistConfigureMenu.Value && !PasswordForm.ShowForm())
+                return DialogResult.Cancel;
+
+            DialogResult dialogResult;
             var hotKeySys = AppArchitecture.Interface.GetSystem<HotKeyManager>();
             hotKeySys.RemoveAllQuickActions();
             try
