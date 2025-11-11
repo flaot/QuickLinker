@@ -59,7 +59,7 @@ namespace QuickLinker
                 else
                 {
                     //调用插件命令
-                    commandSystem.RunCommand(uri.LocalPath);
+                    commandSystem.RunCommand(uri.LocalPath, Array.Empty<string>());
                 }
                 return;
             }

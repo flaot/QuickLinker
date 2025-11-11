@@ -6,5 +6,6 @@
         public static bool isBatchMode;
         public static IItem activeEntity;
         public static IItem activeContext;
+        public static string[] dropFileOrDirs;
     }
 }

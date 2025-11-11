@@ -31,8 +31,8 @@ namespace QuickLinker
         /// </summary>
         private void InitializeComponent()
         {
-            DataGridViewCellStyle dataGridViewCellStyle1 = new DataGridViewCellStyle();
-            DataGridViewCellStyle dataGridViewCellStyle2 = new DataGridViewCellStyle();
+            DataGridViewCellStyle dataGridViewCellStyle3 = new DataGridViewCellStyle();
+            DataGridViewCellStyle dataGridViewCellStyle4 = new DataGridViewCellStyle();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(BtnPropertiesFrom));
             tabControl1 = new TabControl();
             tabPage1 = new TabPage();
@@ -42,7 +42,7 @@ namespace QuickLinker
             label12 = new Label();
             checkBox3 = new CheckBox();
             CheckBox_AutoRun = new CheckBox();
-            CheckBox1 = new CheckBox();
+            CheckBox_DropLaunch = new CheckBox();
             label9 = new Label();
             label8 = new Label();
             label10 = new Label();
@@ -103,7 +103,7 @@ namespace QuickLinker
             tabPage1.Controls.Add(label12);
             tabPage1.Controls.Add(checkBox3);
             tabPage1.Controls.Add(CheckBox_AutoRun);
-            tabPage1.Controls.Add(CheckBox1);
+            tabPage1.Controls.Add(CheckBox_DropLaunch);
             tabPage1.Controls.Add(label9);
             tabPage1.Controls.Add(label8);
             tabPage1.Controls.Add(label10);
@@ -194,16 +194,15 @@ namespace QuickLinker
             CheckBox_AutoRun.Text = "系统启动时运行(&U)";
             CheckBox_AutoRun.UseVisualStyleBackColor = true;
             // 
-            // CheckBox1
+            // CheckBox_DropLaunch
             // 
-            CheckBox1.AutoSize = true;
-            CheckBox1.Enabled = false;
-            CheckBox1.Location = new Point(366, 37);
-            CheckBox1.Name = "CheckBox1";
-            CheckBox1.Size = new Size(91, 21);
-            CheckBox1.TabIndex = 21;
-            CheckBox1.Text = "拖放启动(&R)";
-            CheckBox1.UseVisualStyleBackColor = true;
+            CheckBox_DropLaunch.AutoSize = true;
+            CheckBox_DropLaunch.Location = new Point(366, 37);
+            CheckBox_DropLaunch.Name = "CheckBox_DropLaunch";
+            CheckBox_DropLaunch.Size = new Size(91, 21);
+            CheckBox_DropLaunch.TabIndex = 21;
+            CheckBox_DropLaunch.Text = "拖放启动(&R)";
+            CheckBox_DropLaunch.UseVisualStyleBackColor = true;
             // 
             // label9
             // 
@@ -435,14 +434,14 @@ namespace QuickLinker
             DataGridView_Opt.AllowUserToResizeRows = false;
             DataGridView_Opt.BackgroundColor = Color.White;
             DataGridView_Opt.BorderStyle = BorderStyle.Fixed3D;
-            dataGridViewCellStyle1.Alignment = DataGridViewContentAlignment.MiddleLeft;
-            dataGridViewCellStyle1.BackColor = SystemColors.Control;
-            dataGridViewCellStyle1.Font = new Font("Microsoft YaHei UI", 9F);
-            dataGridViewCellStyle1.ForeColor = SystemColors.WindowText;
-            dataGridViewCellStyle1.SelectionBackColor = SystemColors.Highlight;
-            dataGridViewCellStyle1.SelectionForeColor = SystemColors.HighlightText;
-            dataGridViewCellStyle1.WrapMode = DataGridViewTriState.True;
-            DataGridView_Opt.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle1;
+            dataGridViewCellStyle3.Alignment = DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle3.BackColor = SystemColors.Control;
+            dataGridViewCellStyle3.Font = new Font("Microsoft YaHei UI", 9F);
+            dataGridViewCellStyle3.ForeColor = SystemColors.WindowText;
+            dataGridViewCellStyle3.SelectionBackColor = SystemColors.Highlight;
+            dataGridViewCellStyle3.SelectionForeColor = SystemColors.HighlightText;
+            dataGridViewCellStyle3.WrapMode = DataGridViewTriState.True;
+            DataGridView_Opt.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle3;
             DataGridView_Opt.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             DataGridView_Opt.Columns.AddRange(new DataGridViewColumn[] { icon, name, desc });
             DataGridView_Opt.Dock = DockStyle.Fill;
@@ -459,10 +458,10 @@ namespace QuickLinker
             // icon
             // 
             icon.AutoSizeMode = DataGridViewAutoSizeColumnMode.None;
-            dataGridViewCellStyle2.Alignment = DataGridViewContentAlignment.MiddleCenter;
-            dataGridViewCellStyle2.NullValue = resources.GetObject("dataGridViewCellStyle2.NullValue");
-            dataGridViewCellStyle2.WrapMode = DataGridViewTriState.False;
-            icon.DefaultCellStyle = dataGridViewCellStyle2;
+            dataGridViewCellStyle4.Alignment = DataGridViewContentAlignment.MiddleCenter;
+            dataGridViewCellStyle4.NullValue = resources.GetObject("dataGridViewCellStyle4.NullValue");
+            dataGridViewCellStyle4.WrapMode = DataGridViewTriState.False;
+            icon.DefaultCellStyle = dataGridViewCellStyle4;
             icon.HeaderText = "";
             icon.ImageLayout = DataGridViewImageCellLayout.Stretch;
             icon.MinimumWidth = 25;
@@ -603,5 +602,6 @@ namespace QuickLinker
         private DataGridViewTextBoxColumn name;
         private DataGridViewTextBoxColumn desc;
         private TButton PictureBox_Icon;
+        private CheckBox CheckBox_DropLaunch;
     }
 }

@@ -164,20 +164,20 @@ namespace QuickLinker.QuickLaunch.Systems
             }
         }
         //打开指定入口
-        internal bool Open(int index)
+        internal bool Open(int index, string[] dropFileOrDirs)
         {
             Entity entity = Find(index);
             if (entity == null)
                 return false;
             if (entity.iconType == Constant.OpenType.OTHER)
-                this.GetUtility<IProcessUtil>().RunEntity(entity);
+                this.GetUtility<IProcessUtil>().RunEntity(entity, dropFileOrDirs);
             else
             {
                 string protocol = this.GetUtility<IURIUtil>().Protocol;
                 if (entity.Path.StartsWith($"{protocol}:"))
                 {
                     Uri uri = new Uri(entity.Path);
-                    this.GetSystem<ICommandSystem>().RunCommand(uri.LocalPath);
+                    this.GetSystem<ICommandSystem>().RunCommand(uri.LocalPath, dropFileOrDirs);
                 }
             }
             OpenEntityEvent.Trigger(entity);
@@ -201,14 +201,14 @@ namespace QuickLinker.QuickLaunch.Systems
                 if (!entity.launchOnStartup)
                     continue;
                 if (entity.iconType == Constant.OpenType.OTHER)
-                    this.GetUtility<IProcessUtil>().RunEntity(entity);
+                    this.GetUtility<IProcessUtil>().RunEntity(entity, Array.Empty<string>());
                 else
                 {
                     string protocol = this.GetUtility<IURIUtil>().Protocol;
                     if (entity.Path.StartsWith($"{protocol}:"))
                     {
                         Uri uri = new Uri(entity.Path);
-                        this.GetSystem<ICommandSystem>().RunCommand(uri.LocalPath);
+                        this.GetSystem<ICommandSystem>().RunCommand(uri.LocalPath, Array.Empty<string>());
                     }
                 }
             }

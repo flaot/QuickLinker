@@ -95,6 +95,7 @@ namespace QuickLinker
             if (_inputEntity != null)
             {
                 CheckBox_AutoRun.Checked = _inputEntity.launchOnStartup;
+                CheckBox_DropLaunch.Checked = _inputEntity.dropNLaunch;
             }
         }
         private void SetEntitiy(Entity entity, bool setExtInfo)
@@ -198,6 +199,7 @@ namespace QuickLinker
             _tempEntity.priorityClass = (PriorityClass)ComboBox_PriorityClass.SelectedIndex;
             _tempEntity.launchOnStartup = CheckBox_AutoRun.Checked;
             _tempEntity.actionHotKey = Txt_HotKey.Text;
+            _tempEntity.dropNLaunch = CheckBox_DropLaunch.Checked;
 
             if (_inputEntity != null)
                 this.SendCommand(new QuickEntityRemoveCommand() { index = _inputEntity.index });

@@ -8,6 +8,6 @@
         string Name { get; }
         string Description { get; }
         string Icon { get; }
-        void Action();
+        void Action(string[] dropFileOrDirs);
     }
 }

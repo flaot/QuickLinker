@@ -1,5 +1,6 @@
 ﻿using QFramework;
 using QuickLinker.QuickLaunch.Systems;
+using System;
 
 namespace QuickLinker.QuickLaunch.Command
 {
@@ -9,10 +10,11 @@ namespace QuickLinker.QuickLaunch.Command
     public class QuickEntityOpenCommand : AbstractCommand
     {
         public int index;
+        public string[] dropFileOrDirs;
         protected override void OnExecute()
         {
             var entitySystem = this.GetSystem<QuickEntitySystem>();
-            entitySystem.Open(index);
+            entitySystem.Open(index, dropFileOrDirs == null ? Array.Empty<string>() : dropFileOrDirs);
         }
     }
 }

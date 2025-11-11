@@ -10,7 +10,7 @@ namespace QuickLinker.Systems
         /// <summary> 请求刷新所有命令 </summary>
         void RequestResetAll();
         string[] AllCommand { get; }
-        bool RunCommand(string command);
+        bool RunCommand(string command, string[] dropFileOrDirs);
         IPluginCommand CommandInfo(string command);
     }
     internal class CommandSystem : AbstractSystem, ICommandSystem
@@ -40,11 +40,11 @@ namespace QuickLinker.Systems
             }
         }
 
-        public bool RunCommand(string command)
+        public bool RunCommand(string command, string[] dropFileOrDirs)
         {
             if (_dicCommandByName.TryGetValue(command, out IPluginCommand pluginCommand))
             { 
-                pluginCommand.Action();
+                pluginCommand.Action(dropFileOrDirs);
                 return true;
             }
             return false;

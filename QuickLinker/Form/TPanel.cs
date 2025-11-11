@@ -10,6 +10,7 @@ using System;
 using System.Collections.Generic;
 using System.Drawing;
 using System.Drawing.Drawing2D;
+using System.IO;
 using System.Windows.Forms;
 using AppConfig = QuickLinker.Model.AppConfig;
 
@@ -186,8 +187,22 @@ namespace QuickLinker
         }
         protected override void OnDragDrop(DragEventArgs drgevent)
         {
-            var entitySystem = this.GetSystem<QuickEntitySystem>();
             string[] files = (string[])drgevent.Data.GetData(DataFormats.FileDrop);
+            if (_entity != null && _entity.dropNLaunch)
+            {
+                if (Directory.Exists(_entity.Path))
+                {
+                    //TODO:文件夹右键菜单
+                }
+                else
+                {
+                    Selection.activeContext = this;
+                    Selection.dropFileOrDirs = files;
+                    TypeEventSystem.Global.Send(new ClickTPanelEvent());
+                }
+                return;
+            }
+            var entitySystem = this.GetSystem<QuickEntitySystem>();
             for (int i = 0; i < files.Length; i++)
             {
                 int insertIndex = _defaultIndex + i;
@@ -300,6 +315,7 @@ namespace QuickLinker
             if (click)
             {
                 Selection.activeContext = this;
+                Selection.dropFileOrDirs = Array.Empty<string>();
                 TypeEventSystem.Global.Send(new ClickTPanelEvent());
             }
             base.OnMouseUp(e);

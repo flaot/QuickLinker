@@ -9,22 +9,22 @@ namespace QuickLinker.QuickLaunch.Utils
 {
     public interface IProcessUtil : IUtility
     {
-        void RunEntity(Entity iconInfo);
+        void RunEntity(Entity iconInfo, string[] dropFileOrDirs);
         void ShowInExplore(Entity iconInfo);
     }
     public class ProcessUtil : IProcessUtil
     {
-        public void RunEntity(Entity iconInfo)
+        public void RunEntity(Entity iconInfo, string[] dropFileOrDirs)
         {
-            StartIconApp(iconInfo, iconInfo.adminStartUp ?
+            StartIconApp(iconInfo, dropFileOrDirs, iconInfo.adminStartUp ?
                 IconStartType.ADMIN_STARTUP : IconStartType.DEFAULT_STARTUP);
         }
         public void ShowInExplore(Entity iconInfo)
         {
-            StartIconApp(iconInfo, IconStartType.SHOW_IN_EXPLORE);
+            StartIconApp(iconInfo, Array.Empty<string>(), IconStartType.SHOW_IN_EXPLORE);
         }
 
-        private void StartIconApp(Entity icon, IconStartType type)
+        private void StartIconApp(Entity icon, string[] dropFileOrDirs, IconStartType type)
         {
             try
             {
@@ -36,6 +36,12 @@ namespace QuickLinker.QuickLaunch.Utils
                     p.StartInfo.FileName = icon.Path;
                     if (!string.IsNullOrWhiteSpace(icon.startArg))
                         p.StartInfo.Arguments = icon.startArg;
+                    if (dropFileOrDirs.Length > 0)
+                    {
+                        if (p.StartInfo.Arguments.Length > 0)
+                            p.StartInfo.Arguments += ' ';
+                        p.StartInfo.Arguments += string.Join(' ', Array.ConvertAll(dropFileOrDirs, str => str.Contains(' ') ? '"' + str + '"' : str));
+                    }
 
                     if (icon.iconType != OpenType.OTHER)
                     {

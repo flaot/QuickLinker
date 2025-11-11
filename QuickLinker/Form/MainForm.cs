@@ -324,7 +324,7 @@ namespace QuickLinker
                 TypeEventSystem.Global.Send(new ClickItemPreEvent());
                 if (Selection.activeEntity != null)
                 {
-                    this.SendCommand(new QuickEntityOpenCommand() { index = panel.Index });
+                    this.SendCommand(new QuickEntityOpenCommand() { index = panel.Index, dropFileOrDirs = Selection.dropFileOrDirs });
                     this.GetSystem<IAudioSystem>().PlayAudio(AudioType.Click);
                     TypeEventSystem.Global.Send(new ClickItemPostEvent());
                 }
