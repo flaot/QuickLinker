@@ -80,7 +80,7 @@ namespace QuickLinker
             config.dateTimeType.RegisterWithInitValue(t => Event_RefreshShowTime(null, null));
             config.windowAlpha.RegisterWithInitValue(t => Opacity = t * 1f / 100);
             config.tabAppearance.RegisterWithInitValue(t => tabControl1.Appearance = t);
-            config.disableAffinity.RegisterWithInitValue(b => SetWindowDisplayAffinity(Handle, (uint)(b ? 0x11 : 0)));
+            config.disableAffinity.RegisterWithInitValue(b => Win32API.SetWindowDisplayAffinity(Handle, (uint)(b ? 0x11 : 0)));
             config.showInTray.RegisterWithInitValue(b => { ShowInTaskbar = b; NotifyIcon.Visible = !b; });
             config.launch.RegisterWithInitValue(this.GetUtility<LaunchUtil>().Set);
             config.registerURI.RegisterWithInitValue(this.GetUtility<IURIUtil>().Set);
@@ -110,10 +110,12 @@ namespace QuickLinker
             menuSystem.RegisterMenu(new MenuProxy((int)MenuType.Tab, new ContextMenuStrip()));
             menuSystem.RegisterMenu(new MenuProxy((int)MenuType.Page, new ContextMenuStrip()));
             menuSystem.RegisterMenu(new MenuProxy((int)MenuType.ToolStatus, new ContextMenuStrip()));
+            menuSystem.RegisterMenu(new MenuProxy((int)MenuType.Folder, new ContextMenuStrip()));
             menuSystem.InitSystemMenuItem(new AppMenu(this));
             menuSystem.InitSystemMenuItem(new TabMenu(this));
             menuSystem.InitSystemMenuItem(this);
             menuSystem.InitSystemMenuItem(new ToolStatusMenu(this));
+            menuSystem.InitSystemMenuItem(new FolderMenu(this));
             var pluginSystem = this.GetSystem<IPluginSystem>();
             pluginSystem.LoadAll();
             menuSystem.RequestResetAll();
@@ -737,9 +739,6 @@ namespace QuickLinker
                 tabControl1.TabPages[i].Text = groupArray.Value[i];
             }
         }
-
-        [DllImport("user32.dll")]
-        private static extern uint SetWindowDisplayAffinity(IntPtr hWnd, uint dwAffinity);
 
         //NotifyIcon
         public void ShowMainWindow()

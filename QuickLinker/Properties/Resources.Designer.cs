@@ -134,6 +134,15 @@ namespace QuickLinker.Properties {
         }
         
         /// <summary>
+        ///   查找类似 确定要删除所选择的文件吗? 的本地化字符串。
+        /// </summary>
+        internal static string MainForm_ChekDeletaDropFileOrDirs {
+            get {
+                return ResourceManager.GetString("MainForm_ChekDeletaDropFileOrDirs", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   查找类似 你已选择复制：
         ///
         ///{0}

@@ -2,10 +2,12 @@
 using QuickLinker.Model;
 using QuickLinker.Plugin;
 using QuickLinker.Plugin.Events;
+using QuickLinker.Plugin.Menu;
 using QuickLinker.Properties;
 using QuickLinker.QuickLaunch.Command;
 using QuickLinker.QuickLaunch.Models;
 using QuickLinker.QuickLaunch.Systems;
+using QuickLinker.Systems;
 using System;
 using System.Collections.Generic;
 using System.Drawing;
@@ -190,14 +192,17 @@ namespace QuickLinker
             string[] files = (string[])drgevent.Data.GetData(DataFormats.FileDrop);
             if (_entity != null && _entity.dropNLaunch)
             {
+                Selection.activeContext = this;
+                Selection.dropFileOrDirs = files;
+                base.OnDragDrop(drgevent);
                 if (Directory.Exists(_entity.Path))
                 {
-                    //TODO:文件夹右键菜单
+                    var menuSystem = this.GetSystem<IMenuSystem>();
+                    menuSystem.SetEnable((int)MenuType.Folder, "删除文件(&D)", false);
+                    menuSystem.Show((int)MenuType.Folder, MousePosition.X, MousePosition.Y);
                 }
                 else
                 {
-                    Selection.activeContext = this;
-                    Selection.dropFileOrDirs = files;
                     TypeEventSystem.Global.Send(new ClickTPanelEvent());
                 }
                 return;

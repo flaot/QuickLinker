@@ -25,6 +25,7 @@ namespace QuickLinker
             this.RegisterUtility<IProcessUtil>(new ProcessUtil());
             this.RegisterUtility<IImageUtil>(new ImageUtil());
             this.RegisterUtility<IURIUtil>(new URIUtil());
+            this.RegisterUtility<IFileUtil>(new FileUtil());
             this.RegisterUtility(new LaunchUtil());
             this.RegisterUtility(new SingleAppUtil());
         }

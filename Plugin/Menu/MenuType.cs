@@ -7,5 +7,6 @@
         Tab,
         Page,
         ToolStatus,
+        Folder,
     }
 }

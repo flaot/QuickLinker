@@ -142,6 +142,9 @@
   <data name="MainForm_AlignStats" xml:space="preserve">
     <value>正在排列：请点击目标按钮</value>
   </data>
+  <data name="MainForm_ChekDeletaDropFileOrDirs" xml:space="preserve">
+    <value>确定要删除所选择的文件吗?</value>
+  </data>
   <data name="MainForm_Copy" xml:space="preserve">
     <value>你已选择复制：
 
