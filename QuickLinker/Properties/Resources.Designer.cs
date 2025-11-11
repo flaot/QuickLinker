@@ -216,6 +216,21 @@ namespace QuickLinker.Properties {
         }
         
         /// <summary>
+        ///   查找类似 {0}
+        ///
+        ///被拖放到下列按钮上，该按钮已被配置为运行：
+        ///
+        ///{1}
+        ///
+        ///确定要用新对象替换配置信息吗？ 的本地化字符串。
+        /// </summary>
+        internal static string MianForm_ReplaceTip {
+            get {
+                return ResourceManager.GetString("MianForm_ReplaceTip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   查找类似 提示 的本地化字符串。
         /// </summary>
         internal static string MSGBox_Tip {

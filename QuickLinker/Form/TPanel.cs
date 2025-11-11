@@ -186,11 +186,34 @@ namespace QuickLinker
         }
         protected override void OnDragDrop(DragEventArgs drgevent)
         {
+            var entitySystem = this.GetSystem<QuickEntitySystem>();
             string[] files = (string[])drgevent.Data.GetData(DataFormats.FileDrop);
-            foreach (string file in files)
+            for (int i = 0; i < files.Length; i++)
             {
-                this.SendCommand(new QuickEntityInsertCommand() { filePath = file, index = _defaultIndex, canParse = true });
-                break;
+                int insertIndex = _defaultIndex + i;
+                var fileOrDir = files[i];
+                Entity entity = entitySystem.Find(insertIndex);
+                if (entity != null)
+                {
+                    string entityText = string.IsNullOrWhiteSpace(entity.desc) ? entity.Path : entity.desc;
+                    if (files.Length - i > 2)
+                    {
+                        DialogResult dialogResult = MessageBox.Show(string.Format(Resources.MianForm_ReplaceTip, fileOrDir, entityText), 
+                         Resources.MSGBox_Tip, MessageBoxButtons.YesNoCancel, MessageBoxIcon.Question);
+                        if (dialogResult == DialogResult.No)
+                            continue;
+                        if (dialogResult == DialogResult.Cancel)
+                            break;
+                    }
+                    else
+                    {
+                        DialogResult dialogResult = MessageBox.Show(string.Format(Resources.MianForm_ReplaceTip, fileOrDir, entityText), 
+                            Resources.MSGBox_Tip, MessageBoxButtons.YesNo, MessageBoxIcon.Question);
+                        if (dialogResult == DialogResult.No)
+                            continue;
+                    }
+                }
+                this.SendCommand(new QuickEntityInsertCommand() { filePath = fileOrDir, index = insertIndex, canParse = true });
             }
             base.OnDragDrop(drgevent);
         }

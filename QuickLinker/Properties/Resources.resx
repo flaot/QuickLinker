@@ -176,6 +176,15 @@
   <data name="MainForm_SysMenu_TopMost" xml:space="preserve">
     <value>总在最前面(&amp;T)</value>
   </data>
+  <data name="MianForm_ReplaceTip" xml:space="preserve">
+    <value>{0}
+
+被拖放到下列按钮上，该按钮已被配置为运行：
+
+{1}
+
+确定要用新对象替换配置信息吗？</value>
+  </data>
   <data name="MSGBox_Tip" xml:space="preserve">
     <value>提示</value>
   </data>
