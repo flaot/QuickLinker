@@ -28,7 +28,7 @@ namespace QuickLinker.Menus
                 this.GetUtility<IFileUtil>().Copy(path, tPanel.Entity.Path);
             }
         }
-        [FolderMenuItem("移动文件到此处(&C)", 101)]
+        [FolderMenuItem("移动文件到此处(&M)", 101)]
         private void FolderMenu_Move_Click()
         {
             var tPanel = Selection.activeContext as TPanel;
@@ -56,7 +56,7 @@ namespace QuickLinker.Menus
                 this.GetUtility<IFileUtil>().Delete(path);
             }
         }
-        [FolderMenuItem("取消", 120)]
+        [FolderMenuItem("取消", 200)]
         private void FolderMenu_Cancel_Click()
         {
         }

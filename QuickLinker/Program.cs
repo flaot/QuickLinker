@@ -23,7 +23,7 @@ namespace QuickLinker
         [STAThread]
         static void Main(string[] args)
         {
-            string rootPath = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location.Replace(".dll", ".exe"));
+            string rootPath = Path.GetDirectoryName(Application.ExecutablePath);
             System.Environment.CurrentDirectory = rootPath;
 
             if (args.Length > 0 && args[0] == "--")

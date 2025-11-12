@@ -1,14 +1,15 @@
 ﻿using Microsoft.Win32;
 using QFramework;
 using System;
-using System.Reflection;
+using System.IO;
+using System.Windows.Forms;
 
 namespace QuickLinker.Utils
 {
     internal class LaunchUtil : IUtility
     {
-        public static string ApplicationName { get; } = Assembly.GetExecutingAssembly().GetName().Name;
-        public static string ApplicationExecutable { get; } = Assembly.GetExecutingAssembly().Location.Replace(".dll", ".exe");
+        public static string ApplicationName { get; } = Path.GetFileNameWithoutExtension(Application.ExecutablePath);
+        public static string ApplicationExecutable { get; } = Application.ExecutablePath;
         private const string RunKey = @"SOFTWARE\Microsoft\Windows\CurrentVersion\Run";
         private static readonly RegistryView RegView = Environment.Is64BitOperatingSystem ? RegistryView.Registry32 : RegistryView.Default;
 

@@ -198,7 +198,7 @@ namespace QuickLinker
                 if (Directory.Exists(_entity.Path))
                 {
                     var menuSystem = this.GetSystem<IMenuSystem>();
-                    menuSystem.SetEnable((int)MenuType.Folder, "删除文件(&D)", false);
+                    menuSystem.SetEnable((int)MenuType.Folder, "取消", false);
                     menuSystem.Show((int)MenuType.Folder, MousePosition.X, MousePosition.Y);
                 }
                 else

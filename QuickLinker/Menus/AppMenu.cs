@@ -12,12 +12,12 @@ namespace QuickLinker.Menus
             this.mainForm = mainForm;
         }
   
-        [AppMenuItem("显示(&S)", 108)]
+        [AppMenuItem("显示(&S)", 100)]
         private void AppMenu_Show_Click()
         {
             mainForm.ShowMainWindow();
         }
-        [AppMenuItem("首选项(&P)...", 109)]
+        [AppMenuItem("首选项(&P)...", 101)]
         private void AppMenu_Setting_Click()
         {
             AppMenu_Show_Click();

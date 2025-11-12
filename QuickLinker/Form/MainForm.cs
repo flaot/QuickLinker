@@ -13,9 +13,9 @@ using QuickLinker.Systems;
 using QuickLinker.Utils;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Drawing;
 using System.IO;
-using System.Runtime.InteropServices;
 using System.Text;
 using System.Windows.Forms;
 using WK.Libraries.HotkeyListenerNS;
@@ -752,8 +752,16 @@ namespace QuickLinker
         }
         private void NotifyIcon_MouseClick(object sender, MouseEventArgs e)
         {
-            if (e.Button == MouseButtons.Left)
+            if (e.Button != MouseButtons.Left)
+                return;
+            if ((ModifierKeys & Keys.Control) != 0) //Ctrl+左键 打开所在目录
+            {
+                Process.Start("explorer.exe", "/e,/select," + Application.ExecutablePath);
+            }
+            else
+            {
                 ShowMainWindow();
+            }
         }
 
         private void NoSettingStartEvent(NoSettingStratEvent _)
