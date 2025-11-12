@@ -3,6 +3,7 @@ using System.Drawing;
 using System.IO;
 using System.Runtime.InteropServices;
 using System.Text;
+using System.Threading;
 using System.Windows.Forms;
 
 namespace QuickLinker.Utils
@@ -1507,9 +1508,7 @@ namespace QuickLinker.Utils
                 m_hookType,
                 m_filterFunc,
                 IntPtr.Zero,
-#pragma warning disable CS0618 // “AppDomain.GetCurrentThreadId()”已过时:“AppDomain.GetCurrentThreadId has been deprecated because it does not provide a stable Id when managed threads are running on fibers (aka lightweight threads). To get a stable identifier for a managed thread, use the ManagedThreadId property on Thread.  http://go.microsoft.com/fwlink/?linkid=14202”
-                (int)AppDomain.GetCurrentThreadId());
-#pragma warning restore CS0618 // “AppDomain.GetCurrentThreadId()”已过时:“AppDomain.GetCurrentThreadId has been deprecated because it does not provide a stable Id when managed threads are running on fibers (aka lightweight threads). To get a stable identifier for a managed thread, use the ManagedThreadId property on Thread.  http://go.microsoft.com/fwlink/?linkid=14202”
+                Thread.CurrentThread.ManagedThreadId);
         }
         // ************************************************************************
 

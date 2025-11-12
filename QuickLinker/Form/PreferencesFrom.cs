@@ -280,8 +280,8 @@ namespace QuickLinker
         private void Btn_AudioBrowse_Click(object sender, EventArgs e)
         {
             OpenFileDialog openFileDialog = new OpenFileDialog();
-            openFileDialog.Title = "选择文件";
-            openFileDialog.Filter = "声音文件(*.wav)|*.wav|所有文件(*.*)|*.*";
+            openFileDialog.Title = Resources.BtnPropertiesForm_OpenFileTitle;
+            openFileDialog.Filter = Resources.BtnPropertiesForm_OpenFileFilter;
             openFileDialog.RestoreDirectory = true;
             openFileDialog.Multiselect = false;
             if (openFileDialog.ShowDialog() == DialogResult.Cancel)
@@ -371,7 +371,7 @@ namespace QuickLinker
             var node = TreeView_Font.SelectedNode;
             if (node.Tag == null)
             {
-                Txt_FontChangeTip.Text = "请选择要修改的字体。";
+                Txt_FontChangeTip.Text = Resources.BtnPropertiesForm_ChangeFontTip;
                 Btn_FontChange.Visible = false;
                 Btn_FontDefault.Visible = false;
             }

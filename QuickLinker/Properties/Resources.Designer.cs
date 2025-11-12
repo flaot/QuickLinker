@@ -61,6 +61,33 @@ namespace QuickLinker.Properties {
         }
         
         /// <summary>
+        ///   查找类似 请选择要修改的字体。 的本地化字符串。
+        /// </summary>
+        internal static string BtnPropertiesForm_ChangeFontTip {
+            get {
+                return ResourceManager.GetString("BtnPropertiesForm_ChangeFontTip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 声音文件(*.wav)|*.wav|所有文件(*.*)|*.* 的本地化字符串。
+        /// </summary>
+        internal static string BtnPropertiesForm_OpenFileFilter {
+            get {
+                return ResourceManager.GetString("BtnPropertiesForm_OpenFileFilter", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 选择文件 的本地化字符串。
+        /// </summary>
+        internal static string BtnPropertiesForm_OpenFileTitle {
+            get {
+                return ResourceManager.GetString("BtnPropertiesForm_OpenFileTitle", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   查找类似 确定要清除此按钮的配置吗? 的本地化字符串。
         /// </summary>
         internal static string BtnPropertiesFrom_Clear {
