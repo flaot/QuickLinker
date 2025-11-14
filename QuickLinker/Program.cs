@@ -49,12 +49,7 @@ namespace QuickLinker
                     }
                     Selection.activeContext = null;
                     Selection.activeEntity = entity;
-                    TypeEventSystem.Global.Send(new ClickItemPreEvent());
-                    if (Selection.activeEntity != null)
-                    {
-                        appArchitecture.SendCommand(new QuickEntityOpenCommand() { index = entity.index });
-                        TypeEventSystem.Global.Send(new ClickItemPostEvent());
-                    }
+                    appArchitecture.SendCommand(new QuickEntityOpenCommand() { index = entity.index });
                 }
                 else
                 {

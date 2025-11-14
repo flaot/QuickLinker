@@ -40,7 +40,7 @@ namespace QuickLinker
             Btn_ChangeIcon = new Button();
             label11 = new Label();
             label12 = new Label();
-            checkBox3 = new CheckBox();
+            CheckBox_Close = new CheckBox();
             CheckBox_AutoRun = new CheckBox();
             CheckBox_DropLaunch = new CheckBox();
             label9 = new Label();
@@ -101,7 +101,7 @@ namespace QuickLinker
             tabPage1.Controls.Add(Btn_ChangeIcon);
             tabPage1.Controls.Add(label11);
             tabPage1.Controls.Add(label12);
-            tabPage1.Controls.Add(checkBox3);
+            tabPage1.Controls.Add(CheckBox_Close);
             tabPage1.Controls.Add(CheckBox_AutoRun);
             tabPage1.Controls.Add(CheckBox_DropLaunch);
             tabPage1.Controls.Add(label9);
@@ -173,16 +173,15 @@ namespace QuickLinker
             label12.Text = "图标";
             label12.TextAlign = ContentAlignment.MiddleRight;
             // 
-            // checkBox3
+            // CheckBox_Close
             // 
-            checkBox3.AutoSize = true;
-            checkBox3.Enabled = false;
-            checkBox3.Location = new Point(366, 91);
-            checkBox3.Name = "checkBox3";
-            checkBox3.Size = new Size(134, 21);
-            checkBox3.TabIndex = 23;
-            checkBox3.Text = "关闭QuickLinker(&T)";
-            checkBox3.UseVisualStyleBackColor = true;
+            CheckBox_Close.AutoSize = true;
+            CheckBox_Close.Location = new Point(366, 91);
+            CheckBox_Close.Name = "CheckBox_Close";
+            CheckBox_Close.Size = new Size(134, 21);
+            CheckBox_Close.TabIndex = 23;
+            CheckBox_Close.Text = "关闭QuickLinker(&T)";
+            CheckBox_Close.UseVisualStyleBackColor = true;
             // 
             // CheckBox_AutoRun
             // 
@@ -589,7 +588,7 @@ namespace QuickLinker
         private Button Btn_ChangeIcon;
         private Label label11;
         private Label label12;
-        private CheckBox checkBox3;
+        private CheckBox CheckBox_Close;
         private CheckBox CheckBox_AutoRun;
         private CheckBox CheckBox1;
         private SplitContainer splitContainer1;

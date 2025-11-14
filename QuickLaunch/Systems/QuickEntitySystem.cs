@@ -170,7 +170,9 @@ namespace QuickLinker.QuickLaunch.Systems
             if (entity == null)
                 return false;
             if (entity.iconType == Constant.OpenType.OTHER)
+            { 
                 this.GetUtility<IProcessUtil>().RunEntity(entity, dropFileOrDirs);
+            }
             else
             {
                 string protocol = this.GetUtility<IURIUtil>().Protocol;
@@ -201,7 +203,9 @@ namespace QuickLinker.QuickLaunch.Systems
                 if (!entity.launchOnStartup)
                     continue;
                 if (entity.iconType == Constant.OpenType.OTHER)
+                { 
                     this.GetUtility<IProcessUtil>().RunEntity(entity, Array.Empty<string>());
+                }
                 else
                 {
                     string protocol = this.GetUtility<IURIUtil>().Protocol;

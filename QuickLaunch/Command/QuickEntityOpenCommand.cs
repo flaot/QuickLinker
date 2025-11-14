@@ -1,4 +1,7 @@
 ﻿using QFramework;
+using QuickLinker.Plugin;
+using QuickLinker.Plugin.Events;
+using QuickLinker.QuickLaunch.Models;
 using QuickLinker.QuickLaunch.Systems;
 using System;
 
@@ -13,8 +16,13 @@ namespace QuickLinker.QuickLaunch.Command
         public string[] dropFileOrDirs;
         protected override void OnExecute()
         {
-            var entitySystem = this.GetSystem<QuickEntitySystem>();
-            entitySystem.Open(index, dropFileOrDirs == null ? Array.Empty<string>() : dropFileOrDirs);
+            TypeEventSystem.Global.Send(new ClickItemPreEvent());
+            if (Selection.activeEntity != null)
+            {
+                var entitySystem = this.GetSystem<QuickEntitySystem>();
+                entitySystem.Open(index, dropFileOrDirs == null ? Array.Empty<string>() : dropFileOrDirs);
+                TypeEventSystem.Global.Send(new ClickItemPostEvent());
+            }
         }
     }
 }

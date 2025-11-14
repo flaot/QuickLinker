@@ -21,6 +21,8 @@ namespace QuickLinker.QuickLaunch.Models
         public bool launchOnStartup = false;
         /// <summary> 拖放启动/文件 </summary>
         public bool dropNLaunch = false;
+        /// <summary> 关闭QuickLinker </summary>
+        public bool closeSoft = false;
 
         /// <summary> 打开方式 </summary>
         public OpenType iconType = OpenType.OTHER;

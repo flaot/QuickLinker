@@ -77,12 +77,10 @@ namespace QuickLinker
 
             Selection.activeContext = null;
             Selection.activeEntity = quickAction.entity;
-            TypeEventSystem.Global.Send(new ClickItemPreEvent());
-            if (Selection.activeEntity != null)
-            {
-                ((ISystem)this).GetArchitecture().SendCommand(new QuickEntityOpenCommand() { index = quickAction.entity.index });
-                TypeEventSystem.Global.Send(new ClickItemPostEvent());
-            }
+            bool closeSoft = quickAction.entity.closeSoft;
+            ((ISystem)this).GetArchitecture().SendCommand(new QuickEntityOpenCommand() { index = quickAction.entity.index });
+            if (closeSoft)
+                TypeEventSystem.Global.Send(new CloseSoftwareEvent());
         }
 
         private void InitializeGlobalQuickActionsHotKey()

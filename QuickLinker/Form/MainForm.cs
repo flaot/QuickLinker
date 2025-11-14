@@ -91,6 +91,7 @@ namespace QuickLinker
             TypeEventSystem.Global.Register<ClickTPanelEvent>(TPanel_OnClick);
             TypeEventSystem.Global.Register<ClickMenuTPanelEvent>(TPanel_OnClickMenu);
             TypeEventSystem.Global.Register<NoSettingStratEvent>(NoSettingStartEvent);
+            TypeEventSystem.Global.Register<CloseSoftwareEvent>(CloseSoftwareEvent);
 
             _dateTimer = new Timer();
             _dateTimer.Tick += Event_RefreshShowTime;
@@ -323,13 +324,11 @@ namespace QuickLinker
                     return;
                 }
                 Selection.activeEntity = panel.Entity;
-                TypeEventSystem.Global.Send(new ClickItemPreEvent());
-                if (Selection.activeEntity != null)
-                {
-                    this.SendCommand(new QuickEntityOpenCommand() { index = panel.Index, dropFileOrDirs = Selection.dropFileOrDirs });
-                    this.GetSystem<IAudioSystem>().PlayAudio(AudioType.Click);
-                    TypeEventSystem.Global.Send(new ClickItemPostEvent());
-                }
+                bool closeSoft = panel.Entity.closeSoft;
+                this.GetSystem<IAudioSystem>().PlayAudio(AudioType.Click);
+                this.SendCommand(new QuickEntityOpenCommand() { index = panel.Index, dropFileOrDirs = Selection.dropFileOrDirs });
+                if (closeSoft)
+                    TypeEventSystem.Global.Send(new CloseSoftwareEvent());
             }
         }
         private void TPanel_OnClickMenu(ClickMenuTPanelEvent info)
@@ -836,6 +835,15 @@ namespace QuickLinker
                 if (!string.IsNullOrEmpty(parameters))
                     this.SendCommand(new QuickEntitySetCommand() { index = inIndex - 1, startArg = parameters });
             }
+        }
+        private void CloseSoftwareEvent(CloseSoftwareEvent _)
+        {
+            if (!ApplicationExit())
+                return;
+            NotifyIcon.Visible = false;
+            Close();
+            Dispose();
+            Application.Exit();
         }
     }
 }

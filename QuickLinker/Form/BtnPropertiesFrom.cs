@@ -96,6 +96,7 @@ namespace QuickLinker
             {
                 CheckBox_AutoRun.Checked = _inputEntity.launchOnStartup;
                 CheckBox_DropLaunch.Checked = _inputEntity.dropNLaunch;
+                CheckBox_Close.Checked = _inputEntity.closeSoft;
             }
         }
         private void SetEntitiy(Entity entity, bool setExtInfo)
@@ -200,6 +201,7 @@ namespace QuickLinker
             _tempEntity.launchOnStartup = CheckBox_AutoRun.Checked;
             _tempEntity.actionHotKey = Txt_HotKey.Text;
             _tempEntity.dropNLaunch = CheckBox_DropLaunch.Checked;
+            _tempEntity.closeSoft = CheckBox_Close.Checked;
 
             if (_inputEntity != null)
                 this.SendCommand(new QuickEntityRemoveCommand() { index = _inputEntity.index });

@@ -53,6 +53,8 @@ namespace QuickLinker.Model
     public struct ClickMenuTPanelEvent
     {
     }
+    /// <summary> 关闭软件 </summary>
+    public struct CloseSoftwareEvent { }
 
     /// <summary> 无配置情况下首次启动 </summary>
     public struct NoSettingStratEvent { }

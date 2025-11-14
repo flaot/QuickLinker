@@ -1,4 +1,6 @@
 ﻿using System.Windows.Forms;
+using QFramework;
+using QuickLinker.Model;
 using QuickLinker.Plugin.Menu;
 using QuickLinker.Plugin.Menu.Attribute;
 
@@ -26,12 +28,7 @@ namespace QuickLinker.Menus
         [AppMenuItem("关闭 QuickLinker", 200)]
         private void AppMenu_Quit_Click()
         {
-            if (!mainForm.ApplicationExit())
-                return;
-            mainForm.NotifyIcon.Visible = false;
-            mainForm.Close();
-            mainForm.Dispose();
-            Application.Exit();
+            TypeEventSystem.Global.Send(new CloseSoftwareEvent());
         }
     }
 }
