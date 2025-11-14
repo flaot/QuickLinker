@@ -147,6 +147,7 @@ namespace QuickLinker
             label35 = new Label();
             label33 = new Label();
             label34 = new Label();
+            label41 = new Label();
             tabControl1.SuspendLayout();
             tabPage1.SuspendLayout();
             tabPage2.SuspendLayout();
@@ -365,6 +366,7 @@ namespace QuickLinker
             // tabPage2
             // 
             tabPage2.BackColor = Color.FromArgb(240, 240, 240);
+            tabPage2.Controls.Add(label41);
             tabPage2.Controls.Add(label27);
             tabPage2.Controls.Add(label26);
             tabPage2.Controls.Add(trackBar1);
@@ -533,9 +535,9 @@ namespace QuickLinker
             label5.AutoSize = true;
             label5.Location = new Point(8, 178);
             label5.Name = "label5";
-            label5.Size = new Size(120, 17);
+            label5.Size = new Size(84, 17);
             label5.TabIndex = 8;
-            label5.Text = "自动最小化或上卷(&A)";
+            label5.Text = "自动最小化(&A)";
             // 
             // checkBox13
             // 
@@ -1322,6 +1324,15 @@ namespace QuickLinker
             label34.TabIndex = 0;
             label34.Text = "密码";
             // 
+            // label41
+            // 
+            label41.BorderStyle = BorderStyle.Fixed3D;
+            label41.Location = new Point(100, 187);
+            label41.Name = "label41";
+            label41.Size = new Size(70, 2);
+            label41.TabIndex = 21;
+            label41.Text = "label41";
+            // 
             // PreferencesFrom
             // 
             AutoScaleDimensions = new SizeF(7F, 17F);
@@ -1470,5 +1481,6 @@ namespace QuickLinker
         private Label label39;
         private Label label40;
         private CheckBox checkBox22;
+        private Label label41;
     }
 }

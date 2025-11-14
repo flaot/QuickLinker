@@ -1,7 +1,6 @@
 ﻿using QFramework;
 using QuickLinker.Plugin;
 using QuickLinker.Plugin.Events;
-using QuickLinker.QuickLaunch.Models;
 using QuickLinker.QuickLaunch.Systems;
 using System;
 
