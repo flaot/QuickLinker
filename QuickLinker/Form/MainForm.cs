@@ -102,7 +102,6 @@ namespace QuickLinker
             var hotKeyMgr = this.GetSystem<HotKeyManager>();
             hotKeyMgr.HotKeyListener.HotkeyPressed += HotkeyListener_HotkeyPressed;
             hotKeyMgr.InitializeQuickActionsHotKeys();
-            TypeEventSystem.Global.Send(new NoSettingStratEvent());
 
             var appMenu = new ContextMenuStrip();
             NotifyIcon.ContextMenuStrip = appMenu;
@@ -127,6 +126,8 @@ namespace QuickLinker
 
             if (config.startbutton.Value)
                 this.SendCommand(new QuickEntityAutoStartCommand());
+
+            TypeEventSystem.Global.Send(new NoSettingStratEvent());
         }
         private void MainForm_FormClosing(object sender, FormClosingEventArgs e)
         {
