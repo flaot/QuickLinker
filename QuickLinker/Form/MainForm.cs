@@ -814,7 +814,7 @@ namespace QuickLinker
                 if (subKey.ReadDword("Initialized") == 0)
                     continue;
                 string exeFile = subKey.ReadSz("Command", string.Empty);
-                if (string.IsNullOrEmpty(exeFile) || !(File.Exists(exeFile) || Directory.Exists(exeFile)))
+                if (string.IsNullOrEmpty(exeFile) || (!File.Exists(exeFile) && !Directory.Exists(exeFile)))
                     continue;
                 this.SendCommand(new QuickEntityInsertCommand() { filePath = exeFile, index = inIndex - 1, canParse = false });
                 string description = subKey.ReadSz("Description", string.Empty);
@@ -830,7 +830,7 @@ namespace QuickLinker
                 if (dropNLaunch)
                     this.SendCommand(new QuickEntitySetCommand() { index = inIndex - 1, dropNLaunch = dropNLaunch });
                 bool launchOnStartup = subKey.ReadDword("LaunchOnStartup", 0) == 1;
-                if (dropNLaunch)
+                if (launchOnStartup)
                     this.SendCommand(new QuickEntitySetCommand() { index = inIndex - 1, launchOnStartup = launchOnStartup });
                 string parameters = subKey.ReadSz("Parameters", string.Empty);
                 if (!string.IsNullOrEmpty(parameters))
