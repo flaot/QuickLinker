@@ -63,6 +63,7 @@ namespace QuickLinker
             checkBox2 = new CheckBox();
             checkBox1 = new CheckBox();
             tabPage2 = new TabPage();
+            label41 = new Label();
             label27 = new Label();
             label26 = new Label();
             trackBar1 = new TrackBar();
@@ -147,7 +148,6 @@ namespace QuickLinker
             label35 = new Label();
             label33 = new Label();
             label34 = new Label();
-            label41 = new Label();
             tabControl1.SuspendLayout();
             tabPage1.SuspendLayout();
             tabPage2.SuspendLayout();
@@ -394,6 +394,15 @@ namespace QuickLinker
             tabPage2.Size = new Size(440, 241);
             tabPage2.TabIndex = 1;
             tabPage2.Text = "外观";
+            // 
+            // label41
+            // 
+            label41.BorderStyle = BorderStyle.Fixed3D;
+            label41.Location = new Point(100, 187);
+            label41.Name = "label41";
+            label41.Size = new Size(70, 2);
+            label41.TabIndex = 21;
+            label41.Text = "label41";
             // 
             // label27
             // 
@@ -649,7 +658,7 @@ namespace QuickLinker
             dataGridView1.ClipboardCopyMode = DataGridViewClipboardCopyMode.EnableWithoutHeaderText;
             dataGridViewCellStyle1.Alignment = DataGridViewContentAlignment.MiddleLeft;
             dataGridViewCellStyle1.BackColor = Color.FromArgb(240, 240, 240);
-            dataGridViewCellStyle1.Font = new Font("Microsoft YaHei UI", 9F);
+            dataGridViewCellStyle1.Font = new Font("Microsoft YaHei UI", 12F, FontStyle.Regular, GraphicsUnit.Pixel);
             dataGridViewCellStyle1.ForeColor = SystemColors.WindowText;
             dataGridViewCellStyle1.SelectionBackColor = SystemColors.Highlight;
             dataGridViewCellStyle1.SelectionForeColor = SystemColors.HighlightText;
@@ -666,7 +675,7 @@ namespace QuickLinker
             dataGridView1.RowHeadersBorderStyle = DataGridViewHeaderBorderStyle.None;
             dataGridViewCellStyle3.Alignment = DataGridViewContentAlignment.MiddleLeft;
             dataGridViewCellStyle3.BackColor = Color.FromArgb(240, 240, 240);
-            dataGridViewCellStyle3.Font = new Font("Microsoft YaHei UI", 9F);
+            dataGridViewCellStyle3.Font = new Font("Microsoft YaHei UI", 12F, FontStyle.Regular, GraphicsUnit.Pixel);
             dataGridViewCellStyle3.ForeColor = SystemColors.WindowText;
             dataGridViewCellStyle3.SelectionBackColor = SystemColors.Highlight;
             dataGridViewCellStyle3.SelectionForeColor = SystemColors.HighlightText;
@@ -1008,8 +1017,9 @@ namespace QuickLinker
             Btn_AudioBrowse.BackColor = Color.FromArgb(240, 240, 240);
             Btn_AudioBrowse.BackgroundImageLayout = ImageLayout.Stretch;
             Btn_AudioBrowse.Enabled = false;
+            Btn_AudioBrowse.Font = new Font("Microsoft YaHei UI", 12F, FontStyle.Regular, GraphicsUnit.Pixel);
             Btn_AudioBrowse.Image = null;
-            Btn_AudioBrowse.Location = new Point(334, 204);
+            Btn_AudioBrowse.Location = new Point(335, 204);
             Btn_AudioBrowse.Margin = new Padding(0);
             Btn_AudioBrowse.Name = "Btn_AudioBrowse";
             Btn_AudioBrowse.Size = new Size(24, 24);
@@ -1029,10 +1039,9 @@ namespace QuickLinker
             // 
             TextBox_AudioFilePath.AllowDrop = true;
             TextBox_AudioFilePath.Enabled = false;
-            TextBox_AudioFilePath.Font = new Font("Microsoft YaHei UI", 8.25F, FontStyle.Regular, GraphicsUnit.Point, 134);
             TextBox_AudioFilePath.Location = new Point(103, 206);
             TextBox_AudioFilePath.Name = "TextBox_AudioFilePath";
-            TextBox_AudioFilePath.Size = new Size(226, 21);
+            TextBox_AudioFilePath.Size = new Size(226, 23);
             TextBox_AudioFilePath.TabIndex = 7;
             TextBox_AudioFilePath.DragDrop += Txt_Path_DragDrop;
             TextBox_AudioFilePath.DragEnter += Txt_Path_DragEnter;
@@ -1268,11 +1277,10 @@ namespace QuickLinker
             // Txt_RPassword
             // 
             Txt_RPassword.AllowDrop = true;
-            Txt_RPassword.Font = new Font("Microsoft YaHei UI", 8.25F, FontStyle.Regular, GraphicsUnit.Point, 134);
             Txt_RPassword.Location = new Point(120, 62);
             Txt_RPassword.MaxLength = 16;
             Txt_RPassword.Name = "Txt_RPassword";
-            Txt_RPassword.Size = new Size(170, 21);
+            Txt_RPassword.Size = new Size(170, 23);
             Txt_RPassword.TabIndex = 5;
             Txt_RPassword.UseSystemPasswordChar = true;
             Txt_RPassword.WordWrap = false;
@@ -1289,11 +1297,10 @@ namespace QuickLinker
             // Txt_Password
             // 
             Txt_Password.AllowDrop = true;
-            Txt_Password.Font = new Font("Microsoft YaHei UI", 8.25F, FontStyle.Regular, GraphicsUnit.Point, 134);
             Txt_Password.Location = new Point(120, 35);
             Txt_Password.MaxLength = 16;
             Txt_Password.Name = "Txt_Password";
-            Txt_Password.Size = new Size(170, 21);
+            Txt_Password.Size = new Size(170, 23);
             Txt_Password.TabIndex = 3;
             Txt_Password.UseSystemPasswordChar = true;
             // 
@@ -1324,22 +1331,14 @@ namespace QuickLinker
             label34.TabIndex = 0;
             label34.Text = "密码";
             // 
-            // label41
-            // 
-            label41.BorderStyle = BorderStyle.Fixed3D;
-            label41.Location = new Point(100, 187);
-            label41.Name = "label41";
-            label41.Size = new Size(70, 2);
-            label41.TabIndex = 21;
-            label41.Text = "label41";
-            // 
             // PreferencesFrom
             // 
-            AutoScaleDimensions = new SizeF(7F, 17F);
-            AutoScaleMode = AutoScaleMode.Font;
+            AutoScaleDimensions = new SizeF(96F, 96F);
+            AutoScaleMode = AutoScaleMode.Dpi;
             BackColor = Color.FromArgb(240, 240, 240);
             ClientSize = new Size(448, 271);
             Controls.Add(tabControl1);
+            Font = new Font("Microsoft YaHei UI", 12F, FontStyle.Regular, GraphicsUnit.Pixel);
             FormBorderStyle = FormBorderStyle.FixedSingle;
             Icon = (Icon)resources.GetObject("$this.Icon");
             KeyPreview = true;

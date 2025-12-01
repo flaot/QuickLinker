@@ -126,17 +126,17 @@ namespace QuickLinker.Model
     public class FontInfo
     {
         public string familyName;
-        public float pointSize;
+        public float size;
 
         public FontInfo() { }
         public FontInfo(Font font)
         {
             this.familyName = font.FontFamily.Name;
-            this.pointSize = font.SizeInPoints;
+            this.size = font.Size;
         }
 
         public override string ToString() =>
-            string.Format("{0}, {1}", familyName == null ? string.Empty : familyName, pointSize);
-        public bool Invalid => string.IsNullOrWhiteSpace(familyName) || pointSize <= 0;
+            string.Format("{0}, {1}", familyName == null ? string.Empty : familyName, size);
+        public bool Invalid => string.IsNullOrWhiteSpace(familyName) || size <= 0;
     }
 }

@@ -31,8 +31,8 @@ namespace QuickLinker
         /// </summary>
         private void InitializeComponent()
         {
-            DataGridViewCellStyle dataGridViewCellStyle3 = new DataGridViewCellStyle();
-            DataGridViewCellStyle dataGridViewCellStyle4 = new DataGridViewCellStyle();
+            DataGridViewCellStyle dataGridViewCellStyle1 = new DataGridViewCellStyle();
+            DataGridViewCellStyle dataGridViewCellStyle2 = new DataGridViewCellStyle();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(BtnPropertiesFrom));
             tabControl1 = new TabControl();
             tabPage1 = new TabPage();
@@ -91,7 +91,7 @@ namespace QuickLinker
             tabControl1.Location = new Point(0, 0);
             tabControl1.Name = "tabControl1";
             tabControl1.SelectedIndex = 0;
-            tabControl1.Size = new Size(518, 230);
+            tabControl1.Size = new Size(550, 216);
             tabControl1.TabIndex = 0;
             // 
             // tabPage1
@@ -127,8 +127,8 @@ namespace QuickLinker
             tabPage1.Controls.Add(label1);
             tabPage1.Location = new Point(4, 26);
             tabPage1.Name = "tabPage1";
-            tabPage1.Padding = new Padding(3);
-            tabPage1.Size = new Size(510, 200);
+            tabPage1.Padding = new Padding(3, 3, 3, 3);
+            tabPage1.Size = new Size(542, 186);
             tabPage1.TabIndex = 0;
             tabPage1.Text = "运行一个程序";
             // 
@@ -138,17 +138,17 @@ namespace QuickLinker
             PictureBox_Icon.BackColor = Color.FromArgb(240, 240, 240);
             PictureBox_Icon.BackgroundImageLayout = ImageLayout.Stretch;
             PictureBox_Icon.Image = null;
-            PictureBox_Icon.Location = new Point(380, 154);
+            PictureBox_Icon.Location = new Point(403, 144);
             PictureBox_Icon.Margin = new Padding(0);
             PictureBox_Icon.Name = "PictureBox_Icon";
-            PictureBox_Icon.Size = new Size(32, 32);
+            PictureBox_Icon.Size = new Size(34, 30);
             PictureBox_Icon.TabIndex = 26;
             // 
             // Btn_ChangeIcon
             // 
-            Btn_ChangeIcon.Location = new Point(424, 159);
+            Btn_ChangeIcon.Location = new Point(450, 150);
             Btn_ChangeIcon.Name = "Btn_ChangeIcon";
-            Btn_ChangeIcon.Size = new Size(65, 25);
+            Btn_ChangeIcon.Size = new Size(69, 23);
             Btn_ChangeIcon.TabIndex = 27;
             Btn_ChangeIcon.Text = "更改(&A)...";
             Btn_ChangeIcon.UseVisualStyleBackColor = true;
@@ -157,16 +157,16 @@ namespace QuickLinker
             // label11
             // 
             label11.BorderStyle = BorderStyle.Fixed3D;
-            label11.Location = new Point(399, 135);
+            label11.Location = new Point(423, 127);
             label11.Name = "label11";
-            label11.Size = new Size(100, 2);
+            label11.Size = new Size(106, 2);
             label11.TabIndex = 25;
             label11.Text = "label11";
             // 
             // label12
             // 
             label12.AutoSize = true;
-            label12.Location = new Point(361, 126);
+            label12.Location = new Point(383, 119);
             label12.Name = "label12";
             label12.Size = new Size(32, 17);
             label12.TabIndex = 24;
@@ -176,7 +176,7 @@ namespace QuickLinker
             // CheckBox_Close
             // 
             CheckBox_Close.AutoSize = true;
-            CheckBox_Close.Location = new Point(366, 91);
+            CheckBox_Close.Location = new Point(389, 86);
             CheckBox_Close.Name = "CheckBox_Close";
             CheckBox_Close.Size = new Size(134, 21);
             CheckBox_Close.TabIndex = 23;
@@ -186,7 +186,7 @@ namespace QuickLinker
             // CheckBox_AutoRun
             // 
             CheckBox_AutoRun.AutoSize = true;
-            CheckBox_AutoRun.Location = new Point(366, 64);
+            CheckBox_AutoRun.Location = new Point(389, 60);
             CheckBox_AutoRun.Name = "CheckBox_AutoRun";
             CheckBox_AutoRun.Size = new Size(128, 21);
             CheckBox_AutoRun.TabIndex = 22;
@@ -196,7 +196,7 @@ namespace QuickLinker
             // CheckBox_DropLaunch
             // 
             CheckBox_DropLaunch.AutoSize = true;
-            CheckBox_DropLaunch.Location = new Point(366, 37);
+            CheckBox_DropLaunch.Location = new Point(389, 35);
             CheckBox_DropLaunch.Name = "CheckBox_DropLaunch";
             CheckBox_DropLaunch.Size = new Size(91, 21);
             CheckBox_DropLaunch.TabIndex = 21;
@@ -206,16 +206,16 @@ namespace QuickLinker
             // label9
             // 
             label9.BorderStyle = BorderStyle.Fixed3D;
-            label9.Location = new Point(399, 19);
+            label9.Location = new Point(423, 18);
             label9.Name = "label9";
-            label9.Size = new Size(100, 2);
+            label9.Size = new Size(106, 2);
             label9.TabIndex = 20;
             label9.Text = "label9";
             // 
             // label8
             // 
             label8.AutoSize = true;
-            label8.Location = new Point(361, 10);
+            label8.Location = new Point(383, 9);
             label8.Name = "label8";
             label8.Size = new Size(32, 17);
             label8.TabIndex = 19;
@@ -225,9 +225,9 @@ namespace QuickLinker
             // label10
             // 
             label10.BorderStyle = BorderStyle.Fixed3D;
-            label10.Location = new Point(353, 14);
+            label10.Location = new Point(375, 13);
             label10.Name = "label10";
-            label10.Size = new Size(2, 175);
+            label10.Size = new Size(2, 165);
             label10.TabIndex = 18;
             label10.Text = "label10";
             // 
@@ -236,15 +236,15 @@ namespace QuickLinker
             ComboBox_PriorityClass.DropDownStyle = ComboBoxStyle.DropDownList;
             ComboBox_PriorityClass.FormattingEnabled = true;
             ComboBox_PriorityClass.Items.AddRange(new object[] { "实时", "高", "高于正常", "正常", "低于正常", "低" });
-            ComboBox_PriorityClass.Location = new Point(265, 161);
+            ComboBox_PriorityClass.Location = new Point(281, 151);
             ComboBox_PriorityClass.Name = "ComboBox_PriorityClass";
-            ComboBox_PriorityClass.Size = new Size(81, 25);
+            ComboBox_PriorityClass.Size = new Size(86, 25);
             ComboBox_PriorityClass.TabIndex = 17;
             // 
             // label7
             // 
             label7.AutoSize = true;
-            label7.Location = new Point(191, 164);
+            label7.Location = new Point(203, 154);
             label7.Name = "label7";
             label7.Size = new Size(74, 17);
             label7.TabIndex = 16;
@@ -256,49 +256,49 @@ namespace QuickLinker
             ComboBox_WindowStyle.DropDownStyle = ComboBoxStyle.DropDownList;
             ComboBox_WindowStyle.FormattingEnabled = true;
             ComboBox_WindowStyle.Items.AddRange(new object[] { "标准", "最小化", "最大化", "隐藏" });
-            ComboBox_WindowStyle.Location = new Point(101, 161);
+            ComboBox_WindowStyle.Location = new Point(107, 151);
             ComboBox_WindowStyle.Name = "ComboBox_WindowStyle";
-            ComboBox_WindowStyle.Size = new Size(89, 25);
+            ComboBox_WindowStyle.Size = new Size(94, 25);
             ComboBox_WindowStyle.TabIndex = 15;
             // 
             // label6
             // 
-            label6.Location = new Point(5, 164);
+            label6.Location = new Point(5, 154);
             label6.Name = "label6";
-            label6.Size = new Size(93, 17);
+            label6.Size = new Size(99, 16);
             label6.TabIndex = 14;
             label6.Text = "窗口样式(&W)：";
             label6.TextAlign = ContentAlignment.MiddleRight;
             // 
             // Txt_HotKey
             // 
-            Txt_HotKey.Location = new Point(101, 130);
+            Txt_HotKey.Location = new Point(107, 122);
             Txt_HotKey.Name = "Txt_HotKey";
-            Txt_HotKey.Size = new Size(239, 23);
+            Txt_HotKey.Size = new Size(253, 23);
             Txt_HotKey.TabIndex = 13;
             // 
             // label5
             // 
-            label5.Location = new Point(11, 133);
+            label5.Location = new Point(11, 125);
             label5.Name = "label5";
-            label5.Size = new Size(84, 17);
+            label5.Size = new Size(89, 16);
             label5.TabIndex = 12;
             label5.Text = "快捷键(&K)：";
             label5.TextAlign = ContentAlignment.MiddleRight;
             // 
             // Txt_Desc
             // 
-            Txt_Desc.Location = new Point(101, 99);
+            Txt_Desc.Location = new Point(107, 93);
             Txt_Desc.Name = "Txt_Desc";
-            Txt_Desc.Size = new Size(239, 23);
+            Txt_Desc.Size = new Size(253, 23);
             Txt_Desc.TabIndex = 11;
             Txt_Desc.Leave += Txt_TextBox_Leave;
             // 
             // label4
             // 
-            label4.Location = new Point(11, 102);
+            label4.Location = new Point(11, 96);
             label4.Name = "label4";
-            label4.Size = new Size(84, 17);
+            label4.Size = new Size(89, 16);
             label4.TabIndex = 10;
             label4.Text = "描述(&D)：";
             label4.TextAlign = ContentAlignment.MiddleRight;
@@ -309,19 +309,19 @@ namespace QuickLinker
             Btn_BrowseFolder.BackColor = Color.FromArgb(240, 240, 240);
             Btn_BrowseFolder.BackgroundImageLayout = ImageLayout.Stretch;
             Btn_BrowseFolder.Image = null;
-            Btn_BrowseFolder.Location = new Point(322, 68);
+            Btn_BrowseFolder.Location = new Point(342, 64);
             Btn_BrowseFolder.Margin = new Padding(0);
             Btn_BrowseFolder.Name = "Btn_BrowseFolder";
-            Btn_BrowseFolder.Size = new Size(24, 24);
+            Btn_BrowseFolder.Size = new Size(27, 23);
             Btn_BrowseFolder.TabIndex = 9;
             Btn_BrowseFolder.Click += Btn_BrowseFolder_Click;
             // 
             // Txt_WorkFolder
             // 
             Txt_WorkFolder.AllowDrop = true;
-            Txt_WorkFolder.Location = new Point(101, 70);
+            Txt_WorkFolder.Location = new Point(107, 66);
             Txt_WorkFolder.Name = "Txt_WorkFolder";
-            Txt_WorkFolder.Size = new Size(215, 23);
+            Txt_WorkFolder.Size = new Size(228, 23);
             Txt_WorkFolder.TabIndex = 8;
             Txt_WorkFolder.DragDrop += Txt_Folder_DragDrop;
             Txt_WorkFolder.DragEnter += Txt_Folder_DragEnter;
@@ -329,9 +329,9 @@ namespace QuickLinker
             // 
             // label3
             // 
-            label3.Location = new Point(11, 73);
+            label3.Location = new Point(11, 69);
             label3.Name = "label3";
-            label3.Size = new Size(84, 17);
+            label3.Size = new Size(89, 16);
             label3.TabIndex = 7;
             label3.Text = "起始位置(&S)：";
             label3.TextAlign = ContentAlignment.MiddleRight;
@@ -342,10 +342,10 @@ namespace QuickLinker
             Btn_BrowseArgFile.BackColor = Color.FromArgb(240, 240, 240);
             Btn_BrowseArgFile.BackgroundImageLayout = ImageLayout.Stretch;
             Btn_BrowseArgFile.Image = null;
-            Btn_BrowseArgFile.Location = new Point(322, 40);
+            Btn_BrowseArgFile.Location = new Point(342, 38);
             Btn_BrowseArgFile.Margin = new Padding(0);
             Btn_BrowseArgFile.Name = "Btn_BrowseArgFile";
-            Btn_BrowseArgFile.Size = new Size(24, 24);
+            Btn_BrowseArgFile.Size = new Size(27, 23);
             Btn_BrowseArgFile.TabIndex = 6;
             Btn_BrowseArgFile.Click += Btn_BrowseArgFile_Click;
             // 
@@ -355,19 +355,19 @@ namespace QuickLinker
             Btn_BrowsePath.BackColor = Color.FromArgb(240, 240, 240);
             Btn_BrowsePath.BackgroundImageLayout = ImageLayout.Stretch;
             Btn_BrowsePath.Image = null;
-            Btn_BrowsePath.Location = new Point(322, 12);
+            Btn_BrowsePath.Location = new Point(342, 11);
             Btn_BrowsePath.Margin = new Padding(0);
             Btn_BrowsePath.Name = "Btn_BrowsePath";
-            Btn_BrowsePath.Size = new Size(24, 24);
+            Btn_BrowsePath.Size = new Size(27, 23);
             Btn_BrowsePath.TabIndex = 3;
             Btn_BrowsePath.Click += Btn_BrowsePath_Click;
             // 
             // Txt_Args
             // 
             Txt_Args.AllowDrop = true;
-            Txt_Args.Location = new Point(101, 41);
+            Txt_Args.Location = new Point(107, 39);
             Txt_Args.Name = "Txt_Args";
-            Txt_Args.Size = new Size(215, 23);
+            Txt_Args.Size = new Size(228, 23);
             Txt_Args.TabIndex = 5;
             Txt_Args.DragDrop += Txt_FolderOrFile_DragDrop;
             Txt_Args.DragEnter += Txt_FolderOrFile_DragEnter;
@@ -375,9 +375,9 @@ namespace QuickLinker
             // 
             // label2
             // 
-            label2.Location = new Point(11, 41);
+            label2.Location = new Point(11, 39);
             label2.Name = "label2";
-            label2.Size = new Size(84, 17);
+            label2.Size = new Size(89, 16);
             label2.TabIndex = 4;
             label2.Text = "参数(&P)：";
             label2.TextAlign = ContentAlignment.MiddleRight;
@@ -388,19 +388,19 @@ namespace QuickLinker
             Btn_Parse.BackColor = Color.FromArgb(240, 240, 240);
             Btn_Parse.BackgroundImageLayout = ImageLayout.Stretch;
             Btn_Parse.Image = null;
-            Btn_Parse.Location = new Point(293, 12);
+            Btn_Parse.Location = new Point(311, 11);
             Btn_Parse.Margin = new Padding(0);
             Btn_Parse.Name = "Btn_Parse";
-            Btn_Parse.Size = new Size(24, 24);
+            Btn_Parse.Size = new Size(27, 23);
             Btn_Parse.TabIndex = 2;
             Btn_Parse.Click += Btn_Parse_Click;
             // 
             // Txt_TargetPostion
             // 
             Txt_TargetPostion.AllowDrop = true;
-            Txt_TargetPostion.Location = new Point(101, 11);
+            Txt_TargetPostion.Location = new Point(107, 10);
             Txt_TargetPostion.Name = "Txt_TargetPostion";
-            Txt_TargetPostion.Size = new Size(187, 23);
+            Txt_TargetPostion.Size = new Size(198, 23);
             Txt_TargetPostion.TabIndex = 1;
             Txt_TargetPostion.TextChanged += Txt_TargetPostion_TextChanged;
             Txt_TargetPostion.DragDrop += Txt_FolderOrFile_DragDrop;
@@ -409,9 +409,9 @@ namespace QuickLinker
             // 
             // label1
             // 
-            label1.Location = new Point(8, 15);
+            label1.Location = new Point(9, 14);
             label1.Name = "label1";
-            label1.Size = new Size(87, 17);
+            label1.Size = new Size(93, 16);
             label1.TabIndex = 0;
             label1.Text = "目标位置(&C)：";
             label1.TextAlign = ContentAlignment.MiddleRight;
@@ -422,7 +422,7 @@ namespace QuickLinker
             tabPage2.Controls.Add(DataGridView_Opt);
             tabPage2.Location = new Point(4, 26);
             tabPage2.Name = "tabPage2";
-            tabPage2.Size = new Size(510, 200);
+            tabPage2.Size = new Size(542, 186);
             tabPage2.TabIndex = 1;
             tabPage2.Text = "执行一个命令";
             // 
@@ -433,14 +433,14 @@ namespace QuickLinker
             DataGridView_Opt.AllowUserToResizeRows = false;
             DataGridView_Opt.BackgroundColor = Color.White;
             DataGridView_Opt.BorderStyle = BorderStyle.Fixed3D;
-            dataGridViewCellStyle3.Alignment = DataGridViewContentAlignment.MiddleLeft;
-            dataGridViewCellStyle3.BackColor = SystemColors.Control;
-            dataGridViewCellStyle3.Font = new Font("Microsoft YaHei UI", 9F);
-            dataGridViewCellStyle3.ForeColor = SystemColors.WindowText;
-            dataGridViewCellStyle3.SelectionBackColor = SystemColors.Highlight;
-            dataGridViewCellStyle3.SelectionForeColor = SystemColors.HighlightText;
-            dataGridViewCellStyle3.WrapMode = DataGridViewTriState.True;
-            DataGridView_Opt.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle3;
+            dataGridViewCellStyle1.Alignment = DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle1.BackColor = SystemColors.Control;
+            dataGridViewCellStyle1.Font = new Font("Microsoft YaHei UI", 9F);
+            dataGridViewCellStyle1.ForeColor = SystemColors.WindowText;
+            dataGridViewCellStyle1.SelectionBackColor = SystemColors.Highlight;
+            dataGridViewCellStyle1.SelectionForeColor = SystemColors.HighlightText;
+            dataGridViewCellStyle1.WrapMode = DataGridViewTriState.True;
+            DataGridView_Opt.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle1;
             DataGridView_Opt.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             DataGridView_Opt.Columns.AddRange(new DataGridViewColumn[] { icon, name, desc });
             DataGridView_Opt.Dock = DockStyle.Fill;
@@ -449,18 +449,19 @@ namespace QuickLinker
             DataGridView_Opt.Name = "DataGridView_Opt";
             DataGridView_Opt.ReadOnly = true;
             DataGridView_Opt.RowHeadersVisible = false;
+            DataGridView_Opt.RowHeadersWidth = 72;
             DataGridView_Opt.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
-            DataGridView_Opt.Size = new Size(510, 200);
+            DataGridView_Opt.Size = new Size(542, 186);
             DataGridView_Opt.TabIndex = 0;
             DataGridView_Opt.CellContentDoubleClick += DataGridView_Opt_CellContentDoubleClick;
             // 
             // icon
             // 
             icon.AutoSizeMode = DataGridViewAutoSizeColumnMode.None;
-            dataGridViewCellStyle4.Alignment = DataGridViewContentAlignment.MiddleCenter;
-            dataGridViewCellStyle4.NullValue = resources.GetObject("dataGridViewCellStyle4.NullValue");
-            dataGridViewCellStyle4.WrapMode = DataGridViewTriState.False;
-            icon.DefaultCellStyle = dataGridViewCellStyle4;
+            dataGridViewCellStyle2.Alignment = DataGridViewContentAlignment.MiddleCenter;
+            dataGridViewCellStyle2.NullValue = resources.GetObject("dataGridViewCellStyle2.NullValue");
+            dataGridViewCellStyle2.WrapMode = DataGridViewTriState.False;
+            icon.DefaultCellStyle = dataGridViewCellStyle2;
             icon.HeaderText = "";
             icon.ImageLayout = DataGridViewImageCellLayout.Stretch;
             icon.MinimumWidth = 25;
@@ -471,13 +472,16 @@ namespace QuickLinker
             // name
             // 
             name.HeaderText = "名称";
+            name.MinimumWidth = 9;
             name.Name = "name";
             name.ReadOnly = true;
+            name.Width = 175;
             // 
             // desc
             // 
             desc.AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill;
             desc.HeaderText = "描述";
+            desc.MinimumWidth = 9;
             desc.Name = "desc";
             desc.ReadOnly = true;
             // 
@@ -498,26 +502,26 @@ namespace QuickLinker
             splitContainer1.Panel2.Controls.Add(Btn_Cancel);
             splitContainer1.Panel2.Controls.Add(Btn_Ok);
             splitContainer1.Panel2.Controls.Add(Btn_Clear);
-            splitContainer1.Size = new Size(518, 272);
-            splitContainer1.SplitterDistance = 230;
+            splitContainer1.Size = new Size(550, 256);
+            splitContainer1.SplitterDistance = 216;
             splitContainer1.SplitterWidth = 1;
             splitContainer1.TabIndex = 1;
             // 
             // Btn_Cancel
             // 
             Btn_Cancel.DialogResult = DialogResult.Cancel;
-            Btn_Cancel.Location = new Point(438, 7);
+            Btn_Cancel.Location = new Point(465, 7);
             Btn_Cancel.Name = "Btn_Cancel";
-            Btn_Cancel.Size = new Size(75, 25);
+            Btn_Cancel.Size = new Size(79, 23);
             Btn_Cancel.TabIndex = 2;
             Btn_Cancel.Text = "取消";
             Btn_Cancel.UseVisualStyleBackColor = true;
             // 
             // Btn_Ok
             // 
-            Btn_Ok.Location = new Point(357, 7);
+            Btn_Ok.Location = new Point(379, 7);
             Btn_Ok.Name = "Btn_Ok";
-            Btn_Ok.Size = new Size(75, 25);
+            Btn_Ok.Size = new Size(79, 23);
             Btn_Ok.TabIndex = 1;
             Btn_Ok.Text = "确定";
             Btn_Ok.UseVisualStyleBackColor = true;
@@ -525,9 +529,9 @@ namespace QuickLinker
             // 
             // Btn_Clear
             // 
-            Btn_Clear.Location = new Point(245, 7);
+            Btn_Clear.Location = new Point(260, 7);
             Btn_Clear.Name = "Btn_Clear";
-            Btn_Clear.Size = new Size(75, 25);
+            Btn_Clear.Size = new Size(79, 23);
             Btn_Clear.TabIndex = 0;
             Btn_Clear.Text = "清除";
             Btn_Clear.UseVisualStyleBackColor = true;
@@ -535,11 +539,12 @@ namespace QuickLinker
             // 
             // BtnPropertiesFrom
             // 
-            AutoScaleDimensions = new SizeF(7F, 17F);
-            AutoScaleMode = AutoScaleMode.Font;
+            AutoScaleDimensions = new SizeF(96F, 96F);
+            AutoScaleMode = AutoScaleMode.Dpi;
             BackColor = Color.FromArgb(240, 240, 240);
-            ClientSize = new Size(518, 272);
+            ClientSize = new Size(550, 256);
             Controls.Add(splitContainer1);
+            Font = new Font("Microsoft YaHei UI", 12F, FontStyle.Regular, GraphicsUnit.Pixel);
             Icon = (Icon)resources.GetObject("$this.Icon");
             MaximizeBox = false;
             MinimizeBox = false;

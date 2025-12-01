@@ -35,10 +35,11 @@ namespace QuickLinker
             // 
             // TButton
             // 
-            AutoScaleDimensions = new SizeF(7F, 17F);
-            AutoScaleMode = AutoScaleMode.Font;
+            AutoScaleDimensions = new SizeF(96F, 96F);
+            AutoScaleMode = AutoScaleMode.Dpi;
             BackColor = Color.FromArgb(240, 240, 240);
             BackgroundImageLayout = ImageLayout.Stretch;
+            Font = new Font("Microsoft YaHei UI", 12F, FontStyle.Regular, GraphicsUnit.Pixel);
             Name = "TButton";
             ResumeLayout(false);
         }

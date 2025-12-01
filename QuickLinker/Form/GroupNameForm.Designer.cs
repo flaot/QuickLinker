@@ -47,22 +47,22 @@ namespace QuickLinker
             panel1.Controls.Add(label1);
             panel1.Location = new Point(7, 9);
             panel1.Name = "panel1";
-            panel1.Size = new Size(294, 46);
+            panel1.Size = new Size(312, 43);
             panel1.TabIndex = 0;
             // 
             // Txt_GroupName
             // 
             Txt_GroupName.AllowDrop = true;
-            Txt_GroupName.Location = new Point(81, 11);
+            Txt_GroupName.Location = new Point(86, 10);
             Txt_GroupName.Name = "Txt_GroupName";
-            Txt_GroupName.Size = new Size(194, 23);
+            Txt_GroupName.Size = new Size(206, 23);
             Txt_GroupName.TabIndex = 1;
             // 
             // label1
             // 
-            label1.Location = new Point(6, 14);
+            label1.Location = new Point(6, 13);
             label1.Name = "label1";
-            label1.Size = new Size(68, 17);
+            label1.Size = new Size(72, 16);
             label1.TabIndex = 0;
             label1.Text = "组名(&N)：";
             label1.TextAlign = ContentAlignment.TopRight;
@@ -70,18 +70,18 @@ namespace QuickLinker
             // Btn_Cancel
             // 
             Btn_Cancel.DialogResult = DialogResult.Cancel;
-            Btn_Cancel.Location = new Point(226, 69);
+            Btn_Cancel.Location = new Point(240, 65);
             Btn_Cancel.Name = "Btn_Cancel";
-            Btn_Cancel.Size = new Size(75, 25);
+            Btn_Cancel.Size = new Size(79, 23);
             Btn_Cancel.TabIndex = 2;
             Btn_Cancel.Text = "取消";
             Btn_Cancel.UseVisualStyleBackColor = true;
             // 
             // Btn_Ok
             // 
-            Btn_Ok.Location = new Point(145, 69);
+            Btn_Ok.Location = new Point(154, 65);
             Btn_Ok.Name = "Btn_Ok";
-            Btn_Ok.Size = new Size(75, 25);
+            Btn_Ok.Size = new Size(79, 23);
             Btn_Ok.TabIndex = 1;
             Btn_Ok.Text = "确定";
             Btn_Ok.UseVisualStyleBackColor = true;
@@ -89,12 +89,13 @@ namespace QuickLinker
             // 
             // GroupNameForm
             // 
-            AutoScaleDimensions = new SizeF(7F, 17F);
-            AutoScaleMode = AutoScaleMode.Font;
-            ClientSize = new Size(308, 106);
+            AutoScaleDimensions = new SizeF(96F, 96F);
+            AutoScaleMode = AutoScaleMode.Dpi;
+            ClientSize = new Size(327, 100);
             Controls.Add(Btn_Cancel);
             Controls.Add(Btn_Ok);
             Controls.Add(panel1);
+            Font = new Font("Microsoft YaHei UI", 12F, FontStyle.Regular, GraphicsUnit.Pixel);
             FormBorderStyle = FormBorderStyle.FixedDialog;
             Icon = (Icon)resources.GetObject("$this.Icon");
             MaximizeBox = false;

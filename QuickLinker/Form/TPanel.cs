@@ -97,7 +97,7 @@ namespace QuickLinker
         }
         private void Event_FontChange(FontInfo fontInfo)
         {
-            Font = new Font(fontInfo.familyName, fontInfo.pointSize, GraphicsUnit.Point);
+            Font = new Font(fontInfo.familyName, fontInfo.size, GraphicsUnit.Pixel);
             Refresh();
         }
         public void SetIndex(int index)
@@ -242,7 +242,9 @@ namespace QuickLinker
             base.OnPaint(e);
             if (showImage != null)
             {
-                Rectangle destRect = new Rectangle(0, 0, Width, Height);
+                Rectangle destRect = new Rectangle(0, 0, Width - 2, Height - 2);
+                if (BorderStyle == BorderStyle.Fixed3D)
+                    destRect = new Rectangle(0, 0, Width - 6, Height - 6);
                 Rectangle srcRect = new Rectangle(0, 0, showImage.Width, showImage.Height);
                 e.Graphics.InterpolationMode = InterpolationMode.High;
                 e.Graphics.DrawImage(showImage, destRect, srcRect, GraphicsUnit.Pixel);

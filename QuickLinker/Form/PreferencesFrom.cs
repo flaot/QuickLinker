@@ -402,7 +402,7 @@ namespace QuickLinker
             var bindFontInfo = FontConfig((string)node.Tag);
             FontDialog fontDialog = new FontDialog();
             FontInfo fontInfo = bindFontInfo.Value.Invalid ? new FontInfo(Font) : bindFontInfo.Value;
-            fontDialog.Font = new Font(fontInfo.familyName, fontInfo.pointSize, GraphicsUnit.Point);
+            fontDialog.Font = new Font(fontInfo.familyName, fontInfo.size, GraphicsUnit.Pixel);
             fontDialog.ShowEffects = false;
             if (fontDialog.ShowDialog() == DialogResult.Cancel)
                 return;
@@ -415,7 +415,7 @@ namespace QuickLinker
             var bindFontInfo = FontConfig((string)node.Tag);
             FontInfo fontInfo = bindFontInfo.Value.Invalid ? new FontInfo(Font) : bindFontInfo.Value;
             if (fontInfo.familyName == Font.FontFamily.Name &&
-               fontInfo.pointSize == Font.SizeInPoints)
+               fontInfo.size == Font.Size)
                 return;
             bindFontInfo.Value = new FontInfo(Font);
             TreeView_Font_AfterSelect(sender, null);

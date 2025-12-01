@@ -58,7 +58,7 @@ namespace QuickLinker
             tabPage1.Location = new Point(4, 26);
             tabPage1.Margin = new Padding(0);
             tabPage1.Name = "tabPage1";
-            tabPage1.Size = new Size(341, 236);
+            tabPage1.Size = new Size(362, 220);
             tabPage1.TabIndex = 0;
             tabPage1.Text = "tabPage1";
             // 
@@ -67,24 +67,24 @@ namespace QuickLinker
             tableLayoutPanel.AutoSizeMode = AutoSizeMode.GrowAndShrink;
             tableLayoutPanel.CellBorderStyle = TableLayoutPanelCellBorderStyle.Inset;
             tableLayoutPanel.ColumnCount = 6;
-            tableLayoutPanel.ColumnStyles.Add(new ColumnStyle(SizeType.Absolute, 32F));
-            tableLayoutPanel.ColumnStyles.Add(new ColumnStyle(SizeType.Absolute, 32F));
-            tableLayoutPanel.ColumnStyles.Add(new ColumnStyle(SizeType.Absolute, 32F));
-            tableLayoutPanel.ColumnStyles.Add(new ColumnStyle(SizeType.Absolute, 32F));
-            tableLayoutPanel.ColumnStyles.Add(new ColumnStyle(SizeType.Absolute, 32F));
-            tableLayoutPanel.ColumnStyles.Add(new ColumnStyle(SizeType.Absolute, 32F));
+            tableLayoutPanel.ColumnStyles.Add(new ColumnStyle(SizeType.Absolute, 34F));
+            tableLayoutPanel.ColumnStyles.Add(new ColumnStyle(SizeType.Absolute, 34F));
+            tableLayoutPanel.ColumnStyles.Add(new ColumnStyle(SizeType.Absolute, 34F));
+            tableLayoutPanel.ColumnStyles.Add(new ColumnStyle(SizeType.Absolute, 34F));
+            tableLayoutPanel.ColumnStyles.Add(new ColumnStyle(SizeType.Absolute, 34F));
+            tableLayoutPanel.ColumnStyles.Add(new ColumnStyle(SizeType.Absolute, 43F));
             tableLayoutPanel.GrowStyle = TableLayoutPanelGrowStyle.FixedSize;
-            tableLayoutPanel.Location = new Point(63, 20);
+            tableLayoutPanel.Location = new Point(21, 11);
             tableLayoutPanel.Margin = new Padding(0);
             tableLayoutPanel.Name = "tableLayoutPanel";
             tableLayoutPanel.RowCount = 6;
-            tableLayoutPanel.RowStyles.Add(new RowStyle(SizeType.Absolute, 32F));
-            tableLayoutPanel.RowStyles.Add(new RowStyle(SizeType.Absolute, 32F));
-            tableLayoutPanel.RowStyles.Add(new RowStyle(SizeType.Absolute, 32F));
-            tableLayoutPanel.RowStyles.Add(new RowStyle(SizeType.Absolute, 32F));
-            tableLayoutPanel.RowStyles.Add(new RowStyle(SizeType.Absolute, 32F));
-            tableLayoutPanel.RowStyles.Add(new RowStyle(SizeType.Absolute, 32F));
-            tableLayoutPanel.Size = new Size(206, 207);
+            tableLayoutPanel.RowStyles.Add(new RowStyle(SizeType.Absolute, 30F));
+            tableLayoutPanel.RowStyles.Add(new RowStyle(SizeType.Absolute, 30F));
+            tableLayoutPanel.RowStyles.Add(new RowStyle(SizeType.Absolute, 30F));
+            tableLayoutPanel.RowStyles.Add(new RowStyle(SizeType.Absolute, 30F));
+            tableLayoutPanel.RowStyles.Add(new RowStyle(SizeType.Absolute, 30F));
+            tableLayoutPanel.RowStyles.Add(new RowStyle(SizeType.Absolute, 30F));
+            tableLayoutPanel.Size = new Size(219, 195);
             tableLayoutPanel.TabIndex = 0;
             // 
             // tabControl1
@@ -96,7 +96,7 @@ namespace QuickLinker
             tabControl1.Name = "tabControl1";
             tabControl1.Padding = new Point(0, 0);
             tabControl1.SelectedIndex = 0;
-            tabControl1.Size = new Size(349, 266);
+            tabControl1.Size = new Size(370, 250);
             tabControl1.TabIndex = 0;
             tabControl1.SelectedIndexChanged += TabControl1_SelectedIndexChanged;
             tabControl1.Click += TabControl1_Click;
@@ -108,7 +108,7 @@ namespace QuickLinker
             tabPage2.Location = new Point(4, 26);
             tabPage2.Name = "tabPage2";
             tabPage2.Padding = new Padding(3);
-            tabPage2.Size = new Size(341, 236);
+            tabPage2.Size = new Size(362, 220);
             tabPage2.TabIndex = 1;
             tabPage2.Text = "tabPage2";
             tabPage2.UseVisualStyleBackColor = true;
@@ -123,10 +123,13 @@ namespace QuickLinker
             // 
             // StatusStrip
             // 
+            StatusStrip.Font = new Font("Microsoft YaHei UI", 12F, FontStyle.Regular, GraphicsUnit.Pixel);
+            StatusStrip.ImageScalingSize = new Size(28, 28);
             StatusStrip.Items.AddRange(new ToolStripItem[] { ToolStatus_Txt, ToolStatus_DateTime });
-            StatusStrip.Location = new Point(0, 266);
+            StatusStrip.Location = new Point(0, 249);
             StatusStrip.Name = "StatusStrip";
-            StatusStrip.Size = new Size(349, 26);
+            StatusStrip.Padding = new Padding(1, 0, 15, 0);
+            StatusStrip.Size = new Size(370, 26);
             StatusStrip.SizingGrip = false;
             StatusStrip.TabIndex = 1;
             StatusStrip.Text = "statusStrip1";
@@ -138,7 +141,7 @@ namespace QuickLinker
             ToolStatus_Txt.DisplayStyle = ToolStripItemDisplayStyle.Text;
             ToolStatus_Txt.ImageAlign = ContentAlignment.MiddleLeft;
             ToolStatus_Txt.Name = "ToolStatus_Txt";
-            ToolStatus_Txt.Size = new Size(263, 21);
+            ToolStatus_Txt.Size = new Size(283, 21);
             ToolStatus_Txt.Spring = true;
             ToolStatus_Txt.Text = "toolStripStatusLabel1";
             ToolStatus_Txt.TextAlign = ContentAlignment.MiddleLeft;
@@ -190,14 +193,15 @@ namespace QuickLinker
             // 
             // MainForm
             // 
-            AutoScaleDimensions = new SizeF(7F, 17F);
-            AutoScaleMode = AutoScaleMode.Font;
+            AutoScaleDimensions = new SizeF(96F, 96F);
+            AutoScaleMode = AutoScaleMode.Dpi;
             AutoSize = true;
             BackColor = Color.FromArgb(240, 240, 240);
-            ClientSize = new Size(349, 292);
+            ClientSize = new Size(370, 275);
             Controls.Add(StatusStrip);
             Controls.Add(tabControl1);
             DoubleBuffered = true;
+            Font = new Font("Microsoft YaHei UI", 12F, FontStyle.Regular, GraphicsUnit.Pixel);
             FormBorderStyle = FormBorderStyle.FixedDialog;
             Icon = (Icon)resources.GetObject("$this.Icon");
             Name = "MainForm";

@@ -36,7 +36,6 @@ namespace QuickLinker
         private bool formMove = false;//窗体是否移动
         private Point formPoint;//记录窗体的位置
         private int _oldGroupCount;
-        private Size _offsetSize = Size.Empty;
         ToolTip _toolTip = new ToolTip();
         public static int ignoreDeactivate = 0;
 
@@ -84,8 +83,8 @@ namespace QuickLinker
             config.showInTray.RegisterWithInitValue(b => { ShowInTaskbar = b; NotifyIcon.Visible = !b; });
             config.launch.RegisterWithInitValue(this.GetUtility<LaunchUtil>().Set);
             config.registerURI.RegisterWithInitValue(this.GetUtility<IURIUtil>().Set);
-            config.fontStates.RegisterWithInitValue(t => StatusStrip.Font = new Font(t.familyName, t.pointSize, GraphicsUnit.Point));
-            config.fontGroupTitle.RegisterWithInitValue(t => tabControl1.Font = new Font(t.familyName, t.pointSize, GraphicsUnit.Point));
+            config.fontStates.RegisterWithInitValue(t => StatusStrip.Font = new Font(t.familyName, t.size, GraphicsUnit.Pixel));
+            config.fontGroupTitle.RegisterWithInitValue(t => tabControl1.Font = new Font(t.familyName, t.size, GraphicsUnit.Pixel));
             TypeEventSystem.Global.Register<RefreshStateTextEvent>(Event_RefreshStateText);
             TypeEventSystem.Global.Register<ShowToolTipEvent>(Event_ShowToolTip);
             TypeEventSystem.Global.Register<ClickTPanelEvent>(TPanel_OnClick);
@@ -103,14 +102,14 @@ namespace QuickLinker
             hotKeyMgr.HotKeyListener.HotkeyPressed += HotkeyListener_HotkeyPressed;
             hotKeyMgr.InitializeQuickActionsHotKeys();
 
-            var appMenu = new ContextMenuStrip();
+            var appMenu = CreateContextMenuStrip();
             NotifyIcon.ContextMenuStrip = appMenu;
             var menuSystem = this.GetSystem<IMenuSystem>();
             menuSystem.RegisterMenu(new MenuProxy((int)MenuType.App, appMenu));
-            menuSystem.RegisterMenu(new MenuProxy((int)MenuType.Tab, new ContextMenuStrip()));
-            menuSystem.RegisterMenu(new MenuProxy((int)MenuType.Page, new ContextMenuStrip()));
-            menuSystem.RegisterMenu(new MenuProxy((int)MenuType.ToolStatus, new ContextMenuStrip()));
-            menuSystem.RegisterMenu(new MenuProxy((int)MenuType.Folder, new ContextMenuStrip()));
+            menuSystem.RegisterMenu(new MenuProxy((int)MenuType.Tab, CreateContextMenuStrip()));
+            menuSystem.RegisterMenu(new MenuProxy((int)MenuType.Page, CreateContextMenuStrip()));
+            menuSystem.RegisterMenu(new MenuProxy((int)MenuType.ToolStatus, CreateContextMenuStrip()));
+            menuSystem.RegisterMenu(new MenuProxy((int)MenuType.Folder, CreateContextMenuStrip()));
             menuSystem.InitSystemMenuItem(new AppMenu(this));
             menuSystem.InitSystemMenuItem(new TabMenu(this));
             menuSystem.InitSystemMenuItem(this);
@@ -128,6 +127,13 @@ namespace QuickLinker
                 this.SendCommand(new QuickEntityAutoStartCommand());
 
             TypeEventSystem.Global.Send(new NoSettingStratEvent());
+        }
+        private ContextMenuStrip CreateContextMenuStrip()
+        {
+            var ss = this.DeviceDpi;
+            var menu = new ContextMenuStrip();
+            menu.Font = Font;
+            return menu;
         }
         private void MainForm_FormClosing(object sender, FormClosingEventArgs e)
         {
@@ -167,9 +173,6 @@ namespace QuickLinker
             var config = this.GetModel<AppConfig>();
             if (e.Hotkey.ToString() == HotKeyUtil.Convert(config.actionHotKey.Value).ToString())
             {
-                WindowState = FormWindowState.Normal;
-                Show();
-                Activate();
                 if (config.showMouse.Value)
                 {
                     var showPos = MousePosition;
@@ -177,6 +180,9 @@ namespace QuickLinker
                     showPos.Y -= Height / 2;
                     this.Location = showPos;
                 }
+                WindowState = FormWindowState.Normal;
+                Show();
+                Activate();
             }
             else
                 hotKeyMgr.ProcessQuickActionHotKey(e.Hotkey);
@@ -554,12 +560,10 @@ namespace QuickLinker
         private void AutoWindowSize()
         {
             var config = this.GetModel<AppConfig>();
-            if (_offsetSize == Size.Empty)
-                _offsetSize = tabControl1.Size - tabControl1.TabPages[0].Size;
             tabControl1.Size = new Size(config.gridColumn.Value * config.gridSize.Value + (config.gridColumn.Value - 1) * config.grid.Value,
                                         config.gridSize.Value * config.gridRow.Value + (config.gridRow.Value - 1) * config.grid.Value)
-                                       + _offsetSize;
-            var titelHeight = Height - ClientRectangle.Height;
+                                       + (tabControl1.Size - tabControl1.DisplayRectangle.Size);
+            var titelHeight = Height - ClientSize.Height;
             Size = new Size(tabControl1.Size.Width, tabControl1.Size.Height + titelHeight + StatusStrip.Height);
         }
         private void Event_RefreshTabSizeControl(int _)

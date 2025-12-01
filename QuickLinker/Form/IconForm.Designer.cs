@@ -48,18 +48,18 @@ namespace QuickLinker
             // 
             // label1
             // 
-            label1.Location = new Point(10, 14);
+            label1.Location = new Point(11, 13);
             label1.Name = "label1";
-            label1.Size = new Size(68, 17);
+            label1.Size = new Size(72, 16);
             label1.TabIndex = 0;
             label1.Text = "图标(&F)：";
             label1.TextAlign = ContentAlignment.TopRight;
             // 
             // label2
             // 
-            label2.Location = new Point(10, 40);
+            label2.Location = new Point(11, 38);
             label2.Name = "label2";
-            label2.Size = new Size(68, 17);
+            label2.Size = new Size(72, 16);
             label2.TabIndex = 3;
             label2.Text = "索引(&I)：";
             label2.TextAlign = ContentAlignment.TopRight;
@@ -67,9 +67,9 @@ namespace QuickLinker
             // Txt_IconPath
             // 
             Txt_IconPath.AllowDrop = true;
-            Txt_IconPath.Location = new Point(84, 11);
+            Txt_IconPath.Location = new Point(89, 10);
             Txt_IconPath.Name = "Txt_IconPath";
-            Txt_IconPath.Size = new Size(194, 23);
+            Txt_IconPath.Size = new Size(206, 23);
             Txt_IconPath.TabIndex = 1;
             Txt_IconPath.TextChanged += Txt_IconPath_TextChanged;
             Txt_IconPath.DragDrop += Txt_FolderOrFile_DragDrop;
@@ -81,18 +81,19 @@ namespace QuickLinker
             Btn_Browse.BackColor = Color.FromArgb(240, 240, 240);
             Btn_Browse.BackgroundImageLayout = ImageLayout.Stretch;
             Btn_Browse.Image = null;
-            Btn_Browse.Location = new Point(284, 11);
+            Btn_Browse.Location = new Point(301, 10);
+            Btn_Browse.Margin = new Padding(6, 5, 6, 5);
             Btn_Browse.Name = "Btn_Browse";
-            Btn_Browse.Size = new Size(30, 25);
+            Btn_Browse.Size = new Size(32, 23);
             Btn_Browse.TabIndex = 2;
             Btn_Browse.Click += Btn_Browse_Click;
             // 
             // MumericUpDown_CurIndex
             // 
-            MumericUpDown_CurIndex.Location = new Point(84, 40);
+            MumericUpDown_CurIndex.Location = new Point(89, 38);
             MumericUpDown_CurIndex.Minimum = new decimal(new int[] { 1, 0, 0, 0 });
             MumericUpDown_CurIndex.Name = "MumericUpDown_CurIndex";
-            MumericUpDown_CurIndex.Size = new Size(68, 23);
+            MumericUpDown_CurIndex.Size = new Size(72, 23);
             MumericUpDown_CurIndex.TabIndex = 4;
             MumericUpDown_CurIndex.Value = new decimal(new int[] { 1, 0, 0, 0 });
             MumericUpDown_CurIndex.ValueChanged += MumericUpDown_CurIndex_ValueChanged;
@@ -100,7 +101,7 @@ namespace QuickLinker
             // Txt_MaxIndex
             // 
             Txt_MaxIndex.AutoSize = true;
-            Txt_MaxIndex.Location = new Point(158, 42);
+            Txt_MaxIndex.Location = new Point(167, 39);
             Txt_MaxIndex.Name = "Txt_MaxIndex";
             Txt_MaxIndex.Size = new Size(20, 17);
             Txt_MaxIndex.TabIndex = 5;
@@ -108,9 +109,9 @@ namespace QuickLinker
             // 
             // Btn_OK
             // 
-            Btn_OK.Location = new Point(183, 117);
+            Btn_OK.Location = new Point(194, 110);
             Btn_OK.Name = "Btn_OK";
-            Btn_OK.Size = new Size(75, 25);
+            Btn_OK.Size = new Size(79, 23);
             Btn_OK.TabIndex = 1;
             Btn_OK.Text = "确定";
             Btn_OK.UseVisualStyleBackColor = true;
@@ -119,9 +120,9 @@ namespace QuickLinker
             // Btn_Cancel
             // 
             Btn_Cancel.DialogResult = DialogResult.Cancel;
-            Btn_Cancel.Location = new Point(264, 117);
+            Btn_Cancel.Location = new Point(280, 110);
             Btn_Cancel.Name = "Btn_Cancel";
-            Btn_Cancel.Size = new Size(75, 25);
+            Btn_Cancel.Size = new Size(79, 23);
             Btn_Cancel.TabIndex = 2;
             Btn_Cancel.Text = "取消";
             Btn_Cancel.UseVisualStyleBackColor = true;
@@ -136,9 +137,9 @@ namespace QuickLinker
             panel1.Controls.Add(Txt_MaxIndex);
             panel1.Controls.Add(label2);
             panel1.Controls.Add(Btn_Browse);
-            panel1.Location = new Point(10, 10);
+            panel1.Location = new Point(11, 9);
             panel1.Name = "panel1";
-            panel1.Size = new Size(329, 91);
+            panel1.Size = new Size(349, 86);
             panel1.TabIndex = 0;
             // 
             // pictureBox1
@@ -147,19 +148,21 @@ namespace QuickLinker
             pictureBox1.BackColor = Color.FromArgb(240, 240, 240);
             pictureBox1.BackgroundImageLayout = ImageLayout.Stretch;
             pictureBox1.Image = null;
-            pictureBox1.Location = new Point(269, 42);
+            pictureBox1.Location = new Point(286, 39);
+            pictureBox1.Margin = new Padding(6, 5, 6, 5);
             pictureBox1.Name = "pictureBox1";
-            pictureBox1.Size = new Size(32, 32);
+            pictureBox1.Size = new Size(34, 30);
             pictureBox1.TabIndex = 6;
             // 
             // IconForm
             // 
-            AutoScaleDimensions = new SizeF(7F, 17F);
-            AutoScaleMode = AutoScaleMode.Font;
-            ClientSize = new Size(353, 154);
+            AutoScaleDimensions = new SizeF(96F, 96F);
+            AutoScaleMode = AutoScaleMode.Dpi;
+            ClientSize = new Size(375, 145);
             Controls.Add(panel1);
             Controls.Add(Btn_Cancel);
             Controls.Add(Btn_OK);
+            Font = new Font("Microsoft YaHei UI", 12F, FontStyle.Regular, GraphicsUnit.Pixel);
             Icon = (Icon)resources.GetObject("$this.Icon");
             MaximizeBox = false;
             MinimizeBox = false;
