@@ -67,8 +67,10 @@ namespace QuickLinker.QuickLaunch.Utils
                             p.StartInfo.Verb = "runas";
                             break;
                         case IconStartType.SHOW_IN_EXPLORE:
-                            p.StartInfo.Arguments = "/e,/select," + p.StartInfo.FileName;
-                            p.StartInfo.FileName = "Explorer.exe";
+                            FileExplorerHelper.OpenFileInExplorer(p.StartInfo.FileName);
+                            return;
+                            //p.StartInfo.Arguments = "/e,/select," + p.StartInfo.FileName;
+                            //p.StartInfo.FileName = "Explorer.exe";
                             break;
                     }
                     if (p.Start())
