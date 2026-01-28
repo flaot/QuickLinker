@@ -54,7 +54,6 @@ namespace QuickLinker
         protected override void OnLoad(EventArgs e)
         {
             base.OnLoad(e);
-            BackColor = Color.FromArgb(255, 240, 240, 240);
             var entitySystem = this.GetSystem<QuickEntitySystem>();
             SetEntity(entitySystem.Find(_defaultIndex), false);
             entitySystem.ChangeEntityEvent.Register(_defaultIndex, Event_Change);
