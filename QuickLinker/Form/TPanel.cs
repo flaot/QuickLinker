@@ -1,7 +1,7 @@
 ﻿using QFramework;
+using QuickLinker.Menus;
 using QuickLinker.Model;
 using QuickLinker.Plugin;
-using QuickLinker.Plugin.Events;
 using QuickLinker.Plugin.Menu;
 using QuickLinker.Properties;
 using QuickLinker.QuickLaunch.Command;
@@ -197,7 +197,7 @@ namespace QuickLinker
                 if (Directory.Exists(_entity.Path))
                 {
                     var menuSystem = this.GetSystem<IMenuSystem>();
-                    menuSystem.SetEnable((int)MenuType.Folder, "取消", false);
+                    menuSystem.SetEnable((int)MenuType.Folder, MenuKey.FolderMenu_Cancel, false);
                     menuSystem.Show((int)MenuType.Folder, MousePosition.X, MousePosition.Y);
                 }
                 else
@@ -217,7 +217,7 @@ namespace QuickLinker
                     string entityText = string.IsNullOrWhiteSpace(entity.desc) ? entity.Path : entity.desc;
                     if (files.Length - i > 2)
                     {
-                        DialogResult dialogResult = MessageBox.Show(string.Format(Resources.MianForm_ReplaceTip, fileOrDir, entityText), 
+                        DialogResult dialogResult = MessageBox.Show(string.Format(Resources.MianForm_ReplaceTip, fileOrDir, entityText),
                          Resources.MSGBox_Tip, MessageBoxButtons.YesNoCancel, MessageBoxIcon.Question);
                         if (dialogResult == DialogResult.No)
                             continue;
@@ -226,7 +226,7 @@ namespace QuickLinker
                     }
                     else
                     {
-                        DialogResult dialogResult = MessageBox.Show(string.Format(Resources.MianForm_ReplaceTip, fileOrDir, entityText), 
+                        DialogResult dialogResult = MessageBox.Show(string.Format(Resources.MianForm_ReplaceTip, fileOrDir, entityText),
                             Resources.MSGBox_Tip, MessageBoxButtons.YesNo, MessageBoxIcon.Question);
                         if (dialogResult == DialogResult.No)
                             continue;

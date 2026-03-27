@@ -26,7 +26,7 @@ namespace IconFromImage
         {
             object result = null;
             if (IsImage(filePath))
-            { 
+            {
                 try
                 {
                     result = GetThumbnailByFile(filePath, 256, 256);
@@ -37,7 +37,7 @@ namespace IconFromImage
                 }
             }
             if (result == null)
-            { 
+            {
                 result = _parent.GetImage(filePath, index);
             }
             return result;

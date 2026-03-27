@@ -1,7 +1,5 @@
-using QFramework;
 using QuickLinker.Model;
 using QuickLinker.Plugin;
-using QuickLinker.Plugin.Events;
 using QuickLinker.Properties;
 using QuickLinker.QuickLaunch.Command;
 using QuickLinker.QuickLaunch.Systems;
@@ -10,7 +8,6 @@ using QuickLinker.Utils;
 using System;
 using System.Diagnostics;
 using System.IO;
-using System.Reflection;
 using System.Windows.Forms;
 
 namespace QuickLinker
@@ -83,7 +80,7 @@ namespace QuickLinker
         }
 
         private static void Event_TirggerSave()
-        { 
+        {
             var appArchitecture = AppArchitecture.Interface;
             var appConfig = appArchitecture.GetModel<AppConfig>();
             appArchitecture.GetSystem<IStroeSystem>().Save(appConfig);

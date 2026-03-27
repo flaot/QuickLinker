@@ -6,13 +6,13 @@
     [AttributeUsage(AttributeTargets.Method, Inherited = false)]
     public abstract class CustomMenuItemAttribute : System.Attribute
     {
-        public string Name { get; }
+        public string Key { get; }
         public int Priority { get; set; }
         public int MenuType { get; set; }
-        public CustomMenuItemAttribute(string name, int menuType, int priority = 1000)
+        public CustomMenuItemAttribute(string menuKey, int menuType, int priority = 1000)
         {
             MenuType = menuType;
-            Name = name;
+            Key = menuKey;
             Priority = priority;
         }
     }

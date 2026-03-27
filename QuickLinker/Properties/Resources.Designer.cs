@@ -19,7 +19,7 @@ namespace QuickLinker.Properties {
     // 类通过类似于 ResGen 或 Visual Studio 的工具自动生成的。
     // 若要添加或移除成员，请编辑 .ResX 文件，然后重新运行 ResGen
     // (以 /str 作为命令选项)，或重新生成 VS 项目。
-    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "17.0.0.0")]
+    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "18.0.0.0")]
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
     internal class Resources {
@@ -57,6 +57,33 @@ namespace QuickLinker.Properties {
             }
             set {
                 resourceCulture = value;
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 关闭 QuickLinker 的本地化字符串。
+        /// </summary>
+        internal static string AppMenu_Quit {
+            get {
+                return ResourceManager.GetString("AppMenu_Quit", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 显示(&amp;S) 的本地化字符串。
+        /// </summary>
+        internal static string AppMenu_Show {
+            get {
+                return ResourceManager.GetString("AppMenu_Show", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 首选项(&amp;P)... 的本地化字符串。
+        /// </summary>
+        internal static string AppMenu_ShowSetting {
+            get {
+                return ResourceManager.GetString("AppMenu_ShowSetting", resourceCulture);
             }
         }
         
@@ -130,6 +157,42 @@ namespace QuickLinker.Properties {
             get {
                 object obj = ResourceManager.GetObject("CUR_COPY", resourceCulture);
                 return ((byte[])(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 取消 的本地化字符串。
+        /// </summary>
+        internal static string FolderMenu_Cancel {
+            get {
+                return ResourceManager.GetString("FolderMenu_Cancel", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 复制文件到此处(&amp;C) 的本地化字符串。
+        /// </summary>
+        internal static string FolderMenu_Copy {
+            get {
+                return ResourceManager.GetString("FolderMenu_Copy", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 删除文件(&amp;D) 的本地化字符串。
+        /// </summary>
+        internal static string FolderMenu_Delate {
+            get {
+                return ResourceManager.GetString("FolderMenu_Delate", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 移动文件到此处(&amp;M) 的本地化字符串。
+        /// </summary>
+        internal static string FolderMenu_Move {
+            get {
+                return ResourceManager.GetString("FolderMenu_Move", resourceCulture);
             }
         }
         
@@ -216,15 +279,6 @@ namespace QuickLinker.Properties {
         }
         
         /// <summary>
-        ///   查找类似 关于(&amp;A)... 的本地化字符串。
-        /// </summary>
-        internal static string MainForm_SysMenu_About {
-            get {
-                return ResourceManager.GetString("MainForm_SysMenu_About", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   查找类似 移除标题栏(&amp;B) 的本地化字符串。
         /// </summary>
         internal static string MainForm_SysMenu_RemoveSysMenu {
@@ -276,6 +330,78 @@ namespace QuickLinker.Properties {
         }
         
         /// <summary>
+        ///   查找类似 排列(&amp;A) 的本地化字符串。
+        /// </summary>
+        internal static string PageMenu_Align {
+            get {
+                return ResourceManager.GetString("PageMenu_Align", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 属性(&amp;P) 的本地化字符串。
+        /// </summary>
+        internal static string PageMenu_Attr {
+            get {
+                return ResourceManager.GetString("PageMenu_Attr", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 清除(&amp;C) 的本地化字符串。
+        /// </summary>
+        internal static string PageMenu_Clear {
+            get {
+                return ResourceManager.GetString("PageMenu_Clear", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 复制(&amp;D) 的本地化字符串。
+        /// </summary>
+        internal static string PageMenu_Copy {
+            get {
+                return ResourceManager.GetString("PageMenu_Copy", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 创建快捷方式(&amp;R) 的本地化字符串。
+        /// </summary>
+        internal static string PageMenu_CreateQuick {
+            get {
+                return ResourceManager.GetString("PageMenu_CreateQuick", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 (未配置) 的本地化字符串。
+        /// </summary>
+        internal static string PageMenu_Null {
+            get {
+                return ResourceManager.GetString("PageMenu_Null", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 交换(&amp;S) 的本地化字符串。
+        /// </summary>
+        internal static string PageMenu_Switch {
+            get {
+                return ResourceManager.GetString("PageMenu_Switch", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 资源管理器(&amp;X) 的本地化字符串。
+        /// </summary>
+        internal static string PageMenu_SystemContext {
+            get {
+                return ResourceManager.GetString("PageMenu_SystemContext", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   查找类似 访问拒绝。
         ///
         ///直到你输入正确密码以前不能继续进行所需操作。 的本地化字符串。
@@ -292,6 +418,105 @@ namespace QuickLinker.Properties {
         internal static string RUN_URI_ERROR {
             get {
                 return ResourceManager.GetString("RUN_URI_ERROR", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 外观/按钮(&amp;B) 的本地化字符串。
+        /// </summary>
+        internal static string TabMenu_Button {
+            get {
+                return ResourceManager.GetString("TabMenu_Button", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 删除(&amp;D) 的本地化字符串。
+        /// </summary>
+        internal static string TabMenu_Delete {
+            get {
+                return ResourceManager.GetString("TabMenu_Delete", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 外观/平面按钮(&amp;F) 的本地化字符串。
+        /// </summary>
+        internal static string TabMenu_Flot {
+            get {
+                return ResourceManager.GetString("TabMenu_Flot", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 左移标签(&amp;L) 的本地化字符串。
+        /// </summary>
+        internal static string TabMenu_MoveLeft {
+            get {
+                return ResourceManager.GetString("TabMenu_MoveLeft", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 右移标签(&amp;R) 的本地化字符串。
+        /// </summary>
+        internal static string TabMenu_MoveRight {
+            get {
+                return ResourceManager.GetString("TabMenu_MoveRight", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 重命名(&amp;E)... 的本地化字符串。
+        /// </summary>
+        internal static string TabMenu_Rename {
+            get {
+                return ResourceManager.GetString("TabMenu_Rename", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 外观/标准(&amp;N) 的本地化字符串。
+        /// </summary>
+        internal static string TabMenu_Stand {
+            get {
+                return ResourceManager.GetString("TabMenu_Stand", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 日期(&amp;D) 的本地化字符串。
+        /// </summary>
+        internal static string ToolStatusMenu_Date {
+            get {
+                return ResourceManager.GetString("ToolStatusMenu_Date", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 时间与日期(&amp;A) 的本地化字符串。
+        /// </summary>
+        internal static string ToolStatusMenu_DateTime {
+            get {
+                return ResourceManager.GetString("ToolStatusMenu_DateTime", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 无(&amp;N) 的本地化字符串。
+        /// </summary>
+        internal static string ToolStatusMenu_None {
+            get {
+                return ResourceManager.GetString("ToolStatusMenu_None", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 时间(&amp;T) 的本地化字符串。
+        /// </summary>
+        internal static string ToolStatusMenu_Time {
+            get {
+                return ResourceManager.GetString("ToolStatusMenu_Time", resourceCulture);
             }
         }
         

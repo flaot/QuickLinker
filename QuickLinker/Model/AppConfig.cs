@@ -1,7 +1,6 @@
 ﻿using QFramework;
 using QuickLinker.Systems;
 using System.Drawing;
-using System.Reflection;
 using System.Text.Json.Serialization;
 using System.Windows.Forms;
 using System.Xml.Serialization;
@@ -108,7 +107,7 @@ namespace QuickLinker.Model
         public EasyEvent TirggerSaveEvent = new EasyEvent();
         protected override void OnInit()
         {
-            foreach (var fieldInfo in typeof(AppConfig).GetFields()) 
+            foreach (var fieldInfo in typeof(AppConfig).GetFields())
             {
                 if (!fieldInfo.FieldType.IsGenericType)
                     continue;

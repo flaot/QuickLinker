@@ -11,6 +11,8 @@ namespace QuickLinker.Systems
     {
         /// <summary> 注册菜单对象 </summary>
         void RegisterMenu(IMenu defaultVal);
+        /// <summary> 注册菜单多语言对象 </summary>
+        void RegisterMenuLan(IMenuLang menuLang);
         /// <summary> 初始化内建带对象的菜单(类的实列) </summary>
         void InitSystemMenuItem(object classObj);
         /// <summary> 请求刷新指定菜单 </summary>
@@ -21,12 +23,12 @@ namespace QuickLinker.Systems
         void Show(int menuType, int x, int y);
         IMenu GetMenu(int menuType);
 
-        void SetChecked(int menuType, string menuPath, bool isChecked);
-        bool GetChecked(int menuType, string menuPath);
-        void SetEnable(int menuType, string menuPath, bool isEnable);
-        bool GetEnable(int menuType, string menuPath);
-        void SetVisible(int menuType, string menuPath, bool isVisible);
-        bool GetVisible(int menuType, string menuPath);
+        void SetChecked(int menuType, string menuKey, bool isChecked);
+        bool GetChecked(int menuType, string menuKey);
+        void SetEnable(int menuType, string menuKey, bool isEnable);
+        bool GetEnable(int menuType, string menuKey);
+        void SetVisible(int menuType, string menuKey, bool isVisible);
+        bool GetVisible(int menuType, string menuKey);
     }
 
     internal class MenuSystem : AbstractSystem, IMenuSystem
@@ -38,6 +40,7 @@ namespace QuickLinker.Systems
         /// <summary> 初始化完成的菜单 </summary>
         private List<int> _initFinishType;
 
+        private List<IMenuLang> _menuLangs;
         private Dictionary<int, Dictionary<string, SwitchData>> _dicSwitchByPath;
         private class SwitchData
         {
@@ -60,6 +63,13 @@ namespace QuickLinker.Systems
         public void RegisterMenu(IMenu defaultVal)
         {
             _dicMenuByType[defaultVal.MenuType] = defaultVal;
+        }
+        public void RegisterMenuLan(IMenuLang menuLang)
+        {
+            if (_menuLangs == null)
+                _menuLangs = new List<IMenuLang>();
+            _menuLangs.Add(menuLang);
+            _menuLangs.Sort((l,r) => r.Priority.CompareTo(l.Priority));
         }
         /// <summary> 请求刷新所有菜单 </summary>
         public void RequestResetAll()
@@ -86,7 +96,7 @@ namespace QuickLinker.Systems
                 {
                     if (item.info == null)
                         continue;
-                    if (!dic.TryGetValue(item.info.namePath, out var switchPath))
+                    if (!dic.TryGetValue(item.info.menuKey, out var switchPath))
                         continue;
                     menu.SetCheck(item, switchPath.isCheck);
                     menu.SetEnable(item, switchPath.isEnable);
@@ -132,7 +142,8 @@ namespace QuickLinker.Systems
                 if (attr == null)
                     continue;
                 MenuItem.Info menuInfo = new MenuItem.Info();
-                menuInfo.namePath = attr.Name;
+                menuInfo.menuKey = attr.Key;
+                menuInfo.namePath = GetLangPath(attr.Key);
                 menuInfo.priority = attr.Priority;
                 menuInfo.MethodInfo = methodInfo;
                 menuInfo.type = attr.MenuType;
@@ -163,6 +174,7 @@ namespace QuickLinker.Systems
                 {
                     menu.AddSeparator(null);
                 }
+              
                 //先确保子菜单之前的路径是存在的
                 MenuItem root = null;
                 for (int i = 0; i < nameSplit.Length - 1; i++)
@@ -192,8 +204,9 @@ namespace QuickLinker.Systems
                 }
                 //对最后一级菜单做处理
                 {
-                    var name = nameSplit[nameSplit.Length - 1];
-                    var findMenu = menu.FindItem(root, nameSplit[nameSplit.Length - 1]);
+                    var lastIndex = nameSplit.Length - 1;
+                    var name = nameSplit[lastIndex];
+                    var findMenu = menu.FindItem(root, nameSplit[lastIndex]);
                     if (findMenu == null)
                     {
                         menu.AddItem(root, new MenuItem()
@@ -229,56 +242,72 @@ namespace QuickLinker.Systems
             return null;
         }
 
-        void IMenuSystem.SetChecked(int menuType, string menuPath, bool isChecked)
+        void IMenuSystem.SetChecked(int menuType, string menuKey, bool isChecked)
         {
             if (!_dicSwitchByPath.TryGetValue(menuType, out var dic))
                 _dicSwitchByPath.Add(menuType, dic = new Dictionary<string, SwitchData>());
-            if (!dic.TryGetValue(menuPath, out var switchData))
-                dic.Add(menuPath, switchData = new SwitchData());
+            if (!dic.TryGetValue(menuKey, out var switchData))
+                dic.Add(menuKey, switchData = new SwitchData());
             switchData.isCheck = isChecked;
         }
-        bool IMenuSystem.GetChecked(int menuType, string menuPath)
+        bool IMenuSystem.GetChecked(int menuType, string menuKey)
         {
             if (!_dicSwitchByPath.TryGetValue(menuType, out var dic))
                 return false;
-            if (dic.TryGetValue(menuPath, out var switchData))
+            if (dic.TryGetValue(menuKey, out var switchData))
                 return switchData.isCheck;
             else
                 return false;
         }
-        void IMenuSystem.SetEnable(int menuType, string menuPath, bool isEnable)
+        void IMenuSystem.SetEnable(int menuType, string menuKey, bool isEnable)
         {
             if (!_dicSwitchByPath.TryGetValue(menuType, out var dic))
                 _dicSwitchByPath.Add(menuType, dic = new Dictionary<string, SwitchData>());
-            if (!dic.TryGetValue(menuPath, out var switchData))
-                dic.Add(menuPath, switchData = new SwitchData());
+            if (!dic.TryGetValue(menuKey, out var switchData))
+                dic.Add(menuKey, switchData = new SwitchData());
             switchData.isEnable = isEnable;
         }
-        bool IMenuSystem.GetEnable(int menuType, string menuPath)
+        bool IMenuSystem.GetEnable(int menuType, string menuKey)
         {
             if (!_dicSwitchByPath.TryGetValue(menuType, out var dic))
                 return true;
-            if (dic.TryGetValue(menuPath, out var switchData))
+            if (dic.TryGetValue(menuKey, out var switchData))
                 return switchData.isEnable;
             else
                 return true;
         }
-        void IMenuSystem.SetVisible(int menuType, string menuPath, bool isVisible)
+        void IMenuSystem.SetVisible(int menuType, string menuKey, bool isVisible)
         {
             if (!_dicSwitchByPath.TryGetValue(menuType, out var dic))
                 _dicSwitchByPath.Add(menuType, dic = new Dictionary<string, SwitchData>());
-            if (!dic.TryGetValue(menuPath, out var switchData))
-                dic.Add(menuPath, switchData = new SwitchData());
+            if (!dic.TryGetValue(menuKey, out var switchData))
+                dic.Add(menuKey, switchData = new SwitchData());
             switchData.isVisible = isVisible;
         }
-        bool IMenuSystem.GetVisible(int menuType, string menuPath)
+        bool IMenuSystem.GetVisible(int menuType, string menuKey)
         {
             if (!_dicSwitchByPath.TryGetValue(menuType, out var dic))
                 return true;
-            if (dic.TryGetValue(menuPath, out var switchData))
+            if (dic.TryGetValue(menuKey, out var switchData))
                 return switchData.isVisible;
             else
                 return true;
+        }
+        private string GetLangPath(string menuKey)
+        {
+            if (_menuLangs == null)
+                return menuKey;
+
+            string displayPath = string.Empty;
+            for (int i = 0; i < _menuLangs.Count && string.IsNullOrEmpty(displayPath); i++)
+            {
+                displayPath = _menuLangs[i].GetLang(menuKey);
+            }
+
+            if (string.IsNullOrEmpty(displayPath))
+                return menuKey;
+
+            return displayPath;
         }
     }
 }

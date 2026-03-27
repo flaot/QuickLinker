@@ -13,6 +13,8 @@ namespace QuickLinker.Plugin.Menu
 
         public class Info : IComparable<Info>
         {
+            /// <summary> 菜单键 </summary>
+            public string menuKey;
             /// <summary> 菜单路径 </summary>
             public string namePath;
             /// <summary> 菜单优先级 </summary>

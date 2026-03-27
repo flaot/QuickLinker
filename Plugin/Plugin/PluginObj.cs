@@ -70,7 +70,7 @@ namespace QuickLinker.Plugin
                 if (attr == null)
                     continue;
                 MenuItem.Info menuInfo = new MenuItem.Info();
-                menuInfo.namePath = attr.Name;
+                menuInfo.namePath = attr.Key;
                 menuInfo.priority = attr.Priority;
                 menuInfo.MethodInfo = methodInfo;
                 menuInfo.type = attr.MenuType;

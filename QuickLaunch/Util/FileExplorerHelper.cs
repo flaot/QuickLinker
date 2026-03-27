@@ -1,11 +1,10 @@
 ﻿using QFramework;
 using System;
 using System.Runtime.InteropServices;
-using System.Text;
 
 namespace QuickLinker.QuickLaunch.Utils
 {
-    internal class FileExplorerHelper
+    public class FileExplorerHelper
     {
         [DllImport("shell32.dll", CharSet = CharSet.Unicode)]
         private static extern int SHOpenFolderAndSelectItems(IntPtr pidlFolder, uint cild, IntPtr[] apidl, uint dwFlags);
@@ -15,9 +14,6 @@ namespace QuickLinker.QuickLaunch.Utils
 
         [DllImport("shell32.dll", CharSet = CharSet.Unicode)]
         private static extern IntPtr ILCreateFromPath(string path);
-
-        [DllImport("shell32.dll", CharSet = CharSet.Unicode)]
-        private static extern int SHParseDisplayName(string name, IntPtr bindingContext, out IntPtr pidl, uint sfgaoIn, out uint psfgaoOut);
 
         public static bool OpenFileInExplorer(string filePath)
         {

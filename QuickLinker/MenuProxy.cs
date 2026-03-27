@@ -11,7 +11,7 @@ namespace QuickLinker
         private ToolStrip _toolStrip;
         private Dictionary<MenuItem, ToolStripMenuItem> _dicCacheByItem = new Dictionary<MenuItem, ToolStripMenuItem>();
 
-        public MenuProxy(int menuType, ToolStrip toolStrip) 
+        public MenuProxy(int menuType, ToolStrip toolStrip)
         {
             _menuType = menuType;
             _toolStrip = toolStrip;
@@ -98,19 +98,14 @@ namespace QuickLinker
             menuItem.Func?.Invoke(menuItem.info);
         }
 
-        public ToolStripMenuItem FindStripMenuItem(string path)
+        public ToolStripMenuItem FindStripMenuItem(string menuKey)
         {
-            MenuItem menuItem = null;
-            string[] paths = path.Split('/');
-            for (int i = 0; i < paths.Length; i++)
-            { 
-                menuItem = ((IMenu)this).FindItem(menuItem, paths[i]);
-                if (menuItem == null)
-                    break;
+            foreach (var dicItem in _dicCacheByItem)
+            {
+                if (dicItem.Key.info.menuKey == menuKey)
+                    return dicItem.Value;
             }
-            if (menuItem == null)
-                return null;
-            return _dicCacheByItem[menuItem];
+            return null;
         }
     }
 }

@@ -1,15 +1,14 @@
 ﻿using QFramework;
 using QuickLinker.Model;
+using QuickLinker.Plugin.Menu.Attribute;
 using QuickLinker.Utils;
 using System;
 using System.Linq;
 using System.Windows.Forms;
-using QuickLinker.Plugin.Menu;
-using QuickLinker.Plugin.Menu.Attribute;
 
 namespace QuickLinker.Menus
 {
-    internal class TabMenu: IController
+    internal class TabMenu : IController
     {
         private MainForm mainForm;
         public IArchitecture GetArchitecture() => mainForm.GetArchitecture();
@@ -18,7 +17,7 @@ namespace QuickLinker.Menus
             this.mainForm = mainForm;
         }
 
-        [TabMenuItem("左移标签(&L)", 100)]
+        [TabMenuItem(MenuKey.TabMenu_MoveLeft, 100)]
         private void TabMenuItem_Left_Click()
         {
             int curIndex = mainForm.tabControl1.SelectedIndex;
@@ -26,7 +25,7 @@ namespace QuickLinker.Menus
             mainForm.SwitchPage(curIndex, swapIndex);
             mainForm.tabControl1.SelectedIndex = swapIndex;
         }
-        [TabMenuItem("右移标签(&R)", 101)]
+        [TabMenuItem(MenuKey.TabMenu_MoveRight, 101)]
         private void TabMenuItem_Right_Click()
         {
             int curIndex = mainForm.tabControl1.SelectedIndex;
@@ -34,7 +33,7 @@ namespace QuickLinker.Menus
             mainForm.SwitchPage(curIndex, swapIndex);
             mainForm.tabControl1.SelectedIndex = swapIndex;
         }
-        [TabMenuItem("重命名(&E)...", 102)]
+        [TabMenuItem(MenuKey.TabMenu_Rename, 102)]
         private void TabMenuItem_Rename_Click()
         {
             string pageText = mainForm.tabControl1.TabPages[mainForm.tabControl1.SelectedIndex].Text;
@@ -49,7 +48,7 @@ namespace QuickLinker.Menus
             tempArray[mainForm.tabControl1.SelectedIndex] = groupName;
             config.groupArray.Value = tempArray;
         }
-        [TabMenuItem("删除(&D)", 103)]
+        [TabMenuItem(MenuKey.TabMenu_Delete, 103)]
         private void TabMenuItem_Delete_Click()
         {
             int curIndex = mainForm.tabControl1.SelectedIndex;
@@ -58,19 +57,19 @@ namespace QuickLinker.Menus
             groupArray.RemoveAt(curIndex);
             config.groupArray.Value = groupArray.ToArray();
         }
-        [TabMenuItem("外观/标准(&N)", 200)]
+        [TabMenuItem(MenuKey.TabMenu_Stand, 200)]
         private void TabMenuItem_Stand_Click()
         {
             var config = this.GetModel<AppConfig>();
             config.tabAppearance.Value = TabAppearance.Normal;
         }
-        [TabMenuItem("外观/按钮(&B)", 201)]
+        [TabMenuItem(MenuKey.TabMenu_Button, 201)]
         private void TabMenuItem_Button_Click()
         {
             var config = this.GetModel<AppConfig>();
             config.tabAppearance.Value = TabAppearance.Buttons;
         }
-        [TabMenuItem("外观/平面按钮(&F)", 202)]
+        [TabMenuItem(MenuKey.TabMenu_Flot, 202)]
         private void TabMenuItem_Flot_Click()
         {
             var config = this.GetModel<AppConfig>();

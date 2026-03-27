@@ -29,7 +29,7 @@ namespace QuickLinker.QuickLaunch.Systems
             if (entitieCache == null)
                 entitieCache = new EntityCache();
             foreach (var item in entitieCache.entities)
-            { 
+            {
                 item.bitmapImage = this.GetUtility<IImageUtil>().ByteArrToImage(item.imageByteArr);
             }
         }
@@ -170,7 +170,7 @@ namespace QuickLinker.QuickLaunch.Systems
             if (entity == null)
                 return false;
             if (entity.iconType == Constant.OpenType.OTHER)
-            { 
+            {
                 this.GetUtility<IProcessUtil>().RunEntity(entity, dropFileOrDirs);
             }
             else
@@ -203,7 +203,7 @@ namespace QuickLinker.QuickLaunch.Systems
                 if (!entity.launchOnStartup)
                     continue;
                 if (entity.iconType == Constant.OpenType.OTHER)
-                { 
+                {
                     this.GetUtility<IProcessUtil>().RunEntity(entity, Array.Empty<string>());
                 }
                 else

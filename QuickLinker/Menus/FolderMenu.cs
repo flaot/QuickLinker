@@ -16,7 +16,7 @@ namespace QuickLinker.Menus
             this.mainForm = mainForm;
         }
 
-        [FolderMenuItem("复制文件到此处(&C)", 100)]
+        [FolderMenuItem(MenuKey.FolderMenu_Copy, 100)]
         private void FolderMenu_Copy_Click()
         {
             var tPanel = Selection.activeContext as TPanel;
@@ -28,7 +28,7 @@ namespace QuickLinker.Menus
                 this.GetUtility<IFileUtil>().Copy(path, tPanel.Entity.Path);
             }
         }
-        [FolderMenuItem("移动文件到此处(&M)", 101)]
+        [FolderMenuItem(MenuKey.FolderMenu_Move, 101)]
         private void FolderMenu_Move_Click()
         {
             var tPanel = Selection.activeContext as TPanel;
@@ -40,7 +40,7 @@ namespace QuickLinker.Menus
                 this.GetUtility<IFileUtil>().MoveTo(path, tPanel.Entity.Path);
             }
         }
-        [FolderMenuItem("删除文件(&D)", 102)]
+        [FolderMenuItem(MenuKey.FolderMenu_Delate, 102)]
         private void FolderMenu_Delate_Click()
         {
             var tPanel = Selection.activeContext as TPanel;
@@ -56,7 +56,7 @@ namespace QuickLinker.Menus
                 this.GetUtility<IFileUtil>().Delete(path);
             }
         }
-        [FolderMenuItem("取消", 200)]
+        [FolderMenuItem(MenuKey.FolderMenu_Cancel, 200)]
         private void FolderMenu_Cancel_Click()
         {
         }

@@ -2,7 +2,6 @@
 using QuickLinker.Model;
 using QuickLinker.Properties;
 using QuickLinker.QuickLaunch.Constant;
-using QuickLinker.QuickLaunch.Models;
 using QuickLinker.QuickLaunch.Utils;
 using QuickLinker.Systems;
 using QuickLinker.Utils;
@@ -10,7 +9,6 @@ using System;
 using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
-using System.Media;
 using System.Windows.Forms;
 
 namespace QuickLinker
@@ -428,7 +426,7 @@ namespace QuickLinker
             checkBox21.Enabled = dcSetting;
             checkBox22.Enabled = dcSetting;
             if (!dcSetting)
-            { 
+            {
                 checkBox21.Checked = false;
                 checkBox22.Checked = false;
             }

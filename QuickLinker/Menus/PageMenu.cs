@@ -1,5 +1,7 @@
 ﻿using QFramework;
+using QuickLinker.Menus;
 using QuickLinker.Plugin;
+using QuickLinker.Plugin.Menu.Attribute;
 using QuickLinker.Properties;
 using QuickLinker.QuickLaunch.Command;
 using QuickLinker.QuickLaunch.Utils;
@@ -8,14 +10,19 @@ using System.Drawing;
 using System.IO;
 using System.Windows.Forms;
 using static QuickLinker.QuickLaunch.Command.QuickEntityOptCommand;
-using QuickLinker.Plugin.Menu;
-using QuickLinker.Plugin.Menu.Attribute;
 
 namespace QuickLinker
 {
-    public partial class MainForm
+    internal class PageMenu : IController
     {
-        [PageMenuItem("(未配置)", 100)]
+        private MainForm mainForm;
+        public IArchitecture GetArchitecture() => mainForm.GetArchitecture();
+        public PageMenu(MainForm mainForm)
+        {
+            this.mainForm = mainForm;
+        }
+
+        [PageMenuItem(MenuKey.PageMenu_Null, 100)]
         private void MenuStrip_Null_Click()
         {
             var tPanel = Selection.activeContext as TPanel;
@@ -23,7 +30,7 @@ namespace QuickLinker
                 return;
             CommonCode.CreateShortcut(tPanel.Entity);
         }
-        [PageMenuItem("创建快捷方式(&R)", 200)]
+        [PageMenuItem(MenuKey.PageMenu_CreateQuick, 200)]
         private void MenuStrip_CreateQuick_Click()
         {
             var tPanel = Selection.activeContext as TPanel;
@@ -31,7 +38,7 @@ namespace QuickLinker
                 return;
             CommonCode.CreateShortcut(tPanel.Entity);
         }
-        [PageMenuItem("资源管理器(&X)", 201)]
+        [PageMenuItem(MenuKey.PageMenu_SystemContext, 201)]
         private void MenuStrip_SystemContextMenu_Click()
         {
             var tPanel = Selection.activeContext as TPanel;
@@ -45,39 +52,39 @@ namespace QuickLinker
             p.Y -= 80;
             scm.ShowContextMenu(folders, p);
         }
-      
-        [PageMenuItem("复制(&D)", 300)]
+
+        [PageMenuItem(MenuKey.PageMenu_Copy, 300)]
         private void MenuStrip_Copy_Click()
         {
             var tPanel = Selection.activeContext as TPanel;
-            _optFirstTemp = tPanel;
-            _optType.Value = OptType.Copy;
+            mainForm.OperateGrid = tPanel;
+            mainForm.OperateType.Value = OptType.Copy;
         }
-        [PageMenuItem("交换(&S)", 301)]
+        [PageMenuItem(MenuKey.PageMenu_Switch, 301)]
         private void MenuStrip_Switch_Click()
         {
             var tPanel = Selection.activeContext as TPanel;
-            _optFirstTemp = tPanel;
-            _optType.Value = OptType.Switch;
+            mainForm.OperateGrid = tPanel;
+            mainForm.OperateType.Value = OptType.Switch;
         }
-        [PageMenuItem("排列(&A)", 302)]
+        [PageMenuItem(MenuKey.PageMenu_Align, 302)]
         private void MenuStrip_Align_Click()
         {
             var tPanel = Selection.activeContext as TPanel;
-            _optFirstTemp = tPanel;
-            _optType.Value = OptType.Align;
+            mainForm.OperateGrid = tPanel;
+            mainForm.OperateType.Value = OptType.Align;
         }
-        [PageMenuItem("清除(&C)", 303)]
+        [PageMenuItem(MenuKey.PageMenu_Clear, 303)]
         private void MenuStrip_Clear_Click()
         {
             var tPanel = Selection.activeContext as TPanel;
             if (tPanel.Entity == null)
                 return;
-            DialogResult dialogResult = MessageBox.Show(string.Format(Resources.MainForm_Remove, tPanel.Title), Text, MessageBoxButtons.YesNo, MessageBoxIcon.Question);
+            DialogResult dialogResult = MessageBox.Show(string.Format(Resources.MainForm_Remove, tPanel.Title), mainForm.Text, MessageBoxButtons.YesNo, MessageBoxIcon.Question);
             if (dialogResult == DialogResult.Yes)
                 this.SendCommand(new QuickEntityRemoveCommand() { index = tPanel.Index });
         }
-        [PageMenuItem("属性(&P)", 400)]
+        [PageMenuItem(MenuKey.PageMenu_Attr, 400)]
         private void MenuStrip_Attr_Click()
         {
             var tPanel = Selection.activeContext as TPanel;

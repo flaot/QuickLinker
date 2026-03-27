@@ -1,7 +1,6 @@
 ﻿using QFramework;
 using QuickLinker.Model;
 using QuickLinker.Plugin;
-using QuickLinker.Plugin.Events;
 using QuickLinker.QuickLaunch.Command;
 using QuickLinker.QuickLaunch.Models;
 using QuickLinker.QuickLaunch.Systems;
@@ -110,14 +109,14 @@ namespace QuickLinker
                 {
                     var hotKey = HotKeyUtil.Convert(entity.actionHotKey);
                     HotKeyListener?.Add(hotKey);
-                    hotKeyEntities.Add(new QuickAction() { entity = entity, hotKey = hotKey});
+                    hotKeyEntities.Add(new QuickAction() { entity = entity, hotKey = hotKey });
                     count++;
                 }
                 catch (Exception ex)
                 {
                     LogKit.E(ex.ToString() + $"[HOTKEYS] Unable to bind individual quickaction hotkey '{entity.actionHotKey}': {ex.Message}");
                 }
-            } 
+            }
             if (count == 0) return;
             LogKit.I($"[HOTKEY] Completed bind for {count} individual quickaction hotkeys");
         }

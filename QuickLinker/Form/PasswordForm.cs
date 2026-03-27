@@ -27,7 +27,7 @@ namespace QuickLinker
         private void Btn_Ok_Click(object sender, EventArgs e)
         {
             if (string.Equals(Txt_Password.Text, _appConfig.password.Value))
-            DialogResult = DialogResult.OK;
+                DialogResult = DialogResult.OK;
             Close();
         }
 
@@ -62,6 +62,6 @@ namespace QuickLinker
             }
         }
 
-        
+
     }
 }

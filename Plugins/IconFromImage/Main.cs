@@ -16,6 +16,6 @@ namespace IconFromImage
         public override void Detach()
         {
             this.GetArchitecture().RegisterSystem<IFileIconSystem>(_oldSystem);
-        } 
+        }
     }
 }

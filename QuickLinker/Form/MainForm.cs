@@ -13,7 +13,7 @@ using QuickLinker.Systems;
 using QuickLinker.Utils;
 using System;
 using System.Collections.Generic;
-using System.Diagnostics;
+using System.ComponentModel;
 using System.Drawing;
 using System.IO;
 using System.Text;
@@ -27,8 +27,8 @@ namespace QuickLinker
 {
     public partial class MainForm : Form, IController
     {
-        private BindableProperty<OptType> _optType = new BindableProperty<OptType>();
-        private TPanel _optFirstTemp; //临时数据：如交换、排列
+        private BindableProperty<OptType> _operateType = new BindableProperty<OptType>();
+        private TPanel _operateGrid; //临时数据：如交换、排列
         private Timer _dateTimer;
         private int _lastRow;
         private int _lastColumn;
@@ -39,6 +39,9 @@ namespace QuickLinker
         ToolTip _toolTip = new ToolTip();
         public static int ignoreDeactivate = 0;
 
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
+        public TPanel OperateGrid { get => _operateGrid; set => _operateGrid = value; }
+        public BindableProperty<OptType> OperateType => _operateType;
         public MainForm()
         {
             InitializeComponent();
@@ -74,7 +77,7 @@ namespace QuickLinker
             config.disableMaxClose.RegisterWithInitValue(b => MaximizeBox = !b);
             config.titleStyle.RegisterWithInitValue(Event_TitleStyleChange);
             config.topWindow.RegisterWithInitValue(b => TopMost = b);
-            _optType.Register(Event_ChengOptType);
+            _operateType.Register(Event_ChengOptType);
             config.dateTimeType.RegisterWithInitValue(Event_RefreshShowMenu);
             config.dateTimeType.RegisterWithInitValue(t => Event_RefreshShowTime(null, null));
             config.windowAlpha.RegisterWithInitValue(t => Opacity = t * 1f / 100);
@@ -102,17 +105,16 @@ namespace QuickLinker
             hotKeyMgr.HotKeyListener.HotkeyPressed += HotkeyListener_HotkeyPressed;
             hotKeyMgr.InitializeQuickActionsHotKeys();
 
-            var appMenu = CreateContextMenuStrip();
-            NotifyIcon.ContextMenuStrip = appMenu;
             var menuSystem = this.GetSystem<IMenuSystem>();
-            menuSystem.RegisterMenu(new MenuProxy((int)MenuType.App, appMenu));
+            menuSystem.RegisterMenu(new MenuProxy((int)MenuType.App, NotifyIcon.ContextMenuStrip = CreateContextMenuStrip()));
             menuSystem.RegisterMenu(new MenuProxy((int)MenuType.Tab, CreateContextMenuStrip()));
             menuSystem.RegisterMenu(new MenuProxy((int)MenuType.Page, CreateContextMenuStrip()));
             menuSystem.RegisterMenu(new MenuProxy((int)MenuType.ToolStatus, CreateContextMenuStrip()));
             menuSystem.RegisterMenu(new MenuProxy((int)MenuType.Folder, CreateContextMenuStrip()));
+            menuSystem.RegisterMenuLan(new MenuDefaultLang());
             menuSystem.InitSystemMenuItem(new AppMenu(this));
             menuSystem.InitSystemMenuItem(new TabMenu(this));
-            menuSystem.InitSystemMenuItem(this);
+            menuSystem.InitSystemMenuItem(new PageMenu(this));
             menuSystem.InitSystemMenuItem(new ToolStatusMenu(this));
             menuSystem.InitSystemMenuItem(new FolderMenu(this));
             var pluginSystem = this.GetSystem<IPluginSystem>();
@@ -223,7 +225,7 @@ namespace QuickLinker
                     ShowTabMenu();
                 }
                 else
-                { 
+                {
                     Selection.activeContext = tPanel;
                     TypeEventSystem.Global.Send(new ClickMenuTPanelEvent());
                 }
@@ -283,34 +285,34 @@ namespace QuickLinker
             var config = this.GetModel<AppConfig>();
             var menuSystem = this.GetSystem<IMenuSystem>();
             var menuType = (int)MenuType.Tab;
-            menuSystem.SetEnable(menuType, "左移标签(&L)", tabControl1.SelectedIndex != 0);
-            menuSystem.SetEnable(menuType, "右移标签(&R)", tabControl1.SelectedIndex != tabControl1.TabPages.Count - 1);
-            menuSystem.SetEnable(menuType, "删除(&D)", tabControl1.TabPages.Count > 1);
-            menuSystem.SetChecked(menuType, "外观/标准(&N)", config.tabAppearance.Value == TabAppearance.Normal);
-            menuSystem.SetChecked(menuType, "外观/按钮(&B)", config.tabAppearance.Value == TabAppearance.Buttons);
-            menuSystem.SetChecked(menuType, "外观/平面按钮(&F)", config.tabAppearance.Value == TabAppearance.FlatButtons);
+            menuSystem.SetEnable(menuType, MenuKey.TabMenu_MoveLeft, tabControl1.SelectedIndex != 0);
+            menuSystem.SetEnable(menuType, MenuKey.TabMenu_MoveRight, tabControl1.SelectedIndex != tabControl1.TabPages.Count - 1);
+            menuSystem.SetEnable(menuType, MenuKey.TabMenu_Delete, tabControl1.TabPages.Count > 1);
+            menuSystem.SetChecked(menuType, MenuKey.TabMenu_Stand, config.tabAppearance.Value == TabAppearance.Normal);
+            menuSystem.SetChecked(menuType, MenuKey.TabMenu_Button, config.tabAppearance.Value == TabAppearance.Buttons);
+            menuSystem.SetChecked(menuType, MenuKey.TabMenu_Flot, config.tabAppearance.Value == TabAppearance.FlatButtons);
             this.GetSystem<IMenuSystem>().Show(menuType, MousePosition.X, MousePosition.Y);
         }
 
         private void TPanel_OnClick(ClickTPanelEvent info)
         {
             var panel = Selection.activeContext as TPanel;
-            if (_optType.Value != OptType.None)
+            if (_operateType.Value != OptType.None)
             {
-                _optFirstTemp.Invert(false);
+                _operateGrid.Invert(false);
                 do
                 {
-                    if (_optFirstTemp.Index == panel.Index)
+                    if (_operateGrid.Index == panel.Index)
                         break;
-                    if (_optType.Value == OptType.Copy && panel.Entity != null)
+                    if (_operateType.Value == OptType.Copy && panel.Entity != null)
                     {
-                        DialogResult dialogResult = MessageBox.Show(string.Format(Resources.MainForm_Copy, _optFirstTemp.Title, panel.Title), Text, MessageBoxButtons.YesNo, MessageBoxIcon.Question);
+                        DialogResult dialogResult = MessageBox.Show(string.Format(Resources.MainForm_Copy, _operateGrid.Title, panel.Title), Text, MessageBoxButtons.YesNo, MessageBoxIcon.Question);
                         if (dialogResult != DialogResult.Yes)
                             break;
                     }
-                    this.SendCommand(new QuickEntityOptCommand() { optType = _optType.Value, fromIndex = _optFirstTemp.Index, index = panel.Index });
+                    this.SendCommand(new QuickEntityOptCommand() { optType = _operateType.Value, fromIndex = _operateGrid.Index, index = panel.Index });
                 } while (false);
-                _optType.Value = OptType.None;
+                _operateType.Value = OptType.None;
                 return;
             }
             if ((ModifierKeys & Keys.Control) != 0) //Ctrl+左键 打开所在目录
@@ -341,7 +343,7 @@ namespace QuickLinker
         private void TPanel_OnClickMenu(ClickMenuTPanelEvent info)
         {
             var panel = Selection.activeContext as TPanel;
-            if (_optType.Value != OptType.None)
+            if (_operateType.Value != OptType.None)
                 return;
             Selection.activeEntity = panel.Entity;
             TypeEventSystem.Global.Send(new ShowItemMenuPreEvent());
@@ -349,12 +351,12 @@ namespace QuickLinker
                 return;
             var menuSystem = this.GetSystem<IMenuSystem>();
             var menuType = (int)MenuType.Page;
-            menuSystem.SetEnable(menuType, "(未配置)", panel.Entity != null);
+            menuSystem.SetEnable(menuType, MenuKey.PageMenu_Null, panel.Entity != null);
             var menuProxy = menuSystem.GetMenu(menuType) as MenuProxy;
-            var menuFullPath = menuProxy.FindStripMenuItem("(未配置)");
+            var menuFullPath = menuProxy.FindStripMenuItem(MenuKey.PageMenu_Null);
             menuFullPath.Text = panel.Title;
             menuFullPath.Font = new Font(menuFullPath.Font, panel.Entity != null ? FontStyle.Bold : FontStyle.Regular);
-            var menuAttr = menuProxy.FindStripMenuItem("属性(&P)");
+            var menuAttr = menuProxy.FindStripMenuItem(MenuKey.PageMenu_Attr);
             menuAttr.Font = new Font(menuAttr.Font, panel.Entity == null ? FontStyle.Bold : FontStyle.Regular);
             menuSystem.Show(menuType, MousePosition.X, MousePosition.Y);
             TypeEventSystem.Global.Send(new ShowItemMenuPostEvent());
@@ -366,15 +368,15 @@ namespace QuickLinker
                 switch (type)
                 {
                     case OptType.Copy:
-                        _optFirstTemp.Invert(true);
+                        _operateGrid.Invert(true);
                         ToolStatus_Txt.Text = Resources.MainForm_CopyStats;
                         break;
                     case OptType.Switch:
-                        _optFirstTemp.Invert(true);
+                        _operateGrid.Invert(true);
                         ToolStatus_Txt.Text = Resources.MainForm_SwitchStats;
                         break;
                     case OptType.Align:
-                        _optFirstTemp.Invert(true);
+                        _operateGrid.Invert(true);
                         ToolStatus_Txt.Text = Resources.MainForm_AlignStats;
                         break;
                 }
@@ -426,22 +428,22 @@ namespace QuickLinker
         {
             var stripMenuItem = sender as ToolStripMenuItem;
             var tPanel = stripMenuItem.Owner.Tag as TPanel;
-            _optFirstTemp = tPanel;
-            _optType.Value = OptType.Copy;
+            _operateGrid = tPanel;
+            _operateType.Value = OptType.Copy;
         }
         private void MenuStrip_Switch_Click(object sender, EventArgs e)
         {
             var stripMenuItem = sender as ToolStripMenuItem;
             var tPanel = stripMenuItem.Owner.Tag as TPanel;
-            _optFirstTemp = tPanel;
-            _optType.Value = OptType.Switch;
+            _operateGrid = tPanel;
+            _operateType.Value = OptType.Switch;
         }
         private void MenuStrip_Align_Click(object sender, EventArgs e)
         {
             var stripMenuItem = sender as ToolStripMenuItem;
             var tPanel = stripMenuItem.Owner.Tag as TPanel;
-            _optFirstTemp = tPanel;
-            _optType.Value = OptType.Align;
+            _operateGrid = tPanel;
+            _operateType.Value = OptType.Align;
         }
         private void MenuStrip_Attr_Click(object sender, EventArgs e)
         {
@@ -496,10 +498,10 @@ namespace QuickLinker
         {
             var menuSystem = this.GetSystem<IMenuSystem>();
             var menuType = (int)MenuType.ToolStatus;
-            menuSystem.SetChecked(menuType, "时间(&T)", dateTime == DateTimeType.Time);
-            menuSystem.SetChecked(menuType, "无(&N)", dateTime == DateTimeType.None);
-            menuSystem.SetChecked(menuType, "日期(&D)", dateTime == DateTimeType.Date);
-            menuSystem.SetChecked(menuType, "时间与日期(&A)", dateTime == DateTimeType.DateTime);
+            menuSystem.SetChecked(menuType, MenuKey.ToolStatusMenu_Time, dateTime == DateTimeType.Time);
+            menuSystem.SetChecked(menuType, MenuKey.ToolStatusMenu_None, dateTime == DateTimeType.None);
+            menuSystem.SetChecked(menuType, MenuKey.ToolStatusMenu_Date, dateTime == DateTimeType.Date);
+            menuSystem.SetChecked(menuType, MenuKey.ToolStatusMenu_DateTime, dateTime == DateTimeType.DateTime);
         }
         private void Event_RefreshShowTime(object sender, EventArgs e)
         {
@@ -751,7 +753,7 @@ namespace QuickLinker
             Show();
             WindowState = FormWindowState.Normal;
             Activate();
-            if(SystemInformation.TerminalServerSession)
+            if (SystemInformation.TerminalServerSession)
                 this.Location = new Point(0, 0);
         }
         private void NotifyIcon_MouseClick(object sender, MouseEventArgs e)
@@ -760,7 +762,7 @@ namespace QuickLinker
                 return;
             if ((ModifierKeys & Keys.Control) != 0) //Ctrl+左键 打开所在目录
             {
-                Process.Start("explorer.exe", "/e,/select," + Application.ExecutablePath);
+                FileExplorerHelper.OpenFileInExplorer(Application.ExecutablePath);
             }
             else
             {

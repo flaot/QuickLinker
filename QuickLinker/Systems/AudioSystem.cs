@@ -1,15 +1,8 @@
 ﻿using QFramework;
 using QuickLinker.Model;
 using QuickLinker.Properties;
-using System;
-using System.Collections.Generic;
 using System.IO;
-using System.Linq;
 using System.Media;
-using System.Numerics;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows.Forms;
 
 namespace QuickLinker.Systems
 {
@@ -31,7 +24,7 @@ namespace QuickLinker.Systems
 
     public interface IAudioSystem : ISystem
     {
-         void PlayAudio(AudioType audioType);
+        void PlayAudio(AudioType audioType);
     }
     internal class AudioSystem : AbstractSystem, IAudioSystem
     {
@@ -51,11 +44,11 @@ namespace QuickLinker.Systems
                     break;
                 case 1:
                 default:
-                break;
+                    break;
             }
         }
         private int AudioPlayModel(AudioType audioType)
-        { 
+        {
             var appConfig = this.GetModel<AppConfig>();
             switch (audioType)
             {

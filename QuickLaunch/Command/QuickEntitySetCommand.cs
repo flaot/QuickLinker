@@ -2,7 +2,6 @@
 using QuickLinker.QuickLaunch.Systems;
 using QuickLinker.QuickLaunch.Utils;
 using System.Drawing;
-using System.IO;
 
 namespace QuickLinker.QuickLaunch.Command
 {

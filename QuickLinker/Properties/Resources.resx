@@ -117,6 +117,15 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
+  <data name="AppMenu_Quit" xml:space="preserve">
+    <value>关闭 QuickLinker</value>
+  </data>
+  <data name="AppMenu_Show" xml:space="preserve">
+    <value>显示(&amp;S)</value>
+  </data>
+  <data name="AppMenu_ShowSetting" xml:space="preserve">
+    <value>首选项(&amp;P)...</value>
+  </data>
   <data name="BtnPropertiesForm_ChangeFontTip" xml:space="preserve">
     <value>请选择要修改的字体。</value>
   </data>
@@ -141,6 +150,18 @@
   <assembly alias="System.Windows.Forms" name="System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
   <data name="CUR_COPY" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\res\cursor\CUR_COPY.cur;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="FolderMenu_Cancel" xml:space="preserve">
+    <value>取消</value>
+  </data>
+  <data name="FolderMenu_Copy" xml:space="preserve">
+    <value>复制文件到此处(&amp;C)</value>
+  </data>
+  <data name="FolderMenu_Delate" xml:space="preserve">
+    <value>删除文件(&amp;D)</value>
+  </data>
+  <data name="FolderMenu_Move" xml:space="preserve">
+    <value>移动文件到此处(&amp;M)</value>
   </data>
   <data name="FromTurboLaunch_Switch" xml:space="preserve">
     <value>存在TurboLaunch配置,是否使用该配置进行初始化?</value>
@@ -176,9 +197,6 @@
   <data name="MainForm_SwitchStats" xml:space="preserve">
     <value>正在交换：请点击目标按钮</value>
   </data>
-  <data name="MainForm_SysMenu_About" xml:space="preserve">
-    <value>关于(&amp;A)...</value>
-  </data>
   <data name="MainForm_SysMenu_RemoveSysMenu" xml:space="preserve">
     <value>移除标题栏(&amp;B)</value>
   </data>
@@ -200,6 +218,30 @@
   <data name="MSGBox_Tip" xml:space="preserve">
     <value>提示</value>
   </data>
+  <data name="PageMenu_Align" xml:space="preserve">
+    <value>排列(&amp;A)</value>
+  </data>
+  <data name="PageMenu_Attr" xml:space="preserve">
+    <value>属性(&amp;P)</value>
+  </data>
+  <data name="PageMenu_Clear" xml:space="preserve">
+    <value>清除(&amp;C)</value>
+  </data>
+  <data name="PageMenu_Copy" xml:space="preserve">
+    <value>复制(&amp;D)</value>
+  </data>
+  <data name="PageMenu_CreateQuick" xml:space="preserve">
+    <value>创建快捷方式(&amp;R)</value>
+  </data>
+  <data name="PageMenu_Null" xml:space="preserve">
+    <value>(未配置)</value>
+  </data>
+  <data name="PageMenu_Switch" xml:space="preserve">
+    <value>交换(&amp;S)</value>
+  </data>
+  <data name="PageMenu_SystemContext" xml:space="preserve">
+    <value>资源管理器(&amp;X)</value>
+  </data>
   <data name="PasswordForm_Tip" xml:space="preserve">
     <value>访问拒绝。
 
@@ -207,6 +249,39 @@
   </data>
   <data name="RUN_URI_ERROR" xml:space="preserve">
     <value>应用程序不存在</value>
+  </data>
+  <data name="TabMenu_Button" xml:space="preserve">
+    <value>外观/按钮(&amp;B)</value>
+  </data>
+  <data name="TabMenu_Delete" xml:space="preserve">
+    <value>删除(&amp;D)</value>
+  </data>
+  <data name="TabMenu_Flot" xml:space="preserve">
+    <value>外观/平面按钮(&amp;F)</value>
+  </data>
+  <data name="TabMenu_MoveLeft" xml:space="preserve">
+    <value>左移标签(&amp;L)</value>
+  </data>
+  <data name="TabMenu_MoveRight" xml:space="preserve">
+    <value>右移标签(&amp;R)</value>
+  </data>
+  <data name="TabMenu_Rename" xml:space="preserve">
+    <value>重命名(&amp;E)...</value>
+  </data>
+  <data name="TabMenu_Stand" xml:space="preserve">
+    <value>外观/标准(&amp;N)</value>
+  </data>
+  <data name="ToolStatusMenu_Date" xml:space="preserve">
+    <value>日期(&amp;D)</value>
+  </data>
+  <data name="ToolStatusMenu_DateTime" xml:space="preserve">
+    <value>时间与日期(&amp;A)</value>
+  </data>
+  <data name="ToolStatusMenu_None" xml:space="preserve">
+    <value>无(&amp;N)</value>
+  </data>
+  <data name="ToolStatusMenu_Time" xml:space="preserve">
+    <value>时间(&amp;T)</value>
   </data>
   <data name="TPanel_None" xml:space="preserve">
     <value>&lt;未配置&gt;</value>

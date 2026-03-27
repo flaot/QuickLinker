@@ -43,7 +43,7 @@ namespace QuickLinker.Systems
         public bool RunCommand(string command, string[] dropFileOrDirs)
         {
             if (_dicCommandByName.TryGetValue(command, out IPluginCommand pluginCommand))
-            { 
+            {
                 pluginCommand.Action(dropFileOrDirs);
                 return true;
             }

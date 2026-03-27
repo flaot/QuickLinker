@@ -52,7 +52,7 @@ namespace QuickLinker.QuickLaunch.Utils
                     string fileOrFolder = GetFullPath(icon);
                     if (string.IsNullOrEmpty(fileOrFolder))
                     {
-                        //HandyControl.Controls.Growl.WarningGlobal("程序启动失败(文件路径不存在或已删除)!");
+                        //Debug.Error("程序启动失败(文件路径不存在或已删除)!");
                         return;
                     }
                     p.StartInfo.FileName = fileOrFolder;
@@ -69,9 +69,6 @@ namespace QuickLinker.QuickLaunch.Utils
                         case IconStartType.SHOW_IN_EXPLORE:
                             FileExplorerHelper.OpenFileInExplorer(p.StartInfo.FileName);
                             return;
-                            //p.StartInfo.Arguments = "/e,/select," + p.StartInfo.FileName;
-                            //p.StartInfo.FileName = "Explorer.exe";
-                            break;
                     }
                     if (p.Start())
                     {
@@ -116,70 +113,6 @@ namespace QuickLinker.QuickLaunch.Utils
             if (filePath.EndsWith(Path.DirectorySeparatorChar))
                 filePath = filePath.Substring(0, filePath.Length - 1);
             return filePath;
-        }
-        private bool StartSystemApp(string startArg, IconStartType type)
-        {
-            if (type == IconStartType.SHOW_IN_EXPLORE)
-            {
-                //Growl.WarningGlobal("系统项目不支持打开文件位置操作!");
-                return false;
-            }
-            switch (startArg)
-            {
-                case "Calculator":
-                    Process.Start("calc.exe");
-                    break;
-                case "Computer":
-                    Process.Start("explorer.exe");
-                    break;
-                case "GroupPolicy":
-                    Process.Start("gpedit.msc");
-                    break;
-                case "Notepad":
-                    Process.Start("notepad");
-                    break;
-                case "Network":
-                    Process.Start("ncpa.cpl");
-                    break;
-                case "RecycleBin":
-                    Process.Start("shell:RecycleBinFolder");
-                    break;
-                case "Registry":
-                    Process.Start("regedit.exe");
-                    break;
-                case "Mstsc":
-                    if (type == IconStartType.ADMIN_STARTUP)
-                    {
-                        Process.Start("mstsc", "-admin");
-                    }
-                    else
-                    {
-                        Process.Start("mstsc");
-                    }
-                    break;
-                case "Control":
-                    Process.Start("Control");
-                    break;
-                case "CMD":
-                    if (type == IconStartType.ADMIN_STARTUP)
-                    {
-                        using (Process process = new Process())
-                        {
-                            process.StartInfo.FileName = "cmd.exe";
-                            process.StartInfo.Verb = "runas";
-                            process.Start();
-                        }
-                    }
-                    else
-                    {
-                        Process.Start("cmd");
-                    }
-                    break;
-                case "Services":
-                    Process.Start("services.msc");
-                    break;
-            }
-            return true;
         }
         private ProcessWindowStyle WindowsStyle2Process(WindowStyle windowStyle)
         {

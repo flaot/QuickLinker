@@ -3,7 +3,7 @@
     [AttributeUsage(AttributeTargets.Method, Inherited = false)]
     public class AppMenuItemAttribute : CustomMenuItemAttribute
     {
-        public AppMenuItemAttribute(string name, int priority = 1000) : base(name, (int)Menu.MenuType.App, priority)
+        public AppMenuItemAttribute(string nameKey, int priority = 1000) : base(nameKey, (int)Menu.MenuType.App, priority)
         {
         }
     }
