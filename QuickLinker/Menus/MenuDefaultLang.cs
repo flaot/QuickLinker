@@ -41,7 +41,7 @@ namespace QuickLinker.Menus
         public int Priority => 0;
         public string GetLang(string menuPathKey)
         {
-            var displayPath = Resources.ResourceManager.GetString(menuPathKey);
+            var displayPath = Resources.ResourceManager.GetString(menuPathKey, Resources.Culture);
             if (string.IsNullOrEmpty(displayPath))
                 return string.Empty;
             return displayPath;
