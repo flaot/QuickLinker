@@ -1,4 +1,4 @@
-﻿using QFramework;
+using QFramework;
 using System;
 using System.IO;
 using System.Text;
@@ -110,8 +110,13 @@ namespace QuickLinker.Utils
                     {
                         XmlSerializer xmlSerializer = new XmlSerializer(obj.GetType());
                         xmlSerializer.Serialize(textWriter, obj);
+                        textWriter.Flush();
                     }
-                    return stream.ToString();
+                    stream.Position = 0;
+                    using (StreamReader streamReader = new StreamReader(stream, Encoding.UTF8))
+                    {
+                        return streamReader.ReadToEnd();
+                    }
                 }
             }
             catch (Exception ex)

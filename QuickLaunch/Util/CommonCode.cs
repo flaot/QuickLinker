@@ -1,4 +1,3 @@
-﻿using IWshRuntimeLibrary;
 using QFramework;
 using QuickLinker.QuickLaunch.Constant;
 using QuickLinker.QuickLaunch.Models;
@@ -11,6 +10,20 @@ namespace QuickLinker.QuickLaunch.Utils
 {
     public class CommonCode
     {
+        private static dynamic CreateWshShell()
+        {
+            var shellType = Type.GetTypeFromProgID("WScript.Shell");
+            if (shellType == null)
+                throw new InvalidOperationException("Unable to load WScript.Shell COM type.");
+            return Activator.CreateInstance(shellType);
+        }
+
+        private static dynamic CreateShortcutObject(string path)
+        {
+            dynamic shell = CreateWshShell();
+            return shell.CreateShortcut(path);
+        }
+
         /// <summary>
         /// 根据路径获取文件图标等信息
         /// </summary>
@@ -40,10 +53,9 @@ namespace QuickLinker.QuickLaunch.Utils
                 bool parseIcon = ext == ".url";
                 if (ext == ".lnk") //有lnk文件没有targetPath
                 {
-                    WshShell shell = new WshShell();
-                    object shortcutObj = shell.CreateShortcut(path);
-                    IWshShortcut shortcut = (IWshShortcut)shortcutObj;
-                    parseIcon = !string.IsNullOrWhiteSpace(shortcut.TargetPath);
+                    dynamic shortcut = CreateShortcutObject(path);
+                    string targetPath = shortcut.TargetPath as string;
+                    parseIcon = !string.IsNullOrWhiteSpace(targetPath);
                 }
                 iconInfo.canParse = parseIcon;
             }
@@ -61,29 +73,38 @@ namespace QuickLinker.QuickLaunch.Utils
             // 1.「普通的软链接」
             // 2.「explorer.exe shell:Name」    https://sspai.com/s/pxNm
             // 3.「explorer.exe shell:::GUID」  https://sspai.com/s/k97Q
-            WshShell shell = new WshShell();
-            object shortcutObj = shell.CreateShortcut(path);
-            IWshShortcut shortcut = (IWshShortcut)shortcutObj;
-            var locationArray = shortcut.IconLocation.Split(',');
+            dynamic shortcut = CreateShortcutObject(path);
+            string iconLocation = shortcut.IconLocation as string ?? string.Empty;
+            var locationArray = iconLocation.Split(',');
             var iconPath = locationArray[0];
+            string targetPath = shortcut.TargetPath as string ?? string.Empty;
             if (string.IsNullOrEmpty(iconPath))
-                iconPath = shortcut.TargetPath;
+                iconPath = targetPath;
             if (string.IsNullOrEmpty(iconPath))
-                iconPath = shortcut.FullName;
+                iconPath = shortcut.FullName as string ?? string.Empty;
             int iconIndex = 0;
-            if (shortcut.IconLocation.Length > 1)
+            if (iconLocation.Length > 1 && locationArray.Length > 1)
                 int.TryParse(locationArray[1], out iconIndex);
             Bitmap bi = ImageUtil.GetBitmapIconByPath(iconPath, iconIndex);
-            iconInfo.Path = (string.IsNullOrWhiteSpace(shortcut.TargetPath) ? path : shortcut.TargetPath);
-            iconInfo.startArg = shortcut.Arguments;
+            iconInfo.Path = string.IsNullOrWhiteSpace(targetPath) ? path : targetPath;
+            iconInfo.startArg = shortcut.Arguments as string ?? string.Empty;
             iconInfo.bitmapImage = bi;
-            iconInfo.desc = shortcut.Description;
-            iconInfo.workFolder = shortcut.WorkingDirectory;
+            iconInfo.desc = shortcut.Description as string ?? string.Empty;
+            iconInfo.workFolder = shortcut.WorkingDirectory as string ?? string.Empty;
             if (string.IsNullOrWhiteSpace(iconInfo.desc))
                 iconInfo.desc = Path.GetFileNameWithoutExtension(path);
             iconInfo.ImagePath = iconPath;
             iconInfo.imageIndex = iconIndex;
-            switch (shortcut.WindowStyle)
+            int windowStyle = 1;
+            try
+            {
+                windowStyle = (int)shortcut.WindowStyle;
+            }
+            catch
+            {
+                windowStyle = 1;
+            }
+            switch (windowStyle)
             {
                 case 1:
                 default:
@@ -101,9 +122,7 @@ namespace QuickLinker.QuickLaunch.Utils
         {
             //URI schemes
             //https://www.163.com/dy/article/GK243C9A05119NPR.html
-            WshShell shell = new WshShell();
-            object shortcutObj = shell.CreateShortcut(path);
-            IWshURLShortcut shortcut = (IWshURLShortcut)shortcutObj;
+            dynamic shortcut = CreateShortcutObject(path);
             //可以得到URI schemes的调用者
             //{
             //    var ss = shortcut.TargetPath.Split(':')[0];
@@ -111,7 +130,7 @@ namespace QuickLinker.QuickLaunch.Utils
             //    var ssdfsf = key.GetValue(string.Empty);
             //}
             Bitmap bi = ImageUtil.GetBitmapIconByPath(path);
-            iconInfo.Path = shortcut.TargetPath;
+            iconInfo.Path = shortcut.TargetPath as string ?? string.Empty;
             iconInfo.bitmapImage = bi;
             iconInfo.desc = Path.GetFileNameWithoutExtension(path);
             iconInfo.iconType = OpenType.URL;
@@ -121,10 +140,11 @@ namespace QuickLinker.QuickLaunch.Utils
         {
             string desktopPath = Environment.GetFolderPath(Environment.SpecialFolder.Desktop);
             string shortcutPath = Path.Combine(desktopPath, Path.GetFileNameWithoutExtension(entity.Path) + ".lnk");
-            WshShell shell = new WshShell();
-            IWshShortcut shortcut = (IWshShortcut)shell.CreateShortcut(shortcutPath);
+            dynamic shortcut = CreateShortcutObject(shortcutPath);
             shortcut.TargetPath = entity.Path;
-            shortcut.WorkingDirectory = Path.GetDirectoryName(entity.workFolder);
+            shortcut.WorkingDirectory = string.IsNullOrWhiteSpace(entity.workFolder)
+                ? Path.GetDirectoryName(entity.Path)
+                : entity.workFolder;
             shortcut.WindowStyle = 1; // 正常窗口
             shortcut.Description = entity.desc;
             shortcut.Save();
