@@ -1,6 +1,7 @@
 using QFramework;
 using QuickLinker.QuickLaunch.Constant;
 using QuickLinker.QuickLaunch.Models;
+using QuickLinker.QuickLaunch.Util;
 using System;
 using System.Drawing;
 using System.IO;
@@ -10,20 +11,6 @@ namespace QuickLinker.QuickLaunch.Utils
 {
     public class CommonCode
     {
-        private static dynamic CreateWshShell()
-        {
-            var shellType = Type.GetTypeFromProgID("WScript.Shell");
-            if (shellType == null)
-                throw new InvalidOperationException("Unable to load WScript.Shell COM type.");
-            return Activator.CreateInstance(shellType);
-        }
-
-        private static dynamic CreateShortcutObject(string path)
-        {
-            dynamic shell = CreateWshShell();
-            return shell.CreateShortcut(path);
-        }
-
         /// <summary>
         /// 根据路径获取文件图标等信息
         /// </summary>
@@ -52,11 +39,7 @@ namespace QuickLinker.QuickLaunch.Utils
             {
                 bool parseIcon = ext == ".url";
                 if (ext == ".lnk") //有lnk文件没有targetPath
-                {
-                    dynamic shortcut = CreateShortcutObject(path);
-                    string targetPath = shortcut.TargetPath as string;
-                    parseIcon = !string.IsNullOrWhiteSpace(targetPath);
-                }
+                    parseIcon = ShortcutHelper.LnkHasTarget(path);
                 iconInfo.canParse = parseIcon;
             }
 
@@ -73,82 +56,34 @@ namespace QuickLinker.QuickLaunch.Utils
             // 1.「普通的软链接」
             // 2.「explorer.exe shell:Name」    https://sspai.com/s/pxNm
             // 3.「explorer.exe shell:::GUID」  https://sspai.com/s/k97Q
-            dynamic shortcut = CreateShortcutObject(path);
-            string iconLocation = shortcut.IconLocation as string ?? string.Empty;
-            var locationArray = iconLocation.Split(',');
-            var iconPath = locationArray[0];
-            string targetPath = shortcut.TargetPath as string ?? string.Empty;
-            if (string.IsNullOrEmpty(iconPath))
-                iconPath = targetPath;
-            if (string.IsNullOrEmpty(iconPath))
-                iconPath = shortcut.FullName as string ?? string.Empty;
-            int iconIndex = 0;
-            if (iconLocation.Length > 1 && locationArray.Length > 1)
-                int.TryParse(locationArray[1], out iconIndex);
-            Bitmap bi = ImageUtil.GetBitmapIconByPath(iconPath, iconIndex);
-            iconInfo.Path = string.IsNullOrWhiteSpace(targetPath) ? path : targetPath;
-            iconInfo.startArg = shortcut.Arguments as string ?? string.Empty;
-            iconInfo.bitmapImage = bi;
-            iconInfo.desc = shortcut.Description as string ?? string.Empty;
-            iconInfo.workFolder = shortcut.WorkingDirectory as string ?? string.Empty;
-            if (string.IsNullOrWhiteSpace(iconInfo.desc))
-                iconInfo.desc = Path.GetFileNameWithoutExtension(path);
-            iconInfo.ImagePath = iconPath;
-            iconInfo.imageIndex = iconIndex;
-            int windowStyle = 1;
-            try
-            {
-                windowStyle = (int)shortcut.WindowStyle;
-            }
-            catch
-            {
-                windowStyle = 1;
-            }
-            switch (windowStyle)
-            {
-                case 1:
-                default:
-                    iconInfo.windowStyle = WindowStyle.Normal;
-                    break;
-                case 7:
-                    iconInfo.windowStyle = WindowStyle.Minimized;
-                    break;
-                case 3:
-                    iconInfo.windowStyle = WindowStyle.Maximized;
-                    break;
-            }
+            ShortcutHelper.ParseLnk(path, iconInfo);
         }
+
+        /// <summary> 从 .url（InternetShortcut）读取 URL=，不依赖 WScript </summary>
+        private static string ReadInternetShortcutUrl(string path)
+        {
+            foreach (string raw in File.ReadAllLines(path))
+            {
+                string line = raw.Trim();
+                if (line.StartsWith("URL=", StringComparison.OrdinalIgnoreCase))
+                    return line.Substring(4).Trim();
+            }
+            return string.Empty;
+        }
+
         private static void ParseUrl(ref Entity iconInfo, string path)
         {
             //URI schemes
             //https://www.163.com/dy/article/GK243C9A05119NPR.html
-            dynamic shortcut = CreateShortcutObject(path);
-            //可以得到URI schemes的调用者
-            //{
-            //    var ss = shortcut.TargetPath.Split(':')[0];
-            //    var key = Registry.ClassesRoot.OpenSubKey($"{ss}\\Shell\\Open\\Command");
-            //    var ssdfsf = key.GetValue(string.Empty);
-            //}
             Bitmap bi = ImageUtil.GetBitmapIconByPath(path);
-            iconInfo.Path = shortcut.TargetPath as string ?? string.Empty;
+            iconInfo.Path = ReadInternetShortcutUrl(path);
             iconInfo.bitmapImage = bi;
             iconInfo.desc = Path.GetFileNameWithoutExtension(path);
             iconInfo.iconType = OpenType.URL;
             iconInfo.ImagePath = path;
         }
-        public static void CreateShortcut(Entity entity)
-        {
-            string desktopPath = Environment.GetFolderPath(Environment.SpecialFolder.Desktop);
-            string shortcutPath = Path.Combine(desktopPath, Path.GetFileNameWithoutExtension(entity.Path) + ".lnk");
-            dynamic shortcut = CreateShortcutObject(shortcutPath);
-            shortcut.TargetPath = entity.Path;
-            shortcut.WorkingDirectory = string.IsNullOrWhiteSpace(entity.workFolder)
-                ? Path.GetDirectoryName(entity.Path)
-                : entity.workFolder;
-            shortcut.WindowStyle = 1; // 正常窗口
-            shortcut.Description = entity.desc;
-            shortcut.Save();
-        }
+
+        public static void CreateShortcut(Entity entity) => ShortcutHelper.CreateShortcut(entity);
 
         public static string GetFullPath(string path)
         {
