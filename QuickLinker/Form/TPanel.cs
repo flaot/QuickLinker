@@ -1,4 +1,4 @@
-﻿using QFramework;
+using QFramework;
 using QuickLinker.Menus;
 using QuickLinker.Model;
 using QuickLinker.Plugin;
@@ -7,7 +7,9 @@ using QuickLinker.Properties;
 using QuickLinker.QuickLaunch.Command;
 using QuickLinker.QuickLaunch.Models;
 using QuickLinker.QuickLaunch.Systems;
+using QuickLinker.QuickLaunch.Utils;
 using QuickLinker.Systems;
+using QuickLinker.Utils;
 using System;
 using System.Collections.Generic;
 using System.Drawing;
@@ -32,6 +34,8 @@ namespace QuickLinker
         private bool _showName;
 
         private Image showImage;
+        /// <summary> showImage 是否为 InvertImage 生成的临时位图（需 Dispose）。 </summary>
+        private bool _disposeShowImageNext;
         bool _leftClick;
         private string _title;
 
@@ -73,6 +77,7 @@ namespace QuickLinker
             _unRegisters.ForEach(item => item.UnRegister());
             var entitySystem = this.GetSystem<QuickEntitySystem>();
             entitySystem.ChangeEntityEvent.UnRegister(_defaultIndex, Event_Change);
+            DisposeOwnedShowImage();
         }
         private void Event_Change(Entity entity) => SetEntity(entity, true);
         private void Event_ShowName(bool showName)
@@ -116,8 +121,7 @@ namespace QuickLinker
             if (enable != _invertImage)
             {
                 _invertImage = enable;
-                if (showImage != null)
-                    showImage = InvertImage(showImage);
+                ApplyLaunchTargetIconOverlay();
             }
         }
         private void InvertBackColor()
@@ -148,26 +152,67 @@ namespace QuickLinker
             return bm;
         }
 
+        /// <summary> 按磁盘状态在「目标缺失红叉」与 Entity 图标间切换；不修改 Entity 持久化数据。 </summary>
+        private void ApplyLaunchTargetIconOverlay()
+        {
+            if (_entity == null)
+            {
+                DisposeOwnedShowImage();
+                showImage = null;
+                return;
+            }
+            var processUtil = this.GetUtility<IProcessUtil>();
+            bool missing = EntityLaunchUi.ShowsLoadButtonMissingFileWarning(_entity, processUtil);
+            Image baseImg;
+            if (missing)
+                baseImg = TargetMissingIndicatorBitmap.CreateOverOriginal(_entity.bitmapImage, this.GetUtility<IImageUtil>());
+            else
+                baseImg = _entity.bitmapImage;
+
+            bool needInvert = _invertImage && baseImg != null;
+            DisposeOwnedShowImage();
+            if (needInvert)
+            {
+                showImage = InvertImage(baseImg);
+                _disposeShowImageNext = true;
+                if (missing && baseImg != null)
+                    baseImg.Dispose();
+            }
+            else
+            {
+                showImage = baseImg;
+                _disposeShowImageNext = missing && baseImg != null;
+            }
+        }
+
+        private void DisposeOwnedShowImage()
+        {
+            if (_disposeShowImageNext && showImage != null)
+            {
+                showImage.Dispose();
+                showImage = null;
+            }
+            _disposeShowImageNext = false;
+        }
+
+        /// <summary> 在提示「目标缺失」等场景后重算红叉覆盖层（避免在 MouseEnter 中频繁执行）。 </summary>
+        public void RefreshLaunchTargetOverlay()
+        {
+            if (_entity == null)
+                return;
+            ApplyLaunchTargetIconOverlay();
+            Refresh();
+        }
+
         public void SetEntity(Entity entity, bool refresh)
         {
+            DisposeOwnedShowImage();
             _entity = entity;
             if (_entity != null)
             {
-                //支持SVG
-                //    增加数据存储，可以动态刷新图标大小
-                //支持dll中图标资源选取(shell.dll)
-                //    ExtractIcon https://learn.microsoft.com/zh-cn/windows/win32/api/shellapi/nf-shellapi-extracticonw
-                //支持更改图标来源
-                //    比如：拖入的exe文件，默认是exe文件的图标，后续可以自定义更改展示的图标
-
-                //pictureBox1.Image = ImageUtil.SvgToImage(pictureBox1.Width, pictureBox1.Height,
-                //    "<svg t=\"1725528264339\" class=\"icon\" viewBox=\"0 0 1024 1024\" version=\"1.1\" xmlns=\"http://www.w3.org/2000/svg\" p-id=\"1220\" width=\"200\" height=\"200\"><path d=\"M85.333333 0v938.666667h938.666667v85.333333H0V0h85.333333z m844.544 168.32a42.666667 42.666667 0 0 1 8.533334 25.514667v574.250666a85.333333 85.333333 0 0 1-85.333334 85.333334H254.976a85.333333 85.333333 0 0 1-85.333333-85.333334V342.442667L401.664 187.733333a42.666667 42.666667 0 0 1 51.84 3.413334l172.032 151.253333 244.650667-182.784a42.666667 42.666667 0 0 1 59.733333 8.661333zM421.76 276.906667L255.061333 388.053333l-0.042666 191.189334 195.456-165.034667 157.013333 133.248 245.546667-148.736 0.042666-119.765333-231.893333 173.226666L421.76 276.906667z\" p-id=\"1221\"></path></svg>");
-                //pictureBox1.Image = _entity.bitmapImage;
-                showImage = _entity.bitmapImage;
-                if (_invertImage)
-                    showImage = InvertImage(_entity.bitmapImage);
                 _text = string.IsNullOrWhiteSpace(_entity.desc) ? _entity.Path : _entity.desc;
                 _title = _text;
+                ApplyLaunchTargetIconOverlay();
             }
             else
             {

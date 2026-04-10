@@ -7,7 +7,6 @@ using QuickLinker.Plugin.Events;
 using QuickLinker.Plugin.Menu;
 using QuickLinker.Properties;
 using QuickLinker.QuickLaunch.Command;
-using QuickLinker.QuickLaunch.Constant;
 using QuickLinker.QuickLaunch.Systems;
 using QuickLinker.QuickLaunch.Utils;
 using QuickLinker.Systems;
@@ -320,10 +319,17 @@ namespace QuickLinker
             {
                 if (panel.Entity != null)
                 {
-                    if (this.GetUtility<IProcessUtil>().CanOpenInExplorer(panel.Entity))
+                    var processUtil = this.GetUtility<IProcessUtil>();
+                    if (!EntityLaunchUi.BlocksExplorerClick(panel.Entity, processUtil))
+                    {
+                        panel.RefreshLaunchTargetOverlay();
                         this.SendCommand(new QuickEntityShowInExploreCommand() { index = panel.Index });
+                    }
                     else
+                    {
                         MessageBox.Show(string.Format(Resources.MainForm_LoadButtonMissingFile, panel.Title), Text, MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                        panel.RefreshLaunchTargetOverlay();
+                    }
                 }
             }
             else //只有鼠标左键 打开应用
@@ -340,11 +346,14 @@ namespace QuickLinker
                 }
                 Selection.activeEntity = panel.Entity;
                 var openEntity = panel.Entity;
-                if (openEntity.iconType == OpenType.OTHER && !this.GetUtility<IProcessUtil>().CanResolveLaunchTarget(openEntity))
+                var processUtilLaunch = this.GetUtility<IProcessUtil>();
+                if (EntityLaunchUi.BlocksLaunchClick(openEntity, processUtilLaunch))
                 {
                     MessageBox.Show(string.Format(Resources.MainForm_LoadButtonMissingFile, panel.Title), Text, MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                    panel.RefreshLaunchTargetOverlay();
                     return;
                 }
+                panel.RefreshLaunchTargetOverlay();
                 bool closeSoft = openEntity.closeSoft;
                 this.GetSystem<IAudioSystem>().PlayAudio(AudioType.Click);
                 this.SendCommand(new QuickEntityOpenCommand() { index = panel.Index, dropFileOrDirs = Selection.dropFileOrDirs });
