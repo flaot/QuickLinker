@@ -320,13 +320,10 @@ namespace QuickLinker
             {
                 if (panel.Entity != null)
                 {
-                    var ctrlEntity = panel.Entity;
-                    if (ctrlEntity.iconType == OpenType.OTHER && !this.GetUtility<IProcessUtil>().CanResolveLaunchTarget(ctrlEntity))
-                    {
+                    if (this.GetUtility<IProcessUtil>().CanOpenInExplorer(panel.Entity))
+                        this.SendCommand(new QuickEntityShowInExploreCommand() { index = panel.Index });
+                    else
                         MessageBox.Show(string.Format(Resources.MainForm_LoadButtonMissingFile, panel.Title), Text, MessageBoxButtons.OK, MessageBoxIcon.Warning);
-                        return;
-                    }
-                    this.SendCommand(new QuickEntityShowInExploreCommand() { index = panel.Index });
                 }
             }
             else //只有鼠标左键 打开应用
@@ -366,7 +363,11 @@ namespace QuickLinker
                 return;
             var menuSystem = this.GetSystem<IMenuSystem>();
             var menuType = (int)MenuType.Page;
-            menuSystem.SetEnable(menuType, MenuKey.PageMenu_Null, panel.Entity != null);
+            bool canCreateShortcut = panel.Entity != null && CommonCode.CanCreateDesktopShortcut(panel.Entity);
+            menuSystem.SetEnable(menuType, MenuKey.PageMenu_Null, canCreateShortcut);
+            menuSystem.SetEnable(menuType, MenuKey.PageMenu_CreateQuick, canCreateShortcut);
+            menuSystem.SetEnable(menuType, MenuKey.PageMenu_SystemContext,
+                panel.Entity != null && this.GetUtility<IProcessUtil>().CanOpenInExplorer(panel.Entity));
             var menuProxy = menuSystem.GetMenu(menuType) as MenuProxy;
             var menuFullPath = menuProxy.FindStripMenuItem(MenuKey.PageMenu_Null);
             menuFullPath.Text = panel.Title;

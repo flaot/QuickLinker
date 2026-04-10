@@ -4,7 +4,6 @@ using QuickLinker.Plugin;
 using QuickLinker.Plugin.Menu.Attribute;
 using QuickLinker.Properties;
 using QuickLinker.QuickLaunch.Command;
-using QuickLinker.QuickLaunch.Constant;
 using QuickLinker.QuickLaunch.Utils;
 using QuickLinker.Utils;
 using System.Drawing;
@@ -45,18 +44,17 @@ namespace QuickLinker
             var tPanel = Selection.activeContext as TPanel;
             if (tPanel.Entity == null)
                 return;
-            if (tPanel.Entity.iconType == OpenType.OTHER && !this.GetUtility<IProcessUtil>().CanResolveLaunchTarget(tPanel.Entity))
-            {
-                MessageBox.Show(string.Format(Resources.MainForm_LoadButtonMissingFile, tPanel.Title), mainForm.Text, MessageBoxButtons.OK, MessageBoxIcon.Warning);
+            var processUtil = this.GetUtility<IProcessUtil>();
+            if (!processUtil.TryGetShellItemPath(tPanel.Entity, out string fsPath))
                 return;
-            }
-            DirectoryInfo[] folders = new DirectoryInfo[1];
-            folders[0] = new DirectoryInfo(tPanel.Entity.Path);
             ShellContextMenu scm = new ShellContextMenu();
             Point p = Cursor.Position;
             p.X -= 80;
             p.Y -= 80;
-            scm.ShowContextMenu(folders, p);
+            if (Directory.Exists(fsPath))
+                scm.ShowContextMenu(new[] { new DirectoryInfo(fsPath) }, p);
+            else
+                scm.ShowContextMenu(new[] { new FileInfo(fsPath) }, p);
         }
 
         [PageMenuItem(MenuKey.PageMenu_Copy, 300)]

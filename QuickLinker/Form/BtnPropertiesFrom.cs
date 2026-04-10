@@ -1,4 +1,4 @@
-﻿using QFramework;
+using QFramework;
 using QuickLinker.Plugin;
 using QuickLinker.Properties;
 using QuickLinker.QuickLaunch.Command;
@@ -190,6 +190,7 @@ namespace QuickLinker
         {
             string filePath = Txt_TargetPostion.Text.Trim();
             _tempEntity.Path = filePath;
+            _tempEntity.ShellItemPath = filePath;
             _tempEntity.workFolder = Txt_WorkFolder.Text.Trim();
             _tempEntity.desc = Txt_Desc.Text.Trim();
             _tempEntity.startArg = Txt_Args.Text.Trim();

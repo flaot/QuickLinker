@@ -30,6 +30,7 @@ namespace QuickLinker.QuickLaunch.Utils
                 Bitmap bi = ImageUtil.GetBitmapIconByPath(path);
                 iconInfo.ImagePath = path;
                 iconInfo.Path = path;
+                iconInfo.ShellItemPath = path;
                 iconInfo.bitmapImage = bi;
                 iconInfo.desc = Path.GetFileNameWithoutExtension(path);
             }
@@ -81,9 +82,13 @@ namespace QuickLinker.QuickLaunch.Utils
             iconInfo.desc = Path.GetFileNameWithoutExtension(path);
             iconInfo.iconType = OpenType.URL;
             iconInfo.ImagePath = path;
+            iconInfo.ShellItemPath = path;
         }
 
         public static void CreateShortcut(Entity entity) => ShortcutHelper.CreateShortcut(entity);
+
+        /// <summary> 是否允许将该项创建到桌面的快捷方式（目标 .lnk 在磁盘不存在时为 false）。 </summary>
+        public static bool CanCreateDesktopShortcut(Entity entity) => ShortcutHelper.CanCreateDesktopShortcut(entity);
 
         public static string GetFullPath(string path)
         {

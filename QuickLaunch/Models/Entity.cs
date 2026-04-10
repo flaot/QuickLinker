@@ -1,4 +1,4 @@
-﻿using QFramework;
+using QFramework;
 using QuickLinker.Plugin;
 using QuickLinker.QuickLaunch.Constant;
 using System;
@@ -63,6 +63,12 @@ namespace QuickLinker.QuickLaunch.Models
         public string ImagePath { get => imagePath; set => imagePath = value.Replace(System.IO.Path.DirectorySeparatorChar, '/'); }
         /// <summary> 图标的下标 </summary>
         public int imageIndex;
+
+        [JsonInclude]
+        private string shellItemPath = string.Empty;
+        /// <summary> 资源管理器 / 系统右键所针对的磁盘路径（如 .lnk/.url 文件本身，而非解析后的目标）。 </summary>
+        [JsonIgnore]
+        public string ShellItemPath { get => shellItemPath; set => shellItemPath = value.Replace(System.IO.Path.DirectorySeparatorChar, '/'); }
 
         /// <summary> 需要保存 </summary>
         [JsonIgnore]

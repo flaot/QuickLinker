@@ -1,4 +1,4 @@
-﻿using QFramework;
+using QFramework;
 using QuickLinker.QuickLaunch.Systems;
 using QuickLinker.QuickLaunch.Utils;
 using System.Drawing;
@@ -28,6 +28,7 @@ namespace QuickLinker.QuickLaunch.Command
             {
                 change |= true;
                 entity.Path = filePath;
+                entity.ShellItemPath = filePath;
             }
             if (adminStartUp.HasValue && adminStartUp.Value != entity.adminStartUp)
             {
