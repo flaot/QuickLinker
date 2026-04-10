@@ -1,4 +1,4 @@
-﻿using QuickLinker.Plugin.Menu;
+using QuickLinker.Plugin.Menu;
 using System.Collections.Generic;
 using System.Linq;
 using System.Windows.Forms;
@@ -17,6 +17,9 @@ namespace QuickLinker
             _toolStrip = toolStrip;
         }
 
+        private ToolStripItemCollection ChildCollection(MenuItem root) =>
+            root == null ? _toolStrip.Items : _dicCacheByItem[root].DropDownItems;
+
         int IMenu.MenuType => _menuType;
         int IMenu.Count => _toolStrip.Items.Count;
 
@@ -29,10 +32,7 @@ namespace QuickLinker
             toolStripItem.Tag = sub;
             toolStripItem.Click += ToolStripItem_Click;
             _dicCacheByItem[sub] = toolStripItem;
-            var collection = _toolStrip.Items;
-            if (root != null)
-                collection = _dicCacheByItem[root].DropDownItems;
-            collection.Add(toolStripItem);
+            ChildCollection(root).Add(toolStripItem);
         }
         void IMenu.ReplaceItem(MenuItem item, MenuItem.Info info)
         {
@@ -54,10 +54,7 @@ namespace QuickLinker
         }
         void IMenu.AddSeparator(MenuItem root)
         {
-            var collection = _toolStrip.Items;
-            if (root != null)
-                collection = _dicCacheByItem[root].DropDownItems;
-            collection.Add(new ToolStripSeparator());
+            ChildCollection(root).Add(new ToolStripSeparator());
         }
         void IMenu.Clear()
         {
@@ -66,9 +63,7 @@ namespace QuickLinker
         }
         MenuItem IMenu.FindItem(MenuItem root, string name)
         {
-            var collection = _toolStrip.Items;
-            if (root != null)
-                collection = _dicCacheByItem[root].DropDownItems;
+            var collection = ChildCollection(root);
             if (string.IsNullOrEmpty(name))
                 return collection.Count > 0 ? collection[0].Tag as MenuItem : null;
             foreach (ToolStripItem stripItem in collection)

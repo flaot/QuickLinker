@@ -23,60 +23,63 @@ namespace QuickLinker
             string rootPath = Path.GetDirectoryName(Application.ExecutablePath);
             System.Environment.CurrentDirectory = rootPath;
 
-            if (args.Length > 1 && args[0] == "--")
-            {
-                Selection.isBatchMode = true;
-                var appArchitecture = AppArchitecture.Interface;
-                var appConfig = appArchitecture.GetModel<AppConfig>();
-                Uri uri = new Uri(args[1]);
-                var system = appArchitecture.GetSystem<QuickEntitySystem>();
-                //初始化插件
-                appArchitecture.GetSystem<IPluginSystem>().LoadAll();
-                appArchitecture.GetSystem<IMenuSystem>().RequestResetAll();
-                var commandSystem = appArchitecture.GetSystem<ICommandSystem>();
-                commandSystem.RequestResetAll();
-                //执行命令
-                if (Guid.TryParse(uri.LocalPath, out var guid))
-                {
-                    var entity = system.QueryWithGuid(guid);
-                    if (entity == null)
-                    {
-                        MessageBox.Show(Resources.RUN_URI_ERROR);
-                        return;
-                    }
-                    Selection.activeContext = null;
-                    Selection.activeEntity = entity;
-                    appArchitecture.SendCommand(new QuickEntityOpenCommand() { index = entity.index });
-                }
-                else
-                {
-                    //调用插件命令
-                    commandSystem.RunCommand(uri.LocalPath, Array.Empty<string>());
-                }
+            if (TryRunBatchUriMode(args))
                 return;
+
+            RunWinFormsApplication();
+        }
+
+        private static bool TryRunBatchUriMode(string[] args)
+        {
+            if (args.Length <= 1 || args[0] != "--")
+                return false;
+
+            Selection.isBatchMode = true;
+            var appArchitecture = AppArchitecture.Interface;
+            Uri uri = new Uri(args[1]);
+            var system = appArchitecture.GetSystem<QuickEntitySystem>();
+            appArchitecture.GetSystem<IPluginSystem>().LoadAll();
+            appArchitecture.GetSystem<IMenuSystem>().RequestResetAll();
+            var commandSystem = appArchitecture.GetSystem<ICommandSystem>();
+            commandSystem.RequestResetAll();
+            if (Guid.TryParse(uri.LocalPath, out var guid))
+            {
+                var entity = system.QueryWithGuid(guid);
+                if (entity == null)
+                {
+                    MessageBox.Show(Resources.RUN_URI_ERROR);
+                    return true;
+                }
+                Selection.activeContext = null;
+                Selection.activeEntity = entity;
+                appArchitecture.SendCommand(new QuickEntityOpenCommand() { index = entity.index });
             }
             else
             {
-                var appArchitecture = AppArchitecture.Interface;
-                var appConfig = appArchitecture.GetModel<AppConfig>();
-                if (appConfig.blockRepeatRun.Value)
-                {
-                    var singleApp = AppArchitecture.Interface.GetUtility<SingleAppUtil>();
-                    Process process = singleApp.RunningInstance();
-                    if (process != null)
-                    {
-                        singleApp.HandleRunningInstance(process);
-                        return;
-                    }
-                }
-                appConfig.TirggerSaveEvent.Register(Event_TirggerSave);
-
-                // To customize application configuration such as set high DPI settings or default font,
-                // see https://aka.ms/applicationconfiguration.
-                Application.SetHighDpiMode(HighDpiMode.PerMonitorV2);
-                ApplicationConfiguration.Initialize();
-                Application.Run(new MainForm());
+                commandSystem.RunCommand(uri.LocalPath, Array.Empty<string>());
             }
+            return true;
+        }
+
+        private static void RunWinFormsApplication()
+        {
+            var appArchitecture = AppArchitecture.Interface;
+            var appConfig = appArchitecture.GetModel<AppConfig>();
+            if (appConfig.blockRepeatRun.Value)
+            {
+                var singleApp = AppArchitecture.Interface.GetUtility<SingleAppUtil>();
+                Process process = singleApp.RunningInstance();
+                if (process != null)
+                {
+                    singleApp.HandleRunningInstance(process);
+                    return;
+                }
+            }
+            appConfig.TirggerSaveEvent.Register(Event_TirggerSave);
+
+            Application.SetHighDpiMode(HighDpiMode.PerMonitorV2);
+            ApplicationConfiguration.Initialize();
+            Application.Run(new MainForm());
         }
 
         private static void Event_TirggerSave()
