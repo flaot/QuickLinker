@@ -1,4 +1,4 @@
-﻿using QFramework;
+using QFramework;
 using QuickLinker.QuickLaunch.Constant;
 using QuickLinker.QuickLaunch.Models;
 using System;
@@ -11,6 +11,8 @@ namespace QuickLinker.QuickLaunch.Utils
     {
         void RunEntity(Entity iconInfo, string[] dropFileOrDirs);
         void ShowInExplore(Entity iconInfo);
+        /// <summary>仅对 <see cref="OpenType.OTHER"/> 校验磁盘路径是否仍存在；其它类型由原有启动逻辑处理。</summary>
+        bool CanResolveLaunchTarget(Entity iconInfo);
     }
     public class ProcessUtil : IProcessUtil
     {
@@ -22,6 +24,15 @@ namespace QuickLinker.QuickLaunch.Utils
         public void ShowInExplore(Entity iconInfo)
         {
             StartIconApp(iconInfo, Array.Empty<string>(), IconStartType.SHOW_IN_EXPLORE);
+        }
+
+        public bool CanResolveLaunchTarget(Entity iconInfo)
+        {
+            if (iconInfo == null)
+                return false;
+            if (iconInfo.iconType != OpenType.OTHER)
+                return true;
+            return !string.IsNullOrEmpty(GetFullPath(iconInfo));
         }
 
         private void StartIconApp(Entity icon, string[] dropFileOrDirs, IconStartType type)

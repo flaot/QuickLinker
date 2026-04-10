@@ -7,6 +7,7 @@ using QuickLinker.Plugin.Events;
 using QuickLinker.Plugin.Menu;
 using QuickLinker.Properties;
 using QuickLinker.QuickLaunch.Command;
+using QuickLinker.QuickLaunch.Constant;
 using QuickLinker.QuickLaunch.Systems;
 using QuickLinker.QuickLaunch.Utils;
 using QuickLinker.Systems;
@@ -318,7 +319,15 @@ namespace QuickLinker
             if ((ModifierKeys & Keys.Control) != 0) //Ctrl+左键 打开所在目录
             {
                 if (panel.Entity != null)
+                {
+                    var ctrlEntity = panel.Entity;
+                    if (ctrlEntity.iconType == OpenType.OTHER && !this.GetUtility<IProcessUtil>().CanResolveLaunchTarget(ctrlEntity))
+                    {
+                        MessageBox.Show(string.Format(Resources.MainForm_LoadButtonMissingFile, panel.Title), Text, MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                        return;
+                    }
                     this.SendCommand(new QuickEntityShowInExploreCommand() { index = panel.Index });
+                }
             }
             else //只有鼠标左键 打开应用
             {
@@ -333,7 +342,13 @@ namespace QuickLinker
                     return;
                 }
                 Selection.activeEntity = panel.Entity;
-                bool closeSoft = panel.Entity.closeSoft;
+                var openEntity = panel.Entity;
+                if (openEntity.iconType == OpenType.OTHER && !this.GetUtility<IProcessUtil>().CanResolveLaunchTarget(openEntity))
+                {
+                    MessageBox.Show(string.Format(Resources.MainForm_LoadButtonMissingFile, panel.Title), Text, MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                    return;
+                }
+                bool closeSoft = openEntity.closeSoft;
                 this.GetSystem<IAudioSystem>().PlayAudio(AudioType.Click);
                 this.SendCommand(new QuickEntityOpenCommand() { index = panel.Index, dropFileOrDirs = Selection.dropFileOrDirs });
                 if (closeSoft)
@@ -389,69 +404,6 @@ namespace QuickLinker
                 tabControl1.Cursor = Cursors.Default;
                 this.GetSystem<IAudioSystem>().PlayAudio(AudioType.Button);
             }
-        }
-
-        //MenuStrip
-        private void MenuStrip_CreateQuick_Click(object sender, EventArgs e)
-        {
-            var stripMenuItem = sender as ToolStripMenuItem;
-            var tPanel = stripMenuItem.Owner.Tag as TPanel;
-            if (tPanel.Entity == null)
-                return;
-            CommonCode.CreateShortcut(tPanel.Entity);
-        }
-        private void MenuStrip_SystemContextMenu_Click(object sender, EventArgs e)
-        {
-            var stripMenuItem = sender as ToolStripMenuItem;
-            var tPanel = stripMenuItem.Owner.Tag as TPanel;
-            if (tPanel.Entity == null)
-                return;
-            DirectoryInfo[] folders = new DirectoryInfo[1];
-            folders[0] = new DirectoryInfo(tPanel.Entity.Path);
-            ShellContextMenu scm = new ShellContextMenu();
-            Point p = Cursor.Position;
-            p.X -= 80;
-            p.Y -= 80;
-            scm.ShowContextMenu(folders, p);
-        }
-        private void MenuStrip_Clear_Click(object sender, EventArgs e)
-        {
-            var stripMenuItem = sender as ToolStripMenuItem;
-            var tPanel = stripMenuItem.Owner.Tag as TPanel;
-            if (tPanel.Entity == null)
-                return;
-            DialogResult dialogResult = MessageBox.Show(string.Format(Resources.MainForm_Remove, tPanel.Title), Text, MessageBoxButtons.YesNo, MessageBoxIcon.Question);
-            if (dialogResult == DialogResult.Yes)
-                this.SendCommand(new QuickEntityRemoveCommand() { index = tPanel.Index });
-        }
-        private void MenuStrip_Copy_Click(object sender, EventArgs e)
-        {
-            var stripMenuItem = sender as ToolStripMenuItem;
-            var tPanel = stripMenuItem.Owner.Tag as TPanel;
-            _operateGrid = tPanel;
-            _operateType.Value = OptType.Copy;
-        }
-        private void MenuStrip_Switch_Click(object sender, EventArgs e)
-        {
-            var stripMenuItem = sender as ToolStripMenuItem;
-            var tPanel = stripMenuItem.Owner.Tag as TPanel;
-            _operateGrid = tPanel;
-            _operateType.Value = OptType.Switch;
-        }
-        private void MenuStrip_Align_Click(object sender, EventArgs e)
-        {
-            var stripMenuItem = sender as ToolStripMenuItem;
-            var tPanel = stripMenuItem.Owner.Tag as TPanel;
-            _operateGrid = tPanel;
-            _operateType.Value = OptType.Align;
-        }
-        private void MenuStrip_Attr_Click(object sender, EventArgs e)
-        {
-            var stripMenuItem = sender as ToolStripMenuItem;
-            var tPanel = stripMenuItem.Owner.Tag as TPanel;
-            tPanel.Invert(true);
-            BtnPropertiesFrom.Show(tPanel);
-            tPanel.Invert(false);
         }
 
         public const int WM_SYSCOMMAND = 0x112;

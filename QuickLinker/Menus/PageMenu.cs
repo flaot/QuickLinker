@@ -1,9 +1,10 @@
-﻿using QFramework;
+using QFramework;
 using QuickLinker.Menus;
 using QuickLinker.Plugin;
 using QuickLinker.Plugin.Menu.Attribute;
 using QuickLinker.Properties;
 using QuickLinker.QuickLaunch.Command;
+using QuickLinker.QuickLaunch.Constant;
 using QuickLinker.QuickLaunch.Utils;
 using QuickLinker.Utils;
 using System.Drawing;
@@ -44,6 +45,11 @@ namespace QuickLinker
             var tPanel = Selection.activeContext as TPanel;
             if (tPanel.Entity == null)
                 return;
+            if (tPanel.Entity.iconType == OpenType.OTHER && !this.GetUtility<IProcessUtil>().CanResolveLaunchTarget(tPanel.Entity))
+            {
+                MessageBox.Show(string.Format(Resources.MainForm_LoadButtonMissingFile, tPanel.Title), mainForm.Text, MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                return;
+            }
             DirectoryInfo[] folders = new DirectoryInfo[1];
             folders[0] = new DirectoryInfo(tPanel.Entity.Path);
             ShellContextMenu scm = new ShellContextMenu();
