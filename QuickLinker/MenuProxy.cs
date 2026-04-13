@@ -2,6 +2,7 @@ using QuickLinker.Plugin.Menu;
 using System.Collections.Generic;
 using System.Linq;
 using System.Windows.Forms;
+using MenuItem = QuickLinker.Plugin.Menu.MenuItem;
 
 namespace QuickLinker
 {

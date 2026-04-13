@@ -1,5 +1,6 @@
 using Microsoft.Win32;
 using QFramework;
+using QuickLinker.Mcp;
 using QuickLinker.Menus;
 using QuickLinker.Model;
 using QuickLinker.Plugin;
@@ -38,6 +39,8 @@ namespace QuickLinker
         private int _oldGroupCount;
         ToolTip _toolTip = new ToolTip();
         public static int ignoreDeactivate = 0;
+
+        private QuickLinkerMcpHost _mcpHost;
 
         [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
         public TPanel OperateGrid { get => _operateGrid; set => _operateGrid = value; }
@@ -88,6 +91,7 @@ namespace QuickLinker
             config.registerURI.RegisterWithInitValue(this.GetUtility<IURIUtil>().Set);
             config.fontStates.RegisterWithInitValue(t => StatusStrip.Font = new Font(t.familyName, t.size, GraphicsUnit.Pixel));
             config.fontGroupTitle.RegisterWithInitValue(t => tabControl1.Font = new Font(t.familyName, t.size, GraphicsUnit.Pixel));
+            config.mcpEnabled.RegisterWithInitValue(ApplyMcpFromConfig);
             TypeEventSystem.Global.Register<RefreshStateTextEvent>(Event_RefreshStateText);
             TypeEventSystem.Global.Register<ShowToolTipEvent>(Event_ShowToolTip);
             TypeEventSystem.Global.Register<ClickTPanelEvent>(TPanel_OnClick);
@@ -155,6 +159,15 @@ namespace QuickLinker
                 }
             }
             ApplicationExit();
+        }
+        private async void MainForm_FormClosed(object sender, FormClosedEventArgs e)
+        {
+            if (_mcpHost != null)
+            {
+                var tempHost = _mcpHost;
+                _mcpHost = null;
+                await tempHost.StopAsync().ConfigureAwait(false);
+            }
         }
         private void MainForm_Deactivate(object sender, EventArgs e)
         {
@@ -813,6 +826,37 @@ namespace QuickLinker
             Close();
             Dispose();
             Application.Exit();
+        }
+
+        private void ApplyMcpFromConfig(bool mcpEnabled)
+        {
+            var config = this.GetModel<AppConfig>();
+            if (!mcpEnabled)
+            {
+                if (_mcpHost != null)
+                    _mcpHost.SetEnabled(false);
+                return;
+            }
+
+            var host = _mcpHost ?? new QuickLinkerMcpHost();
+            var token = string.IsNullOrWhiteSpace(config.mcpToken.Value)
+                ? null
+                : config.mcpToken.Value.Trim();
+            var parameters = new QuickLinkerMcpStartParameters(config.mcpPort.Value, token, new QuickLinkerMcpBridge(this));
+
+            host.SetEnabled(true, parameters, ex =>
+            {
+                if (IsDisposed)
+                    return;
+                if (ex != null)
+                {
+                    MessageBox.Show(this, Resources.MainForm_MCPServer + ex.Message, Text, MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                    config.mcpEnabled.Value = false;
+                    return;
+                }
+
+                _mcpHost = host;
+            });
         }
     }
 }

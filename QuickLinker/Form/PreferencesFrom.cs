@@ -1,4 +1,4 @@
-﻿using QFramework;
+using QFramework;
 using QuickLinker.Model;
 using QuickLinker.Properties;
 using QuickLinker.QuickLaunch.Constant;
@@ -9,6 +9,8 @@ using System;
 using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
+using System.Text.Json;
+using System.Text.Json.Nodes;
 using System.Windows.Forms;
 
 namespace QuickLinker
@@ -18,6 +20,7 @@ namespace QuickLinker
         private List<IUnRegister> _unRegisters = new List<IUnRegister>();
 
         private int _oldGroupNumber = -1;
+        private int _mcpJsonMode = 1;
         public PreferencesFrom()
         {
             InitializeComponent();
@@ -87,16 +90,27 @@ namespace QuickLinker
             RegisterBool(appConfig.persistConfigureMenu, checkBox21);
             RegisterBool(appConfig.persistDragMenu, checkBox22);
             RegisterBool(appConfig.disableCloseSoftware, checkBox23);
+
+            //MCP
+            RegisterBool(appConfig.mcpEnabled, checkBoxMcpEnabled);
+            RegisterNumericUpDown(appConfig.mcpPort, numericUpDownMcpPort);
+            RegisterTextBox(appConfig.mcpToken, textBoxMcpToken);
+            numericUpDownMcpPort.ValueChanged += McpPortOrToken_Changed;
+            textBoxMcpToken.TextChanged += McpPortOrToken_Changed;
+            Btn_McpCopyJson.Click += Btn_McpCopyJson_Click;
+            RefreshMcpJsonPreview();
+            _unRegisters.Add(appConfig.mcpToken.RegisterWithInitValue(Event_McpTokenChange));
+
             _unRegisters.Add(appConfig.disableChangeSetting.RegisterWithInitValue(Event_DispableChangeSetting));
             _unRegisters.Add(appConfig.password.RegisterWithInitValue(Event_Password));
             Txt_Password.TextChanged += Txt_Password_TextChanged;
             Txt_RPassword.TextChanged += Txt_Password_TextChanged;
         }
-
         private void SettingForm_FormClosing(object sender, FormClosingEventArgs e)
         {
             var appConfig = this.GetModel<AppConfig>();
             appConfig.actionHotKey.Value = textBox1.Text;
+            appConfig.mcpToken.Value = textBoxMcpToken.Text ?? string.Empty;
             if (_unRegisters != null)
             {
                 _unRegisters.ForEach(item => item.UnRegister());
@@ -145,6 +159,18 @@ namespace QuickLinker
             else
                 setValue = Convert.ChangeType(comboBox.SelectedIndex, valueProperty.PropertyType);
             valueProperty.SetValue(comboBox.Tag, setValue);
+        }
+        private void RegisterTextBox(BindableProperty<string> bindable, TextBox textBox)
+        {
+            _unRegisters.Add(bindable.RegisterWithInitValue(v => textBox.Text = v));
+            textBox.Tag = bindable;
+            textBox.TextChanged += TextBox_TextChanged;
+        }
+        private void TextBox_TextChanged(object sender, EventArgs e)
+        {
+            var textBox = sender as TextBox;
+            var bindable = textBox.Tag as BindableProperty<string>;
+            bindable.Value = textBox.Text;
         }
 
         private void RegisterNumericUpDown(BindableProperty<int> bindable, NumericUpDown numberic)
@@ -455,5 +481,46 @@ namespace QuickLinker
                 appConfig.password.Value = string.Empty;
         }
         #endregion
+
+        #region MCP
+        private void Btn_McpCopyJson_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                Clipboard.SetText(textBoxMcpJson.Text ?? string.Empty);
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(this, ex.Message, "复制 JSON", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+            }
+        }
+        private void Btn_McpSwitchJson_Click(object sender, EventArgs e)
+        {
+            _mcpJsonMode = _mcpJsonMode == 1 ? 2 : 1;
+            RefreshMcpJsonPreview();
+        }
+        private void McpPortOrToken_Changed(object sender, EventArgs e) => RefreshMcpJsonPreview();
+        private void Event_McpTokenChange(string mcpToken)
+        {
+            Btn_McpSwitchJson.Visible = mcpToken.Length > 0;
+        }
+        private void RefreshMcpJsonPreview()
+        {
+            int port = (int)numericUpDownMcpPort.Value;
+            string token = textBoxMcpToken.Text.Trim();
+            var server = new JsonObject { ["url"] = $"http://127.0.0.1:{port}/mcp" };
+            if (!string.IsNullOrWhiteSpace(token))
+            {
+                if (_mcpJsonMode == 1)
+                    server["headers"] = new JsonObject { ["Authorization"] = "Bearer " + token };
+                else
+                    server["headers"] = new JsonObject { ["X-QuickLinker-Mcp-Token"] = token };
+            }
+            var root = new JsonObject { ["mcpServers"] = new JsonObject { ["quicklinker"] = server } };
+            textBoxMcpJson.Text = root.ToJsonString(new JsonSerializerOptions { WriteIndented = true });
+        }
+        #endregion
+
+
     }
 }

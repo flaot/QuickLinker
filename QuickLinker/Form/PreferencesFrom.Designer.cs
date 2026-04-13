@@ -1,4 +1,4 @@
-﻿using System.Drawing;
+using System.Drawing;
 using System.Windows.Forms;
 
 namespace QuickLinker
@@ -148,6 +148,16 @@ namespace QuickLinker
             label35 = new Label();
             label33 = new Label();
             label34 = new Label();
+            tabPageMcp = new TabPage();
+            Btn_McpSwitchJson = new Button();
+            textBoxMcpJson = new TextBox();
+            Btn_McpCopyJson = new Button();
+            labelMcpJson = new Label();
+            textBoxMcpToken = new TextBox();
+            labelMcpToken = new Label();
+            numericUpDownMcpPort = new NumericUpDown();
+            labelMcpPort = new Label();
+            checkBoxMcpEnabled = new CheckBox();
             tabControl1.SuspendLayout();
             tabPage1.SuspendLayout();
             tabPage2.SuspendLayout();
@@ -163,6 +173,8 @@ namespace QuickLinker
             tabPage5.SuspendLayout();
             tabPage6.SuspendLayout();
             tabPage7.SuspendLayout();
+            tabPageMcp.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)numericUpDownMcpPort).BeginInit();
             SuspendLayout();
             // 
             // tabControl1
@@ -174,6 +186,7 @@ namespace QuickLinker
             tabControl1.Controls.Add(tabPage5);
             tabControl1.Controls.Add(tabPage6);
             tabControl1.Controls.Add(tabPage7);
+            tabControl1.Controls.Add(tabPageMcp);
             tabControl1.Dock = DockStyle.Fill;
             tabControl1.Location = new Point(0, 0);
             tabControl1.Margin = new Padding(0);
@@ -1331,6 +1344,113 @@ namespace QuickLinker
             label34.TabIndex = 0;
             label34.Text = "密码";
             // 
+            // tabPageMcp
+            // 
+            tabPageMcp.Controls.Add(Btn_McpSwitchJson);
+            tabPageMcp.Controls.Add(textBoxMcpJson);
+            tabPageMcp.Controls.Add(Btn_McpCopyJson);
+            tabPageMcp.Controls.Add(labelMcpJson);
+            tabPageMcp.Controls.Add(textBoxMcpToken);
+            tabPageMcp.Controls.Add(labelMcpToken);
+            tabPageMcp.Controls.Add(numericUpDownMcpPort);
+            tabPageMcp.Controls.Add(labelMcpPort);
+            tabPageMcp.Controls.Add(checkBoxMcpEnabled);
+            tabPageMcp.Location = new Point(4, 26);
+            tabPageMcp.Name = "tabPageMcp";
+            tabPageMcp.Padding = new Padding(8);
+            tabPageMcp.Size = new Size(440, 241);
+            tabPageMcp.TabIndex = 8;
+            tabPageMcp.Text = "MCP";
+            tabPageMcp.UseVisualStyleBackColor = true;
+            // 
+            // Btn_McpSwitchJson
+            // 
+            Btn_McpSwitchJson.Anchor = AnchorStyles.Top | AnchorStyles.Right;
+            Btn_McpSwitchJson.Location = new Point(266, 68);
+            Btn_McpSwitchJson.Name = "Btn_McpSwitchJson";
+            Btn_McpSwitchJson.Size = new Size(76, 26);
+            Btn_McpSwitchJson.TabIndex = 9;
+            Btn_McpSwitchJson.Text = "切换(&W)";
+            Btn_McpSwitchJson.UseVisualStyleBackColor = true;
+            Btn_McpSwitchJson.Click += Btn_McpSwitchJson_Click;
+            // 
+            // textBoxMcpJson
+            // 
+            textBoxMcpJson.Anchor = AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right;
+            textBoxMcpJson.Location = new Point(8, 100);
+            textBoxMcpJson.Multiline = true;
+            textBoxMcpJson.Name = "textBoxMcpJson";
+            textBoxMcpJson.ReadOnly = true;
+            textBoxMcpJson.ScrollBars = ScrollBars.Vertical;
+            textBoxMcpJson.Size = new Size(416, 133);
+            textBoxMcpJson.TabIndex = 8;
+            textBoxMcpJson.WordWrap = false;
+            // 
+            // Btn_McpCopyJson
+            // 
+            Btn_McpCopyJson.Anchor = AnchorStyles.Top | AnchorStyles.Right;
+            Btn_McpCopyJson.Location = new Point(348, 68);
+            Btn_McpCopyJson.Name = "Btn_McpCopyJson";
+            Btn_McpCopyJson.Size = new Size(76, 26);
+            Btn_McpCopyJson.TabIndex = 7;
+            Btn_McpCopyJson.Text = "复制(&C)";
+            Btn_McpCopyJson.UseVisualStyleBackColor = true;
+            // 
+            // labelMcpJson
+            // 
+            labelMcpJson.AutoSize = true;
+            labelMcpJson.Location = new Point(8, 74);
+            labelMcpJson.Name = "labelMcpJson";
+            labelMcpJson.Size = new Size(196, 17);
+            labelMcpJson.TabIndex = 6;
+            labelMcpJson.Text = "Cursor HTTP MCP 配置（JSON）";
+            // 
+            // textBoxMcpToken
+            // 
+            textBoxMcpToken.Anchor = AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right;
+            textBoxMcpToken.Location = new Point(100, 39);
+            textBoxMcpToken.Name = "textBoxMcpToken";
+            textBoxMcpToken.Size = new Size(324, 23);
+            textBoxMcpToken.TabIndex = 4;
+            // 
+            // labelMcpToken
+            // 
+            labelMcpToken.AutoSize = true;
+            labelMcpToken.Location = new Point(8, 43);
+            labelMcpToken.Name = "labelMcpToken";
+            labelMcpToken.Size = new Size(67, 17);
+            labelMcpToken.TabIndex = 3;
+            labelMcpToken.Text = "令牌(可选):";
+            // 
+            // numericUpDownMcpPort
+            // 
+            numericUpDownMcpPort.Location = new Point(344, 10);
+            numericUpDownMcpPort.Maximum = new decimal(new int[] { 65535, 0, 0, 0 });
+            numericUpDownMcpPort.Minimum = new decimal(new int[] { 1, 0, 0, 0 });
+            numericUpDownMcpPort.Name = "numericUpDownMcpPort";
+            numericUpDownMcpPort.Size = new Size(80, 23);
+            numericUpDownMcpPort.TabIndex = 2;
+            numericUpDownMcpPort.Value = new decimal(new int[] { 1, 0, 0, 0 });
+            // 
+            // labelMcpPort
+            // 
+            labelMcpPort.AutoSize = true;
+            labelMcpPort.Location = new Point(292, 14);
+            labelMcpPort.Name = "labelMcpPort";
+            labelMcpPort.Size = new Size(35, 17);
+            labelMcpPort.TabIndex = 1;
+            labelMcpPort.Text = "端口:";
+            // 
+            // checkBoxMcpEnabled
+            // 
+            checkBoxMcpEnabled.AutoSize = true;
+            checkBoxMcpEnabled.Location = new Point(8, 12);
+            checkBoxMcpEnabled.Name = "checkBoxMcpEnabled";
+            checkBoxMcpEnabled.Size = new Size(215, 21);
+            checkBoxMcpEnabled.TabIndex = 0;
+            checkBoxMcpEnabled.Text = "启用本机 HTTP MCP（127.0.0.1）";
+            checkBoxMcpEnabled.UseVisualStyleBackColor = true;
+            // 
             // PreferencesFrom
             // 
             AutoScaleDimensions = new SizeF(96F, 96F);
@@ -1371,6 +1491,9 @@ namespace QuickLinker
             tabPage6.PerformLayout();
             tabPage7.ResumeLayout(false);
             tabPage7.PerformLayout();
+            tabPageMcp.ResumeLayout(false);
+            tabPageMcp.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)numericUpDownMcpPort).EndInit();
             ResumeLayout(false);
         }
 
@@ -1481,5 +1604,15 @@ namespace QuickLinker
         private Label label40;
         private CheckBox checkBox22;
         private Label label41;
+        private TabPage tabPageMcp;
+        private CheckBox checkBoxMcpEnabled;
+        private Label labelMcpPort;
+        private NumericUpDown numericUpDownMcpPort;
+        private Label labelMcpToken;
+        private TextBox textBoxMcpToken;
+        private Label labelMcpJson;
+        private Button Btn_McpCopyJson;
+        private TextBox textBoxMcpJson;
+        private Button Btn_McpSwitchJson;
     }
 }

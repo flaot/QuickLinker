@@ -1,4 +1,4 @@
-﻿using QFramework;
+using QFramework;
 using QuickLinker.Systems;
 using System.Drawing;
 using System.Text.Json.Serialization;
@@ -36,6 +36,12 @@ namespace QuickLinker.Model
         public BindableProperty<bool> launch = new BindableProperty<bool>();
         /// <summary> 注册URI </summary>
         public BindableProperty<bool> registerURI = new BindableProperty<bool>();
+        /// <summary> 启用本机 HTTP MCP（127.0.0.1，供 Cursor 等连接） </summary>
+        public BindableProperty<bool> mcpEnabled = new BindableProperty<bool>();
+        /// <summary> MCP 监听端口 </summary>
+        public BindableProperty<int> mcpPort = new BindableProperty<int>(37842);
+        /// <summary> MCP 访问令牌（非空则要求 Bearer 或 X-QuickLinker-Mcp-Token） </summary>
+        public BindableProperty<string> mcpToken = new BindableProperty<string>(string.Empty);
         /// <summary> 处理启动按钮 </summary>
         public BindableProperty<bool> startbutton = new BindableProperty<bool>();
 
