@@ -208,6 +208,7 @@ namespace QuickLinker
             Text = "QuickLinker";
             Deactivate += MainForm_Deactivate;
             FormClosing += MainForm_FormClosing;
+            FormClosed += MainForm_FormClosed;
             Load += MainForm_Load;
             tabPage1.ResumeLayout(false);
             tabControl1.ResumeLayout(false);
