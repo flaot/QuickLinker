@@ -1369,7 +1369,7 @@ namespace QuickLinker
             Btn_McpSwitchJson.Location = new Point(266, 68);
             Btn_McpSwitchJson.Name = "Btn_McpSwitchJson";
             Btn_McpSwitchJson.Size = new Size(76, 26);
-            Btn_McpSwitchJson.TabIndex = 9;
+            Btn_McpSwitchJson.TabIndex = 6;
             Btn_McpSwitchJson.Text = "切换(&W)";
             Btn_McpSwitchJson.UseVisualStyleBackColor = true;
             Btn_McpSwitchJson.Click += Btn_McpSwitchJson_Click;
@@ -1402,7 +1402,7 @@ namespace QuickLinker
             labelMcpJson.Location = new Point(8, 74);
             labelMcpJson.Name = "labelMcpJson";
             labelMcpJson.Size = new Size(196, 17);
-            labelMcpJson.TabIndex = 6;
+            labelMcpJson.TabIndex = 5;
             labelMcpJson.Text = "Cursor HTTP MCP 配置（JSON）";
             // 
             // textBoxMcpToken
