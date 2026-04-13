@@ -1,6 +1,7 @@
 using Microsoft.Win32;
 using QFramework;
 using QuickLinker.Mcp;
+using QuickLinker.Mcp.Bridge;
 using QuickLinker.Menus;
 using QuickLinker.Model;
 using QuickLinker.Plugin;

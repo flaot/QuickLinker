@@ -1,4 +1,5 @@
 using QFramework;
+using QuickLinker.QuickLaunch.Models;
 using QuickLinker.QuickLaunch.Systems;
 using QuickLinker.QuickLaunch.Utils;
 using System.Drawing;
@@ -17,6 +18,9 @@ namespace QuickLinker.QuickLaunch.Command
         public string actionHotKey;
         public bool? dropNLaunch;
         public bool? launchOnStartup;
+        public bool? closeSoft;
+        public WindowStyle? windowStyle;
+        public PriorityClass? priorityClass;
         protected override void OnExecute()
         {
             var entitySystem = this.GetSystem<QuickEntitySystem>();
@@ -70,6 +74,21 @@ namespace QuickLinker.QuickLaunch.Command
             {
                 change |= true;
                 entity.launchOnStartup = launchOnStartup.Value;
+            }
+            if (closeSoft.HasValue && closeSoft.Value != entity.closeSoft)
+            {
+                change |= true;
+                entity.closeSoft = closeSoft.Value;
+            }
+            if (windowStyle.HasValue && windowStyle.Value != entity.windowStyle)
+            {
+                change |= true;
+                entity.windowStyle = windowStyle.Value;
+            }
+            if (priorityClass.HasValue && priorityClass.Value != entity.priorityClass)
+            {
+                change |= true;
+                entity.priorityClass = priorityClass.Value;
             }
             if (change)
             {
