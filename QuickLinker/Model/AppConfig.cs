@@ -36,12 +36,6 @@ namespace QuickLinker.Model
         public BindableProperty<bool> launch = new BindableProperty<bool>();
         /// <summary> 注册URI </summary>
         public BindableProperty<bool> registerURI = new BindableProperty<bool>();
-        /// <summary> 启用本机 HTTP MCP（127.0.0.1，供 Cursor 等连接） </summary>
-        public BindableProperty<bool> mcpEnabled = new BindableProperty<bool>();
-        /// <summary> MCP 监听端口 </summary>
-        public BindableProperty<int> mcpPort = new BindableProperty<int>(37842);
-        /// <summary> MCP 访问令牌（非空则要求 Bearer 或 X-QuickLinker-Mcp-Token） </summary>
-        public BindableProperty<string> mcpToken = new BindableProperty<string>(string.Empty);
         /// <summary> 处理启动按钮 </summary>
         public BindableProperty<bool> startbutton = new BindableProperty<bool>();
 
@@ -49,8 +43,6 @@ namespace QuickLinker.Model
         public BindableProperty<TitleStyle> titleStyle = new BindableProperty<TitleStyle>();
         /// <summary> 唤醒快捷键 </summary>
         public BindableProperty<string> actionHotKey = new BindableProperty<string>(string.Empty);
-
-
 
         /// <summary> 行 </summary>
         public BindableProperty<int> gridRow = new BindableProperty<int>(5);
@@ -64,7 +56,6 @@ namespace QuickLinker.Model
         public BindableProperty<int> grid = new BindableProperty<int>(0);
         /// <summary> 平面按钮 </summary>
         public BindableProperty<bool> flatButton = new BindableProperty<bool>();
-
 
         /// <summary> 作为工具提示 </summary>
         public BindableProperty<bool> showToolTip = new BindableProperty<bool>();
@@ -108,6 +99,13 @@ namespace QuickLinker.Model
         public BindableProperty<bool> persistDragMenu = new BindableProperty<bool>();
         /// <summary> 防止关闭本软件 </summary>
         public BindableProperty<bool> disableCloseSoftware = new BindableProperty<bool>();
+
+        /// <summary> 启用本机 HTTP MCP（127.0.0.1） </summary>
+        public BindableProperty<bool> mcpEnabled = new BindableProperty<bool>();
+        /// <summary> MCP 监听端口 </summary>
+        public BindableProperty<int> mcpPort = new BindableProperty<int>(37842);
+        /// <summary> MCP 访问令牌（非空则要求 Bearer 或 X-QuickLinker-Mcp-Token） </summary>
+        public BindableProperty<string> mcpToken = new BindableProperty<string>(string.Empty);
 
         [JsonIgnore, XmlIgnore]
         public EasyEvent TirggerSaveEvent = new EasyEvent();
