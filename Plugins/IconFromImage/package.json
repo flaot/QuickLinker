@@ -1,0 +1,9 @@
+{
+  "author": {
+    "name": "flaot"
+  },
+  "description": "支持把图片内容显示成icon",
+  "icon": "",
+  "name": "IconFromImage",
+  "version": "1.0"
+}
